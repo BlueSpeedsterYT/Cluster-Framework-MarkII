@@ -3,15 +3,10 @@
 /// @returns {Id.TileMapElement|Id.Instance}
 function player_find_wall()
 {
-	for (var n = array_length(tilemaps) - 1; n > -1; --n)
+	var total_solids = array_concat(tilemaps, solid_objects);
+	for (var n = array_length(total_solids) - 1; n > -1; --n)
 	{
-		var inst = tilemaps[n];
-		if (player_ray_collision(inst)) return inst;
-	}
-	
-	for (n = array_length(solid_objects) - 1; n > -1; --n)
-	{
-		inst = solid_objects[n];
+		var inst = total_solids[n];
 		if (player_ray_collision(inst)) return inst;
 	}
 	
@@ -26,14 +21,10 @@ function player_find_floor(radius)
 {
 	for (var oy = 0; oy <= radius; ++oy)
 	{
-		for (var n = array_length(tilemaps) - 1; n > -1; --n)
+		var total_solids = array_concat(tilemaps, solid_objects);
+		for (var n = array_length(total_solids) - 1; n > -1; --n)
 		{
-			if (player_ray_collision(tilemaps[n], x_radius, oy)) return oy;
-		}
-		
-		for (n = array_length(solid_objects) - 1; n > -1; --n)
-		{
-			if (player_ray_collision(solid_objects[n], x_radius, oy)) return oy;
+			if (player_ray_collision(total_solids[n], x_radius, oy)) return oy;
 		}
 	}
 	

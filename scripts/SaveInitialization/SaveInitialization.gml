@@ -13,3 +13,4 @@ for (var i = 0; i < INPUT_MAX_PLAYERS; i++)
 }
 
 db_write(global.save_database, CHARACTER.SONIC, "character", 0);
+db_write(global.save_database, CHARACTER.MILES, "character", 1);

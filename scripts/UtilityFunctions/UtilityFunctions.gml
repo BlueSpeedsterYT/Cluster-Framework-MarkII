@@ -247,3 +247,34 @@ function draw_reset()
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
 }
+
+/// @function spawn_rings(rings, ox, oy)
+/// @description Spawns up to 32 dropped rings in circles of 16 at the given coordinates
+/// @argument {Real} rings number of dropped rings to create
+/// @argument {Real} ox centre spawn x-position
+/// @argument {Real} oy centre spawn y-position
+/// @returns {Id.Instance}
+function spawn_rings(rings, ox, oy)
+{
+	var total = min(rings, 32);
+	var len = 4;
+	var dir = 101.25;
+	var flip = false;
+
+	for (var ring = 0; ring < total; ++ring) {
+	    if (ring == 16) {
+	        len = 2;
+	        dir = 101.25;
+	    }
+	    with (instance_create_layer(ox, oy, "ZoneObjects", objLostRing)) {
+	        depth = other.depth + 1;
+	        x_speed = lengthdir_x(len, dir);
+	        y_speed = lengthdir_y(len, dir);
+	        if (flip) {
+	            x_speed = -x_speed;
+	            dir += 22.5;
+	        }
+	    }
+	    flip = !flip;
+	}
+}

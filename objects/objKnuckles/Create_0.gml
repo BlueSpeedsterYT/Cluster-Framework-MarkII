@@ -21,7 +21,7 @@ player_animate = function()
         }
         case PLAYER_ANIMATION.TEETER:
         {
-           animation_data.variant = (cliff_sign != image_xscale);
+            animation_data.variant = (cliff_sign != image_xscale);
             animation_set(global.ani_knuckles_teeter);
             player_set_radii(6, 14);
             image_angle = gravity_direction;

@@ -1,5 +1,5 @@
 /// @description Time
-if (time_enabled and ++stage_time == time_limit)
+if (is_hub == false and time_enabled and ++stage_time == time_limit)
 {
 	time_over = true;
 	time_enabled = false;

@@ -11,7 +11,7 @@ bound_bottom = room_height;
 stage_time = 0;
 time_limit = 36000;
 time_over = false;
-time_enabled = true;
+time_enabled = false;
 
 // alarm[0] = 5;
 
@@ -22,6 +22,16 @@ switch (room)
 	{
 		name = "DEMONSTRATION";
 		act = 1;
+		is_hub = false;
+		music_enqueue(bgmMadGear, 0);
+		break;
+	}
+	case rmR99Map:
+	{
+		name = "ROUTE 99";
+		act = 0;
+		is_hub = true;
+		music_enqueue(bgmR99Map, 0);
 		break;
 	}
 }

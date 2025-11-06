@@ -112,13 +112,41 @@ boost_option.set = function(val) { db_write(global.save_database, val, "boost");
 device_option = new option("Device Setup");
 device_option.confirm = function() { InputPartySetJoin(true); }
 
+room_select_option = new option("Room Select");
+room_select_option.confirm = function()
+{
+    current_menu = room_menu;
+    return true;
+};
+
 test_option = new option("Test Room");
 test_option.confirm = function()
+{
+    room_goto(rmTest);
+    return true;
+};
+
+test_new_option = new option("New Test Room");
+test_new_option.confirm = function()
 {
     room_goto(rmTestNew);
     return true;
 };
 
+r99_map_option = new option("MAP: Route 99");
+r99_map_option.confirm = function()
+{
+    room_goto(rmR99Map);
+    return true;
+};
 
-character_menu = new menu([player_0_option, player_1_option, boost_option, device_option, test_option]);
+back_to_character_menu_option = new option("Back to Character Select");
+back_to_character_menu_option.confirm = function()
+{
+    current_menu = character_menu;
+    return true;
+};
+
+character_menu = new menu([player_0_option, player_1_option, boost_option, device_option, room_select_option]);
+room_menu = new menu([test_option, test_new_option, r99_map_option, back_to_character_menu_option]);
 current_menu = character_menu;

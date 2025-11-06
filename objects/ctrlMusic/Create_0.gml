@@ -11,15 +11,17 @@ looping_tracks = [bgmMadGear];
 /// @param {Asset.GMSound} soundid Sound asset to set loop points for.
 /// @param {Real} loop_start Start point of the loop in seconds.
 /// @param {Real} loop_end End point of the loop in seconds.
-var set_music_loop = function(soundid, loop_start, loop_end)
+var set_music_loop = function (soundid, loop_start = 0, loop_end = audio_sound_length(soundid))
 {
 	audio_sound_loop_start(soundid, loop_start);
-	audio_sound_loop_end(soundid, loop_end);
+	if(loop_end > 0) audio_sound_loop_end(soundid, loop_end);
 	array_push(looping_tracks, soundid);
 };
 
 // TODO: define loops points for music (if applicable)
 // Looping tracks that don't have loop points should be added directly into the array
+
+set_music_loop(bgmR99Map, (143360/44100), (1740820/44100));
 
 /// @method play_music(soundid)
 /// @description Plays the given music track, muting it if an overlay is playing, and sets it as the current stream.
