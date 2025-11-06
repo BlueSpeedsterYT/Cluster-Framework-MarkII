@@ -17,19 +17,40 @@ enum CHARACTER
     CREAM
 }
 
+enum TEAM_TYPE
+{
+    NONE = -1,
+    SPEED,
+    POWER,
+    FLY
+}
+
+enum ANGLE
+{
+    UP = 90,
+    DOWN = 270,
+    LEFT = 180,
+    RIGHT = 0,
+    LEFT_UP = 135,
+    LEFT_DOWN = 225,
+    RIGHT_UP = 45,
+    RIGHT_DOWN = 315
+}
+
 // Volumes
-volume_sound = 1;
-volume_music = 1;
+global.volume_sound = 1;
+global.volume_music = 1;
 
 // Player values
-players = -1;
-score = 0;
-lives = 3;
-rings = 0;
+global.players = -1;
+global.characters = -1;
+global.team_type = TEAM_TYPE.NONE;
+global.score = 0;
+global.lives = 3;
+global.rings = 0;
 
 // Fonts
-font_hud = font_add_sprite(sprFontHUD, ord("0"), false, 1);
-font_lives = font_add_sprite(sprFontLives, ord("0"), false, 0);
+global.font_hud = font_add_sprite(sprFontHUD, ord("0"), false, 0);
 
 // Misc.
 surface_depth_disable(true);
@@ -44,6 +65,4 @@ call_later(1, time_source_units_frames, function()
 	instance_create_layer(0, 0, "Controllers", ctrlMusic);
 });
 
-/* AUTHOR NOTE: this must be done one frame later as the first room will not have loaded yet.
- * also, while the manual recommends variables declared in scripts to have a global prefix, this is not done here.
- */
+/* AUTHOR NOTE: this must be done one frame later as the first room will not have loaded yet. */

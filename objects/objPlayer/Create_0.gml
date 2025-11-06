@@ -29,7 +29,8 @@ enum PLAYER_ANIMATION
     TRICK_FRONT,
     TRICK_BACK,
     SPRING,
-    SPRING_TWIRL
+    SPRING_TWIRL,
+	PUSH
 }
 
 enum TRICK
@@ -60,6 +61,7 @@ enum CPU_STATE
 
 // State machine
 state = player_is_ready;
+state_previous = -1;
 state_changed = false;
 
 jump_action = false;
@@ -447,12 +449,36 @@ player_draw_before = function() {};
 /// @description Draws player effects in front of the character sprite.
 player_draw_after = function() {};
 
+/// @method player_set_rings(amount)
+/// @description Sets the player's ring count to the given amount.
+/// @param {Real} amount Amount of rings to give.
+player_set_rings = function (amount)
+{
+	global.rings = clamp(amount, 0, 999)
+};
+
+/// @method player_set_lives(amount)
+/// @description Sets the player's life count to the given amount.
+/// @param {Real} amount Amount of lives to give.
+player_set_lives = function (amount)
+{
+	global.lives = clamp(amount, 0, 99);
+};
+
+/// @method player_set_score(num)
+/// @description Sets the player's score count to the given amount.
+/// @param {Real} amount Amount of score points to give.
+player_set_score = function (amount)
+{
+	global.score = clamp(amount, 0, 999999);
+};
+
 /// @method player_gain_rings(num)
 /// @description Increases the player's ring count by the given amount.
 /// @param {Real} num Amount of rings to give.
 player_gain_rings = function(num)
 {
-	global.rings = min(global.rings + num, 999);
+	player_set_rings(global.rings + num);
 	sound_play(sfxRing);
 	
 	// Gain lives
@@ -470,6 +496,23 @@ player_gain_rings = function(num)
 /// @param {Real} num Amount of lives to give.
 player_gain_lives = function(num)
 {
-	lives = min(lives + num, 99);
+	player_set_lives(global.lives + num);
 	music_overlay(bgmLife);
+};
+
+/// @method player_gain_score(num)
+/// @description Increases the player's score count by the given amount.
+/// @param {Real} num Amount of score points to give.
+player_gain_score = function (num)
+{
+	player_set_score(global.score + num);
+	
+	// Gain lives
+	static score_life_threshold = 49999;
+	if (global.score > score_life_threshold)
+	{
+		var change = global.score div 50000;
+		player_gain_lives(change - score_life_threshold div 50000);
+		score_life_threshold = change * 50000 + 9999;
+	}
 };
