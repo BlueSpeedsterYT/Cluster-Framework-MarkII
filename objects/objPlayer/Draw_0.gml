@@ -9,7 +9,11 @@ if (sprite_index != -1) draw_sprite_ext(sprite_index, image_index, x_int, y_int,
 player_draw_after();
 
 // Spin Dash
-spin_dash_effect.draw();
+with (spin_dash_effect)
+{
+	image_alpha = 1;
+	draw();
+}
 
 draw_hitboxes(mask_direction);
 

@@ -368,5 +368,10 @@ tails_effect = new player_effect();
 
 player_draw_before = function()
 {
-    tails_effect.draw();
+    var _hurt_alpha_effect = (invulnerability_time <= 0) ? 1 : ((invulnerability_time div 2) mod 2);
+	with (tails_effect) 
+	{
+		image_alpha = _hurt_alpha_effect;
+		draw();
+	}
 };
