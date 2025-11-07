@@ -102,13 +102,13 @@ if (player_index != 0 and input_cpu_gamepad_time == 0)
                 var jump_auto = 0;
 				if (animation_data.index == PLAYER_ANIMATION.PUSH)
 				{
-					input_cpu_state_time++;
+					if (input_cpu_state_time > 0) input_cpu_state_time--;
 					if (sign(image_xscale) == sign(leader_inst.image_xscale) 
 					and leader_inst.animation_data.index == PLAYER_ANIMATION.PUSH) 
 					{
-						input_cpu_state_time = 0;
+						input_cpu_state_time = 30;
 					}
-					jump_auto = (input_cpu_state_time < 30) ? 0 : 1;
+					jump_auto = (input_cpu_state_time > 0) ? 1 : 0;
 				}
 				else
 				{

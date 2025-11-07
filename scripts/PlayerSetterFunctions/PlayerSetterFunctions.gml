@@ -48,8 +48,7 @@ function player_push_wall(inst, dir)
 	if (state != player_is_running) exit;
 
 	// Animate
-	// TODO: Add Pushing Animation
-	//animation_init(PLAYER_ANIMATION.PUSH);
+	animation_init(PLAYER_ANIMATION.PUSH);
 
 	// Get movement vectors
 	var ox = dcos(direction) * dir;

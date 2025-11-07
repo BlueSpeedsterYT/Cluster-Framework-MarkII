@@ -287,6 +287,13 @@ player_animate = function()
             }
             break;
         }
+		case PLAYER_ANIMATION.PUSH:
+		{
+			animation_set(global.ani_miles_push_v0);
+			player_set_radii(6, 14);
+            image_angle = gravity_direction;
+			break;
+		}
     }
 };
 

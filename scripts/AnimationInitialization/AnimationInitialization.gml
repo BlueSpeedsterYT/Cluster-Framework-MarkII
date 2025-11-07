@@ -86,6 +86,7 @@ global.ani_sonic_spring = [global.ani_sonic_spring_v0, global.ani_sonic_spring_v
 
 global.ani_sonic_spring_twirl_v0 = new animation(sprSonicSpringTwirl, [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3], 11);
 
+global.ani_sonic_push_v0 = new animation(sprSonicPush, [4, 6, 6, 6, 6, 6, 6, 6, 6], 1);
 #endregion
 
 #region Miles
@@ -142,6 +143,8 @@ global.ani_miles_spring_v2 = new animation(sprMilesSpring2, 3, 1);
 global.ani_miles_spring = [global.ani_miles_spring_v0, global.ani_miles_spring_v1, global.ani_miles_spring_v2];
 
 global.ani_miles_spring_twirl_v0 = new animation(sprMilesSpringTwirl, [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3], 11);
+
+global.ani_miles_push_v0 = new animation(sprMilesPush, [4, 7, 7, 7, 7, 7, 7, 7, 7], 1);
 
 #endregion
 
