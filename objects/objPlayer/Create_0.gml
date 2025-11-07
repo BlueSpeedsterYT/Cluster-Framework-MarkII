@@ -30,7 +30,10 @@ enum PLAYER_ANIMATION
     TRICK_BACK,
     SPRING,
     SPRING_TWIRL,
-	PUSH
+	PUSH,
+	HURT,
+	DEAD,
+	DROWNED
 }
 
 enum TRICK
@@ -77,21 +80,20 @@ for (var i = 0; i < array_length(trick_speed); i++) trick_speed[i] = array_creat
 control_lock_time = 0;
 trick_time = 0;
 superspeed_time = 0;
+remaining_air_time = 0;
 invincibility_time = 0;
 invulnerability_time = 0;
-input_cpu_state_time = 0;
-input_cpu_respawn_time = 0;
-input_cpu_gamepad_time = 0;
 camera_look_time = 0;
 
 slide_duration = 30;
 spring_duration = 16;
 trick_lock_duration = 9;
+remaining_air_duration = 120;
 invulnerability_duration = 120;
-input_cpu_respawn_duration = 300;
-input_cpu_gamepad_duration = 600;
 
 // Physics
+underwater = false;
+drown = false;
 x_speed = 0;
 y_speed = 0;
 
@@ -179,6 +181,11 @@ player_reset_input = function()
 
 // CPU
 input_cpu_state = 0;
+input_cpu_state_time = 0;
+input_cpu_respawn_time = 0;
+input_cpu_gamepad_time = 0;
+input_cpu_respawn_duration = 300;
+input_cpu_gamepad_duration = 600;
 input_cpu_history = array_create(CPU_INPUT.MAX);
 for (var i = 0; i < array_length(input_cpu_history); i++) input_cpu_history[i] = array_create(16);
 
@@ -216,6 +223,46 @@ player_record_cpu_input = function(cpu_input)
 	array_push(input_cpu_history[cpu_input], input);
 };
 
+/// @method player_respawn_cpu()
+/// @description Respawns the CPU to the main player's location
+player_respawn_cpu = function ()
+{
+	var player_inst = global.players[0];
+
+	if (instance_exists(player_inst))
+	{
+		if (player_inst.state != player_is_dead)
+		{
+			player_reset_cpu();
+			invulnerability_time = invulnerability_duration;
+		}
+	}
+}
+
+/// @method player_reset_cpu()
+/// @description Resets the CPU to match the main player
+player_reset_cpu = function ()
+{
+	var player_inst = global.players[0];
+
+	if (instance_exists(player_inst))
+	{
+		x = player_inst.x div 1;
+		y = player_inst.y div 1;
+		xprevious = player_inst.x div 1;
+		yprevious = player_inst.y div 1;
+		image_xscale = player_inst.image_xscale;
+		gravity_direction = player_inst.gravity_direction;
+		x_speed = player_inst.x_speed;
+		y_speed = player_inst.y_speed;
+		// TODO: Add Layer Collisions
+		underwater = player_inst.underwater;
+		player_perform(player_is_falling);
+		animation_init(PLAYER_ANIMATION.ROLL);
+		player_refresh_physics();
+	}
+}
+
 // Animation
 animation_data = new animation_core();
 //animation_history = array_create(16);
@@ -232,10 +279,11 @@ function player_effect() constructor
     image_xscale = 1;
     image_yscale = 1;
     image_angle = 0;
+	image_alpha = 1;
     animation_data = new animation_core();
     static draw = function()
     {
-        if (sprite_index != -1) draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, c_white, 1);
+        if (sprite_index != -1) draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, c_white, image_alpha);
     };
 }
 
@@ -437,8 +485,7 @@ player_set_radii = function(xrad, yrad)
     x_radius = xrad;
     x_wall_radius = x_radius + 2;
     y_radius = yrad;
-    x += sine * (old_y_radius - y_radius);
-    y += cosine * (old_y_radius - y_radius);
+	player_new_position(x + (sine * (old_y_radius - y_radius)), y + (cosine * (old_y_radius - y_radius)));
 };
 
 /// @method player_draw_before()
@@ -516,3 +563,20 @@ player_gain_score = function (num)
 		score_life_threshold = change * 50000 + 9999;
 	}
 };
+
+/// @method player_ring_loss()
+/// @description Drop a ring of rings.
+/// @returns {Id.Instance}
+player_ring_loss = function ()
+{
+	var total = min(global.rings, 32);
+	var dir = 101.25;
+	var len = 4;
+
+	while (total)
+	{
+		var ring_inst = instance_create_layer(x div 1, y div 1, "ZoneObjects", objRing);
+	}
+	
+	player_set_rings(0);
+}

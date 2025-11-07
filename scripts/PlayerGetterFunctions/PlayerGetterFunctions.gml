@@ -13,14 +13,10 @@ function player_calc_ground_normal(ox, oy, rot)
 	/// @returns {Bool}
 	static point_in_solid = function(px, py)
 	{
-		for (var n = array_length(tilemaps) - 1; n > -1; --n)
+		var tile_data = array_concat(tilemaps, solid_objects);
+		for (var n = array_length(tile_data) - 1; n > -1; --n)
 		{
-			if (collision_point(px, py, tilemaps[n], true, false) != noone) return true;
-		}
-		
-		for (n = array_length(solid_objects) - 1; n > -1; --n)
-		{
-			if (collision_point(px, py, solid_objects[n], true, false) != noone) return true;
+			if (collision_point(px, py, tile_data[n], true, false) != noone) return true;
 		}
 		
 		return false;

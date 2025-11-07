@@ -80,19 +80,37 @@ function rotate_towards(dest, src, amt = 2.8125)
     return src;
 }
 
-/// @function instance_in_view([obj], [padding])
+/// @function instance_in_view([obj], [view_padding])
 /// @description Checks if the given instance is visible within the game view.
 /// @param {Asset.GMObject|Id.Instance} [obj] Object or instance to check (optional, default is the calling instance).
-/// @param {Real} [padding] Distance in pixels to extend the size of the view when checking (optional, default is the CAMERA_PADDING macro).
+/// @param {Real} [view_padding] Distance in pixels to extend the size of the view when checking (optional, default is the CAMERA_PADDING macro).
 /// @returns {Bool}
-function instance_in_view(obj = id, padding = CAMERA_PADDING)
+function instance_in_view(obj = id, view_padding = CAMERA_PADDING)
 {
 	var left = global.main_camera.get_x();
 	var top = global.main_camera.get_y();
 	var right = left + CAMERA_WIDTH;
 	var bottom = top + CAMERA_HEIGHT;
 	
-	with (obj) return point_in_rectangle(x, y, left - padding, top - padding, right + padding, bottom + padding);
+	with (obj)
+	{
+		if (object_index == objPlayer)
+		{
+			var x_int = x div 1;
+	        var y_int = y div 1;
+	        var sine = dsin(mask_direction);
+	        var cosine = dcos(mask_direction);
+
+	        var x1 = x_int - (cosine * x_radius * 2) - (sine * y_radius);
+	        var y1 = y_int + (sine * x_radius * 2) - (cosine * y_radius);
+	        var x2 = x_int + (cosine * x_radius * 2) + (sine * y_radius);
+	        var y2 = y_int - (sine * x_radius * 2) + (cosine * y_radius);
+
+	        return (rectangle_in_rectangle(x1, y1, x2, y2, left - view_padding, top - view_padding, right + view_padding, bottom + view_padding) != 0);
+		}
+		
+		return (rectangle_in_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, left - view_padding, top - view_padding, right + view_padding, bottom + view_padding) != 0);
+	}
 }
 
 /// @function collision_player(hb, pla, [plahb])
@@ -249,35 +267,4 @@ function draw_reset()
     draw_set_alpha(1);
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
-}
-
-/// @function spawn_rings(rings, ox, oy)
-/// @description Spawns up to 32 dropped rings in circles of 16 at the given coordinates
-/// @argument {Real} rings number of dropped rings to create
-/// @argument {Real} ox centre spawn x-position
-/// @argument {Real} oy centre spawn y-position
-/// @returns {Id.Instance}
-function spawn_rings(rings, ox, oy)
-{
-	var total = min(rings, 32);
-	var len = 4;
-	var dir = 101.25;
-	var flip = false;
-
-	for (var ring = 0; ring < total; ++ring) {
-	    if (ring == 16) {
-	        len = 2;
-	        dir = 101.25;
-	    }
-	    with (instance_create_layer(ox, oy, "ZoneObjects", objLostRing)) {
-	        depth = other.depth + 1;
-	        x_speed = lengthdir_x(len, dir);
-	        y_speed = lengthdir_y(len, dir);
-	        if (flip) {
-	            x_speed = -x_speed;
-	            dir += 22.5;
-	        }
-	    }
-	    flip = !flip;
-	}
 }

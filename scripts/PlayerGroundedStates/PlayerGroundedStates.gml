@@ -202,15 +202,6 @@ function player_is_running(phase)
 			// Stand
 			if (x_speed == 0 and input_axis_x == 0) return player_perform(player_is_standing);
 			
-			// Push
-			var tile_data = player_find_wall();
-			var wall_sign = is_undefined(player_eject_wall(tile_data)) ? 0 : player_eject_wall(tile_data);
-			if (tile_data != noone and wall_sign == input_axis_x
-			and sign(x_speed) != -wall_sign)
-			{
-				return player_perform(player_is_pushing);
-			}
-			
 			// Animate
 			if (can_brake)
 			{
@@ -234,81 +225,6 @@ function player_is_running(phase)
 			{
 				animation_init(PLAYER_ANIMATION.RUN);
 			}
-			break;
-		}
-		case PHASE.EXIT:
-		{
-			control_lock_time = 0;
-			break;
-		}
-	}
-}
-
-/// @function player_is_pushing(phase)
-function player_is_pushing(phase)
-{
-	switch (phase)
-	{
-		case PHASE.ENTER:
-		{
-			// Animate
-            animation_init(PLAYER_ANIMATION.PUSH);
-			image_angle = gravity_direction;
-			break;
-		}
-		case PHASE.STEP:
-		{
-			// Jump
-			if (input_button.jump.pressed) return player_perform(player_is_jumping);
-			
-			// Handle pushing motion
-			if (input_axis_x != 0)
-			{
-				// If moving in the opposite direction...
-				if (image_xscale != input_axis_x)
-				{
-					// Run
-					return player_perform(player_is_running);
-				}
-				else
-				{
-					// Accelerate
-					image_xscale = input_axis_x;
-					if (abs(x_speed) < speed_cap)
-					{
-						x_speed = min(abs(x_speed) + acceleration, speed_cap) * input_axis_x;
-					}
-				}
-			}
-			else
-			{
-				// Move/Stand
-				return player_perform((abs(x_speed) > 0) ? player_is_running : player_is_standing);
-			}
-			
-			// Move
-			player_move_on_ground();
-			if (state_changed) exit;
-			
-			// Fall
-			if (not on_ground) return player_perform(player_is_falling);
-			
-			// Slide down steep slopes
-			if (abs(x_speed) < slide_threshold)
-			{
-				if (local_direction >= 90 and local_direction <= 270)
-				{
-					return player_perform(player_is_falling);
-				}
-				else if (local_direction >= 45 and local_direction <= 315)
-				{
-					control_lock_time = slide_duration;
-					return player_perform(player_is_running);
-				}
-			}
-			
-			// Apply slope friction
-			player_resist_slope(0.125);
 			break;
 		}
 		case PHASE.EXIT:

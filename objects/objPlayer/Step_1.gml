@@ -4,6 +4,25 @@ if (control_lock_time > 0 and on_ground)
 	--control_lock_time;
 }
 
+if (invulnerability_time > 0)
+{
+	--invulnerability_time;
+}
+
+if (superspeed_time > 0)
+{
+    --superspeed_time;
+    if (superspeed_time <= 0)
+	{
+        player_refresh_physics();
+    }
+}
+
+if (invincibility_time > 0)
+{
+    --invincibility_time;
+}
+
 animation_update();
 with (spin_dash_effect) animation_update();
 
