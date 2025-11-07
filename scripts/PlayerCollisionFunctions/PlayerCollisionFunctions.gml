@@ -12,22 +12,23 @@ function player_collision(obj)
 		collision_rectangle(x_int - x_radius, y_int - y_radius, x_int + x_radius, y_int + y_radius, obj, true, false) != noone);
 }
 
-/// @function player_part_collision(obj, yrad)
+/// @function player_part_collision(obj, xrad, ylen)
 /// @description Checks if the given entity's mask intersects a vertical portion of the player's virtual mask.
 /// @param {Asset.GMObject|Id.Instance|Id.TileMapElement} obj Object, instance or tilemap element to check.
-/// @param {Real} yrad Distance in pixels to extend the player's mask vertically.
+/// @param {Real} xrad Distance in pixels to extend the player's mask horizontally.
+/// @param {Real} ylen Distance in pixels to extend the line downward.
 /// @returns {Bool}
-function player_part_collision(obj, yrad)
+function player_part_collision(obj, xrad, ylen)
 {
 	var x_int = x div 1;
 	var y_int = y div 1;
 	var sine = dsin(mask_direction);
 	var cosine = dcos(mask_direction);
 	
-	var x1 = x_int - cosine * x_radius;
-	var y1 = y_int + sine * x_radius;
-	var x2 = x_int + cosine * x_radius + sine * yrad;
-	var y2 = y_int - sine * x_radius + cosine * yrad;
+	var x1 = x_int - (cosine * xrad);
+	var y1 = y_int + (sine * xrad);
+	var x2 = x_int + (cosine * xrad) + (sine * ylen);
+	var y2 = y_int - (sine * xrad) + (cosine * ylen);
 	
 	return collision_rectangle(x1, y1, x2, y2, obj, true, false) != noone;
 }

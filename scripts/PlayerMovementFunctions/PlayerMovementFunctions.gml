@@ -16,26 +16,39 @@ function player_move_on_ground()
 	However, unless the player's virtual mask is wider than their sprite's, this is not an issue. */
 	
 	// Calculate the number of steps for collision checking
-	var total_steps = 1 + abs(x_speed) div x_radius;
+	var total_steps = 1 + (abs(x_speed) div x_radius);
 	var step = x_speed / total_steps;
+	var sine = dsin(direction);
+	var cosine = dcos(direction);
 	
 	// Loop over the number of steps
 	repeat (total_steps)
 	{
 		// Move by a single step
-		x += dcos(direction) * step;
-		y -= dsin(direction) * step;
-		player_in_bounds(); // TODO: add death state and call it if this is false
+		player_new_position(x + (cosine * step), y - (sine * step));
+		if (player_in_bounds() == false)
+		{
+			player_damage(self);
+		}
 		
 		// Register nearby instances
 		player_detect_entities();
 		
 		// Handle wall collision
 		var tile_data = player_find_wall();
-		var wall_sign = is_undefined(player_eject_wall(tile_data)) ? 0 : player_eject_wall(tile_data);
-		if (tile_data != noone and sign(x_speed) == wall_sign)
+		if (tile_data != noone)
 		{
-			x_speed = 0;
+			var wall_sign = player_eject_wall(tile_data);
+			
+			// Stop moving and push
+			if (sign(x_speed) == wall_sign)
+			{
+				x_speed = 0;
+				if (sign(image_xscale) == wall_sign && input_axis_x == wall_sign) 
+				{
+					player_push_wall(tile_data, wall_sign);
+				}
+			}
 		}
 		
 		// Handle floor collision
@@ -47,7 +60,10 @@ function player_move_on_ground()
 				player_ground(tile_data);
 				player_rotate_mask();
 			}
-			else on_ground = false;
+			else
+			{
+				on_ground = false;
+			}
 		}
 	}
 }
@@ -57,30 +73,51 @@ function player_move_on_ground()
 function player_move_in_air()
 {
 	// Calculate the number of steps for collision checking
-	var total_steps = 1 + abs(x_speed) div x_radius + abs(y_speed) div y_radius;
-	var x_step = x_speed / total_steps;
-	var y_step = y_speed / total_steps;
+	var total_x_steps = 1 + (abs(x_speed) div x_radius);
+	var total_y_steps = 1 + (abs(y_speed) div y_radius);
+	var x_step = x_speed / total_x_steps;
+	var y_step = y_speed / total_y_steps;
 	var sine = dsin(direction);
 	var cosine = dcos(direction);
 	
 	// Loop over the number of steps
-	repeat (total_steps)
+	repeat (total_x_steps)
 	{
 		// Move by a single step
-		x += cosine * x_step + sine * y_step;
-		y += -sine * x_step + cosine * y_step;
-		player_in_bounds();
+		player_new_position(x + (cosine * x_step), y - (sine * x_step));
+		if (player_in_bounds() == false)
+		{
+			player_damage(self);
+		}
 		
 		// Register nearby instances
 		player_detect_entities();
 		
 		// Handle wall collision
 		var tile_data = player_find_wall();
-		var wall_sign = is_undefined(player_eject_wall(tile_data)) ? 0 : player_eject_wall(tile_data);
-		if (tile_data != noone and sign(x_speed) == wall_sign)
+		if (tile_data != noone)
 		{
-			x_speed = 0;
+			var wall_sign = player_eject_wall(tile_data);
+			
+			// Stop moving
+			if (sign(x_speed) == wall_sign)
+			{
+				x_speed = 0;
+			}
 		}
+	}
+	
+	repeat (total_y_steps)
+	{
+		// Move by a single step
+		player_new_position(x + (sine * y_step), y + (cosine * y_step));
+		if (player_in_bounds() == false)
+		{
+			player_damage(self);
+		}
+		
+		// Register nearby instances
+		player_detect_entities();
 		
 		// Handle floor collision
 		if (y_speed >= 0)
@@ -110,7 +147,7 @@ function player_move_in_air()
 					// Slide against it
 					sine = dsin(local_direction);
 					cosine = dcos(local_direction);
-					var g_speed = cosine * x_speed - sine * y_speed;
+					var g_speed = (cosine * x_speed) - (sine * y_speed);
 					x_speed = cosine * g_speed;
 					y_speed = -sine * g_speed;
 					
@@ -137,5 +174,9 @@ function player_move_in_air()
 			landed = false;
 			break;
 		}
+		
+		// Handle wall collision (again)
+		tile_data = player_find_wall();
+		if (tile_data != noone) player_eject_wall(tile_data);
 	}
 }

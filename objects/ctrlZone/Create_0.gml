@@ -26,6 +26,14 @@ switch (room)
 		music_enqueue(bgmMadGear, 0);
 		break;
 	}
+	case rmTestNew:
+	{
+		name = "DEMONSTRATION";
+		act = 1;
+		is_hub = false;
+		//music_enqueue(bgmMadGear, 0);
+		break;
+	}
 	case rmR99Map:
 	{
 		name = "ROUTE 99";

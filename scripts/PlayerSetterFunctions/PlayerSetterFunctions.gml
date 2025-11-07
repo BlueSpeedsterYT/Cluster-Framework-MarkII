@@ -1,7 +1,7 @@
 /// @function player_eject_wall(inst)
 /// @description Moves the player's virtual mask out of collision with the given wall.
 /// @param {Id.Instance|Id.TileMapElement} inst Instance or tilemap element to eject from.
-/// @returns {Real|Undefined} Sign of the wall from the player, or undefined on failure to reposition.
+/// @returns {Real} Sign of the wall from the player, or zero on failure to reposition.
 function player_eject_wall(inst)
 {
 	var sine = dsin(mask_direction);
@@ -15,31 +15,78 @@ function player_eject_wall(inst)
 			// Left of the wall
 			if (player_beam_collision(inst, ox, 0))
 			{
-				x -= cosine * (x_wall_radius - ox + 1);
-				y += sine * (x_wall_radius - ox + 1);
+				player_new_position(x - (cosine * (x_wall_radius - ox + 1)), y + (sine * (x_wall_radius - ox + 1)));
 				return 1;
 			}
 			else if (player_beam_collision(inst, -ox, 0)) // Right of the wall
 			{
-				x += cosine * (x_wall_radius - ox + 1);
-				y -= sine * (x_wall_radius - ox + 1);
+				player_new_position(x + (cosine * (x_wall_radius - ox + 1)), y - (sine * (x_wall_radius - ox + 1)));
 				return -1;
 			}
 		}
 		else if (not player_beam_collision(inst, ox, 0)) // Right of the wall
 		{
-			x += cosine * (x_wall_radius + ox);
-			y -= sine * (x_wall_radius + ox);
+			player_new_position(x + (cosine * (x_wall_radius + ox)), y - (sine * (x_wall_radius + ox)));
 			return -1;
 		}
 		else if (not player_beam_collision(inst, -ox, 0)) // Left of the wall
 		{
-			x -= cosine * (x_wall_radius + ox);
-			y += sine * (x_wall_radius + ox);
+			player_new_position(x - (cosine * (x_wall_radius + ox)), y + (sine * (x_wall_radius + ox)));
 			return 1;
 		}
 	}
-	return undefined;
+	return 0;
+}
+
+/// @function player_push_wall(inst, dir)
+/// @description Sets the animation for pushing, and moves the solid if possible.
+/// @param {Id.Instance|Id.TileMapElement} inst Instance or tilemap element to push on.
+/// @param {Real} dir Direction to push.
+function player_push_wall(inst, dir)
+{
+	// TODO: Check for leader state phase
+	if (state != player_is_running) exit;
+
+	// Animate
+	// TODO: Add Pushing Animation
+	//animation_init(PLAYER_ANIMATION.PUSH);
+
+	// Get movement vectors
+	var ox = dcos(direction) * dir;
+	var oy = dsin(direction) * dir;
+
+	// TODO: Make moving objects work with tiles
+	//with (inst)
+	//{
+	//	// Abort
+	//	if ((!can_push || y - yprevious != 0) || place_meeting(x + ox, y - oy, objSolid)) exit;
+
+	//	// Move object
+	//	x += ox;
+	//	y -= oy;
+	//}
+
+	// Move player
+	player_new_position(x + ox, y - oy);
+}
+
+/// @function player_new_position(new_x, new_y)
+/// @param {Real} new_x
+/// @param {Real} new_y
+function player_new_position(new_x, new_y)
+{
+	if (x != new_x or y != new_y)
+	{
+		if (x != new_x) 
+		{
+	        x = new_x;
+	    }
+		
+	    if (y != new_y) 
+		{
+	        y = new_y;
+	    }
+	}
 }
 
 /// @function player_resolve_angle()
@@ -131,9 +178,9 @@ function player_ground(height)
 	else
 	{
 		// Align to ground
-		var offset = y_radius - height + 1;
-		x -= dsin(mask_direction) * offset;
-		y -= dcos(mask_direction) * offset;
+		var ground_offset = (y_radius - height) + 1;
+		x -= dsin(mask_direction) * ground_offset;
+		y -= dcos(mask_direction) * ground_offset;
 		
 		// Update angle values
 		player_resolve_angle();
@@ -160,8 +207,23 @@ function player_refresh_physics()
 	jump_height = 6.5;
 	jump_release = 4;
 	
+	// Underwater modification
+	if (underwater)
+	{
+		speed_cap *= 0.5;
+	    acceleration *= 0.5;
+	    deceleration *= 0.5;
+		friction *= 0.5;
+		air_acceleration *= 0.5;
+		roll_friction *= 0.5;
+
+	    gravity_force = 0.0625;
+	    recoil_gravity = gravity_force;
+		jump_height -= 3;
+	    jump_release *= 0.5;
+	}
 	// Superspeed modification
-	if (superspeed_time > 0)
+	else if (superspeed_time > 0)
 	{
 		speed_cap *= 2;
 		acceleration *= 2;
@@ -177,7 +239,7 @@ function player_refresh_physics()
 function player_in_bounds()
 {
 	// Check if already inside (early out)
-	if (gravity_direction mod 180 != 0)
+	if (mask_direction mod 180 != 0)
 	{
 		var x1 = x - y_radius;
 		var y1 = y - x_radius;
@@ -251,4 +313,40 @@ function player_in_bounds()
 	}
 	
 	return true;
+}
+
+/// @function player_damage(inst)
+/// @description Sets the player state to being hurt or dying. Setting the inst to the player is instant death.
+/// @param {Id.Instance} inst Instance to damage from.
+/// @returns {Void}
+function player_damage(inst)
+{
+	if (state == player_is_dead || ((state == player_is_hurt || invulnerability_time > 0 || invincibility_time > 0) && inst != self)) exit;
+	
+	var damage_inst = inst.id;
+	var hurt_direction = esign(x - damage_inst.x, 1);
+	
+	if (damage_inst == id || (global.rings == 0 && player_index == 0))
+	{
+		player_perform(player_is_dead);
+		if (drown == false)
+		{
+			y_speed = -7;
+		}
+		else
+		{
+			
+		}
+	}
+	else
+	{
+		x_speed = (underwater ? 2 : 1) * hurt_direction;
+		y_speed = (underwater ? -4 : -2);
+		player_perform(player_is_hurt);
+		
+		if (player_index == 0)
+		{
+			player_ring_loss();
+		}
+	}
 }

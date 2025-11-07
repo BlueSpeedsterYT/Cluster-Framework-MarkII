@@ -14,6 +14,7 @@ with (spin_dash_effect)
         y = other.y + cosine * other.y_radius;
         image_xscale = other.image_xscale;
         image_angle = other.mask_direction;
+		image_alpha = 1;
         animation_data.variant = (charge > 2);
         animation_set(global.ani_spin_dash);
     }

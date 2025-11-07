@@ -142,14 +142,36 @@ function player_is_hurt(phase)
 	{
 		case PHASE.ENTER:
 		{
+			// Detach from ground
+			player_ground(undefined);
+			
+			
 			break;
 		}
 		case PHASE.STEP:
 		{
+			// Move
+			player_move_in_air();
+			if (state_changed) exit;
+			
+			// Land
+			if (on_ground)
+			{
+				player_perform(player_is_standing);
+				x_speed = 0;
+				y_speed = 0;
+			}
+			
+			// Fall
+			if (y_speed < gravity_cap)
+			{
+				y_speed = min(y_speed + recoil_gravity, gravity_cap);
+			}
 			break;
 		}
 		case PHASE.EXIT:
 		{
+			invulnerability_time = invulnerability_duration;
 			break;
 		}
 	}
@@ -162,10 +184,30 @@ function player_is_dead(phase)
 	{
 		case PHASE.ENTER:
 		{
+			// Reset Depth
+			depth = 150;
+			
+			// Detach from ground
+			player_ground(undefined);
+			
+			// Reset Horizontal Speed
+			x_speed = 0;
+			
+			// Refresh Physics
+			player_refresh_physics();
+			
 			break;
 		}
 		case PHASE.STEP:
 		{
+			// Set new position
+			player_new_position(x + (dsin(gravity_direction) * y_speed), y + (dcos(gravity_direction) * y_speed));
+			
+			// Fall
+			if (y_speed < gravity_cap)
+			{
+				y_speed = min(y_speed + gravity_force, gravity_cap);
+			}
 			break;
 		}
 		case PHASE.EXIT:
