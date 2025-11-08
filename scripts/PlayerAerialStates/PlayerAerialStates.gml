@@ -188,6 +188,9 @@ function player_is_dead(phase)
 			// Reset Depth
 			depth = 150;
 			
+			// Disable Boost Mode
+			boost_mode = false;
+			
 			// Detach from ground
 			player_ground(undefined);
 			

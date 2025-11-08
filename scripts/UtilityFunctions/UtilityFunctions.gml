@@ -42,6 +42,17 @@ function esign(val, def)
 	else return sign(val);
 }
 
+/// @function direction_to_object(obj)
+/// @description Returns the targeted object's distance in degrees. Ported from GM8.2.
+/// @param {Id.Instance} obj Object or instance to check.
+/// @returns {Real}
+function direction_to_object(obj)
+{
+	var n = (obj >= 100000) ? obj : instance_nearest(x, y, obj);
+	if(n == noone) return -1;
+	return (point_direction(x, y, n.x, n.y));
+}
+
 /// @function choose_weighted(val1, weight1, val2, weight2...)
 /// @description Returns one of the values while minding their "weights" - in other words, a "biased" version of choose.
 /// @param {Real} val1 First value to get the weight of.
@@ -140,7 +151,7 @@ function instance_in_view(obj = id, view_padding = CAMERA_PADDING)
 /// @function collision_player(hb, pla, [plahb])
 /// @description Checks if the given player is intersecting the given hitbox.
 /// @param {Real} hb Hitbox to check.
-/// @param {Id.Instance} pla Player to checl.
+/// @param {Id.Instance} pla Player to check.
 /// @param {Real} plahb Player hitbox to check (optional, defaults to virtual mask).
 /// @returns {Real}
 function collision_player(hb, pla, plahb = -1)

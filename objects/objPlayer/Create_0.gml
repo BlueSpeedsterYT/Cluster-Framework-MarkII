@@ -103,6 +103,9 @@ slide_threshold = 2.5;
 air_drag_threshold = 0.125;
 air_drag = 0.96875;
 
+boost_mode = false;
+boost_speed = 0;
+
 // Collision detection
 x_radius = 8;
 x_wall_radius = 10;
@@ -135,9 +138,19 @@ semisolid_tilemap = layer_tilemap_get_id("TilesSemisolid");
 
 solid_objects = [];
 
+// Per-Character Variables
+
+// Homing Attack (TODO: Maybe move this to the Sonic object.)
+homing_inst = noone;
+homing_range = 128;
+homing_speed = 12;
+homing_time = 0;
+homing_duration = 180;
+
 // Input
 input_axis_x = 0;
 input_axis_y = 0;
+input_allow = true;
 
 /// @function button(verb)
 /// @description Creates a new button.
@@ -345,7 +358,7 @@ player_try_trick = function(time = trick_time)
 
 /// @method player_rotate_mask()
 /// @description Rotates the player's virtual mask, if applicable.
-player_rotate_mask = function()
+player_rotate_mask = function ()
 {
 	static rotation_lock_time = 0;
 	if (rotation_lock_time > 0) then --rotation_lock_time;
@@ -361,7 +374,7 @@ player_rotate_mask = function()
 /// @method player_resist_slope(force)
 /// @description Applies slope friction to the player's horizontal speed, if appropriate.
 /// @param {Real} force Friction value to use.
-player_resist_slope = function(force)
+player_resist_slope = function (force)
 {
 	// Abort if...
 	if (x_speed == 0 and control_lock_time == 0) exit; // Not moving
@@ -374,7 +387,7 @@ player_resist_slope = function(force)
 
 /// @method player_animate()
 /// @description Sets the player's current animation.
-player_animate = function() {};
+player_animate = function () {};
 
 /// player_set_animation(ani, [ang])
 /// @description Sets the given animation as the player's current animation.
@@ -395,7 +408,7 @@ player_animate_teeter = function(ani)
     player_set_animation(ani);
 };
 
-/// player_animate_run(ani)
+/// player_animate_run(ani, [ang])
 /// @description Sets the given animation as the player's current run animation.
 /// @param {Undefined|Struct.animation|Array} ani Animation to set. Accepts an array as animation variants.
 /// @param {Real} [ang] Angle to set (optional, defaults to direction).
@@ -472,7 +485,7 @@ player_animate_spring = function(ani)
 /// @description Sets the given radii as the player's virtual mask.
 /// @param {Real} xrad Horizontal radius to use.
 /// @param {Real} yrad Vertical radius to use.
-player_set_radii = function(xrad, yrad)
+player_set_radii = function (xrad, yrad)
 {
     // Abort if radii already match
     if (x_radius == xrad and y_radius == yrad) exit;
@@ -489,11 +502,11 @@ player_set_radii = function(xrad, yrad)
 
 /// @method player_draw_before()
 /// @description Draws player effects behind the character sprite.
-player_draw_before = function() {};
+player_draw_before = function () {};
 
 /// @method player_draw_after()
 /// @description Draws player effects in front of the character sprite.
-player_draw_after = function() {};
+player_draw_after = function () {};
 
 /// @method player_set_rings(amount)
 /// @description Sets the player's ring count to the given amount.
@@ -578,4 +591,44 @@ player_ring_loss = function ()
 	}
 	
 	player_set_rings(0);
+}
+
+/// @method player_damage(inst)
+/// @description Sets the player state to being hurt or dying. Setting the inst to the player is instant death.
+/// @param {Id.Instance} inst Instance to damage from.
+player_damage = function (inst)
+{
+	if (state == player_is_dead 
+	or ((state == player_is_hurt or invulnerability_time > 0 or invincibility_time > 0) 
+	and inst != self)) 
+	{
+		exit;
+	}
+	
+	var damage_inst = inst.id;
+	var hurt_direction = esign(x - damage_inst.x, 1);
+	
+	if (damage_inst == id or (global.rings == 0 and player_index == 0))
+	{
+		player_perform(player_is_dead);
+		if (drown == false)
+		{
+			y_speed = -7;
+		}
+		else
+		{
+			
+		}
+	}
+	else
+	{
+		x_speed = (underwater ? 2 : 1) * hurt_direction;
+		y_speed = (underwater ? -4 : -2);
+		player_perform(player_is_hurt);
+		
+		if (player_index == 0)
+		{
+			player_ring_loss();
+		}
+	}
 }

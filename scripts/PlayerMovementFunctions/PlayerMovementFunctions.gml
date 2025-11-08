@@ -36,7 +36,7 @@ function player_move_on_ground()
 		
 		// Handle wall collision
 		var tile_data = player_find_wall();
-		if (tile_data != noone)
+		if (tile_data != undefined)
 		{
 			var wall_sign = player_eject_wall(tile_data);
 			
@@ -95,7 +95,7 @@ function player_move_in_air()
 		
 		// Handle wall collision
 		var tile_data = player_find_wall();
-		if (tile_data != noone)
+		if (tile_data != undefined)
 		{
 			var wall_sign = player_eject_wall(tile_data);
 			
@@ -177,6 +177,6 @@ function player_move_in_air()
 		
 		// Handle wall collision (again)
 		tile_data = player_find_wall();
-		if (tile_data != noone) player_eject_wall(tile_data);
+		if (tile_data != undefined) player_eject_wall(tile_data);
 	}
 }

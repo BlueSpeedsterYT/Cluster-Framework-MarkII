@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"SonicAerialStates",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"SonicAerialStates",
+  "parent":{
+    "name":"Per-Character",
+    "path":"folders/Scripts/Player/States/Per-Character.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
