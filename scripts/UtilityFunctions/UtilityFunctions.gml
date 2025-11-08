@@ -42,6 +42,30 @@ function esign(val, def)
 	else return sign(val);
 }
 
+/// @function choose_weighted(val1, weight1, val2, weight2...)
+/// @description Returns one of the values while minding their "weights" - in other words, a "biased" version of choose.
+/// @param {Real} val1 First value to get the weight of.
+/// @param {Real} weight1 The weight to get from the first value.
+/// @param {Real} val2 Second value to get the weight of.
+/// @param {Real} weight2 The weight to get from the second value.
+/// @returns {Real}
+function choose_weighted() {
+    var n = 0;
+    for (var i = 1; i < argument_count; i += 2) {
+        if (argument[i] <= 0) continue;
+        n += argument[i];
+    }
+    
+    n = random(n);
+    for (var i = 1; i < argument_count; i += 2) {
+        if (argument[i] <= 0) continue;
+        n -= argument[i];
+        if (n < 0) return argument[i - 1];
+    }
+    
+    return argument[0];
+}
+
 /// @function wrap(val, minimum, maximum)
 /// @description Wraps the given value between the minimum and maximum inclusively.
 /// @param {Real} val Value to wrap.

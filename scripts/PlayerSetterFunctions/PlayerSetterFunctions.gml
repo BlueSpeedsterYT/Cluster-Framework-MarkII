@@ -319,7 +319,6 @@ function player_in_bounds()
 /// @function player_damage(inst)
 /// @description Sets the player state to being hurt or dying. Setting the inst to the player is instant death.
 /// @param {Id.Instance} inst Instance to damage from.
-/// @returns {Void}
 function player_damage(inst)
 {
 	if (state == player_is_dead || ((state == player_is_hurt || invulnerability_time > 0 || invincibility_time > 0) && inst != self)) exit;
@@ -350,4 +349,13 @@ function player_damage(inst)
 			player_ring_loss();
 		}
 	}
+}
+
+/// @function player_refresh_status()
+/// @description Resets the player status variables back to their default values.
+function player_refresh_status()
+{
+	invulnerability_time = 0;
+	invincibility_time = 0;
+	superspeed_time = 0;
 }

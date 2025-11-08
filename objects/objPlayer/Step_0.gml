@@ -14,7 +14,11 @@ if (player_index == 0 or input_cpu_gamepad_time > 0)
 	    value.released = InputReleased(verb, player_index);
 	});
     
-    if (input_cpu_gamepad_time > 0) input_cpu_gamepad_time--;
+    if (input_cpu_gamepad_time > 0) 
+	{
+		input_cpu_gamepad_time--;
+		player_refresh_status();
+	}
 }
 
 if (player_index != 0 and input_cpu_gamepad_time == 0)
