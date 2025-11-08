@@ -145,7 +145,8 @@ function player_is_hurt(phase)
 			// Detach from ground
 			player_ground(undefined);
 			
-			
+			// Animate
+			animation_init(PLAYER_ANIMATION.HURT);
 			break;
 		}
 		case PHASE.STEP:
@@ -193,9 +194,11 @@ function player_is_dead(phase)
 			// Reset Horizontal Speed
 			x_speed = 0;
 			
-			// Refresh Physics
-			player_refresh_physics();
+			// Refresh Status
+			player_refresh_status();
 			
+			// Animate
+			animation_init(PLAYER_ANIMATION.DEAD);
 			break;
 		}
 		case PHASE.STEP:

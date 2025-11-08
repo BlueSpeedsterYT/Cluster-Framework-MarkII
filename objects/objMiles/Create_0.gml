@@ -291,8 +291,35 @@ player_animate = function()
 		{
 			animation_set(global.ani_miles_push_v0);
 			player_set_radii(6, 14);
-			hitboxes[0].set(-6, -10, 6, 16);
-            hitboxes[1].set();
+			if (image_index == 0)
+            {
+				hitboxes[0].set_size(-6, -10, 6, 16);
+	            hitboxes[1].set_size();
+			}
+            image_angle = gravity_direction;
+			break;
+		}
+		case PLAYER_ANIMATION.HURT:
+		{
+			animation_set(global.ani_miles_hurt_v0);
+			player_set_radii(6, 14);
+			if (image_index == 0)
+            {
+				hitboxes[0].set_size(-10, -10, 6, 16);
+	            hitboxes[1].set_size();
+			}
+            image_angle = gravity_direction;
+			break;
+		}
+		case PLAYER_ANIMATION.DEAD:
+		{
+			animation_set(global.ani_miles_dead_v0);
+			player_set_radii(6, 14);
+			if (image_index == 0)
+            {
+				hitboxes[0].set_size();
+	            hitboxes[1].set_size();
+			}
             image_angle = gravity_direction;
 			break;
 		}
