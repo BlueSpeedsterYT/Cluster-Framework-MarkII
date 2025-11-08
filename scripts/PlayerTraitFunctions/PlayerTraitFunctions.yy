@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"PlayerTraitFunctions",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"PlayerTraitFunctions",
+  "parent":{
+    "name":"Physics",
+    "path":"folders/Scripts/Player/Physics.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

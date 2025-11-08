@@ -178,8 +178,7 @@ function player_ground(height)
 	{
 		// Align to ground
 		var ground_offset = (y_radius - height) + 1;
-		x -= dsin(mask_direction) * ground_offset;
-		y -= dcos(mask_direction) * ground_offset;
+		player_new_position(x - (dsin(mask_direction) * ground_offset), y - (dcos(mask_direction) * ground_offset))
 		
 		// Update angle values
 		player_resolve_angle();
@@ -230,6 +229,15 @@ function player_refresh_physics()
 		air_acceleration *= 2;
 		roll_friction *= 2;
 	}
+}
+
+/// @function player_refresh_status()
+/// @description Resets the player status variables back to their default values.
+function player_refresh_status()
+{
+	invulnerability_time = 0;
+	invincibility_time = 0;
+	superspeed_time = 0;
 }
 
 /// @function player_in_bounds()
@@ -312,48 +320,4 @@ function player_in_bounds()
 	}
 	
 	return true;
-}
-
-/// @function player_damage(inst)
-/// @description Sets the player state to being hurt or dying. Setting the inst to the player is instant death.
-/// @param {Id.Instance} inst Instance to damage from.
-function player_damage(inst)
-{
-	if (state == player_is_dead || ((state == player_is_hurt || invulnerability_time > 0 || invincibility_time > 0) && inst != self)) exit;
-	
-	var damage_inst = inst.id;
-	var hurt_direction = esign(x - damage_inst.x, 1);
-	
-	if (damage_inst == id || (global.rings == 0 && player_index == 0))
-	{
-		player_perform(player_is_dead);
-		if (drown == false)
-		{
-			y_speed = -7;
-		}
-		else
-		{
-			
-		}
-	}
-	else
-	{
-		x_speed = (underwater ? 2 : 1) * hurt_direction;
-		y_speed = (underwater ? -4 : -2);
-		player_perform(player_is_hurt);
-		
-		if (player_index == 0)
-		{
-			player_ring_loss();
-		}
-	}
-}
-
-/// @function player_refresh_status()
-/// @description Resets the player status variables back to their default values.
-function player_refresh_status()
-{
-	invulnerability_time = 0;
-	invincibility_time = 0;
-	superspeed_time = 0;
 }

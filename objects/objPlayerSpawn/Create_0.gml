@@ -16,11 +16,11 @@ for (var i = 0; i < INPUT_MAX_PLAYERS; i++)
     }
 }
 
-if (global.characters[0] == CHARACTER.SONIC || global.characters[1] == CHARACTER.SONIC)
+if (global.characters[0] == CHARACTER.SONIC or global.characters[1] == CHARACTER.SONIC)
 {
 	global.team_type = TEAM_TYPE.SPEED;
 }
-else if (global.characters[0] == CHARACTER.KNUCKLES || global.characters[1] == CHARACTER.KNUCKLES)
+else if (global.characters[0] == CHARACTER.KNUCKLES or global.characters[1] == CHARACTER.KNUCKLES)
 {
 	global.team_type = TEAM_TYPE.POWER;
 }

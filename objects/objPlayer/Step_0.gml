@@ -1,174 +1,177 @@
 /// @description Behave
 #region Input
 
-if (player_index == 0 or input_cpu_gamepad_time > 0)
+if (input_allow)
 {
-	input_axis_x = InputOpposing(INPUT_VERB.LEFT, INPUT_VERB.RIGHT, player_index);
-	input_axis_y = InputOpposing(INPUT_VERB.UP, INPUT_VERB.DOWN, player_index);
+	if (player_index == 0 or input_cpu_gamepad_time > 0)
+	{
+		input_axis_x = InputOpposing(INPUT_VERB.LEFT, INPUT_VERB.RIGHT, player_index);
+		input_axis_y = InputOpposing(INPUT_VERB.UP, INPUT_VERB.DOWN, player_index);
 	
-	struct_foreach(input_button, function(name, value)
-	{
-	    var verb = value.verb;
-	    value.check = InputCheck(verb, player_index);
-	    value.pressed = InputPressed(verb, player_index);
-	    value.released = InputReleased(verb, player_index);
-	});
-    
-    if (input_cpu_gamepad_time > 0) 
-	{
-		input_cpu_gamepad_time--;
-		player_refresh_status();
-	}
-}
-
-if (player_index != 0 and input_cpu_gamepad_time == 0)
-{
-	player_reset_input();
-	var leader_inst = global.players[0];
-	if (instance_exists(leader_inst))
-	{
-		switch (input_cpu_state)
+		struct_foreach(input_button, function(name, value)
 		{
-			case CPU_STATE.CROUCH:
+		    var verb = value.verb;
+		    value.check = InputCheck(verb, player_index);
+		    value.pressed = InputPressed(verb, player_index);
+		    value.released = InputReleased(verb, player_index);
+		});
+    
+	    if (input_cpu_gamepad_time > 0) 
+		{
+			input_cpu_gamepad_time--;
+			player_refresh_status();
+		}
+	}
+
+	if (player_index != 0 and input_cpu_gamepad_time == 0)
+	{
+		player_reset_input();
+		var leader_inst = global.players[0];
+		if (instance_exists(leader_inst))
+		{
+			switch (input_cpu_state)
 			{
-                if (input_cpu_state_time == 0)
-                {
-                	input_cpu_state = CPU_STATE.FOLLOW;
-					input_cpu_state_time = 0;
-                }
-                else
-                {
-			        if (abs(x_speed) < 0.25 and control_lock_time == 0 and on_ground)
-			        {
-			        	x_speed = 0;
-			        	input_axis_y = 1;
-			        	image_xscale = esign(leader_inst.x - x, leader_inst.image_xscale);
-			        	if (state == player_is_crouching)
-			        	{
-			            	input_cpu_state = CPU_STATE.SPIN_DASH;
-							input_cpu_state_time = 64;
-			        	}
-			        }
-			        --input_cpu_state_time;
-                }
-				break;
-			}
-			case CPU_STATE.SPIN_DASH:
-			{
-				if (input_cpu_state_time == 0)
+				case CPU_STATE.CROUCH:
 				{
-					input_cpu_state = CPU_STATE.FOLLOW;
-					input_cpu_state_time = 0;
-				}
-				else
-				{
-					input_axis_y = 1;
-					input_button.jump.pressed = (input_cpu_state_time mod 16 == 0);
-					--input_cpu_state_time;
-				}
-				break;
-			}
-			default:
-			{
-				// Panic
-				if (abs(x_speed) < 0.5 and control_lock_time > 0)
-				{
-					input_cpu_state = CPU_STATE.CROUCH;
-					input_cpu_state_time = 128;
-					break;
-				}
-				
-				var leader_axis_x = leader_inst.input_cpu_history[CPU_INPUT.X][0];
-				var leader_axis_y = leader_inst.input_cpu_history[CPU_INPUT.Y][0];
-				var leader_button_jump = leader_inst.input_cpu_history[CPU_INPUT.JUMP][0];
-				var leader_button_jump_pressed = leader_inst.input_cpu_history[CPU_INPUT.JUMP_PRESSED][0];
-		        var leader_extra_distance = 32 * (abs(leader_inst.x_speed) < 4);
-                input_axis_x = leader_axis_x;
-                input_axis_y = leader_axis_y;
-                input_button.jump.check = leader_button_jump;
-                input_button.jump.pressed = leader_button_jump_pressed;
-                
-                // TODO: Check for propeller flight
-                
-                // Move
-                if (x > leader_inst.x + 16 + leader_extra_distance)
-                {
-                    input_axis_x = -1;
-                    if (image_xscale == 1 and x_speed != 0 and animation_data.index != PLAYER_ANIMATION.PUSH) x++;
-                }
-                if (x < leader_inst.x - 16 - leader_extra_distance)
-                {
-                    input_axis_x = 1;
-                    if (image_xscale == -1 and x_speed != 0 and animation_data.index != PLAYER_ANIMATION.PUSH) x--;
-                }
-                
-                // Jump
-                var jump_auto = 0;
-				if (animation_data.index == PLAYER_ANIMATION.PUSH)
-				{
-					if (input_cpu_state_time > 0) input_cpu_state_time--;
-					if (sign(image_xscale) == sign(leader_inst.image_xscale) 
-					and leader_inst.animation_data.index == PLAYER_ANIMATION.PUSH) 
-					{
-						input_cpu_state_time = 30;
-					}
-					jump_auto = (input_cpu_state_time > 0) ? 1 : 0;
-				}
-				else
-				{
-	                if (y - leader_inst.y < 32)
+	                if (input_cpu_state_time == 0)
 	                {
-	                    jump_auto = 2;
-	                    input_cpu_state_time = 64;
+	                	input_cpu_state = CPU_STATE.FOLLOW;
+						input_cpu_state_time = 0;
 	                }
 	                else
 	                {
-	                	if (input_cpu_state_time > 0) input_cpu_state_time--;
-	                    jump_auto = (input_cpu_state_time > 0 ? 1 : 0);
+				        if (abs(x_speed) < 0.25 and control_lock_time == 0 and on_ground)
+				        {
+				        	x_speed = 0;
+				        	input_axis_y = 1;
+				        	image_xscale = esign(leader_inst.x - x, leader_inst.image_xscale);
+				        	if (state == player_is_crouching)
+				        	{
+				            	input_cpu_state = CPU_STATE.SPIN_DASH;
+								input_cpu_state_time = 64;
+				        	}
+				        }
+				        --input_cpu_state_time;
+	                }
+					break;
+				}
+				case CPU_STATE.SPIN_DASH:
+				{
+					if (input_cpu_state_time == 0)
+					{
+						input_cpu_state = CPU_STATE.FOLLOW;
+						input_cpu_state_time = 0;
+					}
+					else
+					{
+						input_axis_y = 1;
+						input_button.jump.pressed = (input_cpu_state_time mod 16 == 0);
+						--input_cpu_state_time;
+					}
+					break;
+				}
+				default:
+				{
+					// Panic
+					if (abs(x_speed) < 0.5 and control_lock_time > 0)
+					{
+						input_cpu_state = CPU_STATE.CROUCH;
+						input_cpu_state_time = 128;
+						break;
+					}
+				
+					var leader_axis_x = leader_inst.input_cpu_history[CPU_INPUT.X][0];
+					var leader_axis_y = leader_inst.input_cpu_history[CPU_INPUT.Y][0];
+					var leader_button_jump = leader_inst.input_cpu_history[CPU_INPUT.JUMP][0];
+					var leader_button_jump_pressed = leader_inst.input_cpu_history[CPU_INPUT.JUMP_PRESSED][0];
+			        var leader_extra_distance = 32 * (abs(leader_inst.x_speed) < 4);
+	                input_axis_x = leader_axis_x;
+	                input_axis_y = leader_axis_y;
+	                input_button.jump.check = leader_button_jump;
+	                input_button.jump.pressed = leader_button_jump_pressed;
+                
+	                // TODO: Check for propeller flight
+                
+	                // Move
+	                if (x > leader_inst.x + 16 + leader_extra_distance)
+	                {
+	                    input_axis_x = -1;
+	                    if (image_xscale == 1 and x_speed != 0 and animation_data.index != PLAYER_ANIMATION.PUSH) x++;
+	                }
+	                if (x < leader_inst.x - 16 - leader_extra_distance)
+	                {
+	                    input_axis_x = 1;
+	                    if (image_xscale == -1 and x_speed != 0 and animation_data.index != PLAYER_ANIMATION.PUSH) x--;
+	                }
+                
+	                // Jump
+	                var jump_auto = 0;
+					if (animation_data.index == PLAYER_ANIMATION.PUSH)
+					{
+						if (input_cpu_state_time > 0) input_cpu_state_time--;
+						if (sign(image_xscale) == sign(leader_inst.image_xscale) 
+						and leader_inst.animation_data.index == PLAYER_ANIMATION.PUSH) 
+						{
+							input_cpu_state_time = 30;
+						}
+						jump_auto = (input_cpu_state_time > 0) ? 1 : 0;
+					}
+					else
+					{
+		                if (y - leader_inst.y < 32)
+		                {
+		                    jump_auto = 2;
+		                    input_cpu_state_time = 64;
+		                }
+		                else
+		                {
+		                	if (input_cpu_state_time > 0) input_cpu_state_time--;
+		                    jump_auto = (input_cpu_state_time > 0 ? 1 : 0);
+		                }
+					}
+                
+	                if (leader_inst.state != player_is_dead)
+	                {
+	                    switch (jump_auto)
+	                    {
+	                        case 0:
+	                        {
+	                            if (on_ground)
+	                            {
+	                                if (not input_button.jump.check) input_button.jump.pressed = true;
+	                                input_button.jump.check = true;
+	                            }
+	                            jump_cap = false;
+	                            break;
+	                        }
+	                        case 1:
+	                        {
+	                            input_button.jump.check = true;
+	                            break;
+	                        }
+	                    }
 	                }
 				}
-                
-                if (leader_inst.state != player_is_dead)
-                {
-                    switch (jump_auto)
-                    {
-                        case 0:
-                        {
-                            if (on_ground)
-                            {
-                                if (not input_button.jump.check) input_button.jump.pressed = true;
-                                input_button.jump.check = true;
-                            }
-                            jump_cap = false;
-                            break;
-                        }
-                        case 1:
-                        {
-                            input_button.jump.check = true;
-                            break;
-                        }
-                    }
-                }
+			}
+        
+	        // Swap to player
+	        if (InputCheckMany(-1, player_index)) input_cpu_gamepad_time = input_cpu_gamepad_duration;
+		}
+	
+		// Respawn
+		if (not instance_in_view(self))
+		{
+			// TODO: Add "Interlink" State
+			if (input_cpu_respawn_time++ >= input_cpu_respawn_duration)
+			{
+				input_cpu_respawn_time = 0;
+				player_respawn_cpu();
 			}
 		}
-        
-        // Swap to player
-        if (InputCheckMany(-1, player_index)) input_cpu_gamepad_time = input_cpu_gamepad_duration;
-	}
-	
-	// Respawn
-	if (not instance_in_view(self))
-	{
-		// TODO: Add "Interlink" State
-		if (input_cpu_respawn_time++ >= input_cpu_respawn_duration)
+		else if (input_cpu_respawn_time != 0)
 		{
 			input_cpu_respawn_time = 0;
-			player_respawn_cpu();
 		}
-	}
-	else if (input_cpu_respawn_time != 0)
-	{
-		input_cpu_respawn_time = 0;
 	}
 }
 
@@ -179,6 +182,7 @@ if (player_index != 0 and input_cpu_gamepad_time == 0)
 state(PHASE.STEP);
 if (state_changed) state_changed = false;
 player_animate();
+player_trait_boost();
 
 #endregion
 

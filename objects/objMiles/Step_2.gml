@@ -2,7 +2,7 @@
 // Inherit the parent event
 event_inherited();
 
-var rolling = (animation_data.ani == global.ani_miles_roll_v0 || animation_data.ani == global.ani_miles_jump_v1);
+var rolling = (animation_data.ani == global.ani_miles_roll_v0 or animation_data.ani == global.ani_miles_jump_v1);
 
 with (tails_effect)
 {
@@ -14,12 +14,12 @@ with (tails_effect)
         
         if (other.on_ground)
         {
-            image_angle = angle_wrap(other.direction - 90);
-            if (sign(other.x_speed) == -1) image_angle = angle_wrap(image_angle + 180);
+            image_angle = angle_wrap(other.direction - ANGLE.UP);
+            if (sign(other.x_speed) == -1) image_angle = angle_wrap(image_angle + ANGLE.LEFT);
         }
         else
         {
-        	image_angle = angle_wrap(point_direction(0, 0, other.x_speed, other.y_speed) - 90);
+        	image_angle = angle_wrap(point_direction(0, 0, other.x_speed, other.y_speed) - ANGLE.UP);
         }
         
         animation_set(global.ani_miles_tails_v0);
