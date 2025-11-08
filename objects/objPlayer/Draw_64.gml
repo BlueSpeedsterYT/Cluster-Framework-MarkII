@@ -11,6 +11,7 @@ draw_text_transformed(CAMERA_WIDTH - 10, 79, $"Mask Direction: {mask_direction}"
 draw_text_transformed(CAMERA_WIDTH - 10, 97, $"Control Lock: {control_lock_time}", 0.5, 0.5, 0);
 draw_text_transformed(CAMERA_WIDTH - 10, 115, $"Facing: {image_xscale}", 0.5, 0.5, 0);
 draw_text_transformed(CAMERA_WIDTH - 10, 130, $"Spin Dash Charge: {spin_dash_charge}", 0.5, 0.5, 0);
-draw_text_transformed(CAMERA_WIDTH - 10, 145, $"Step: {ctrlWindow.image_index}", 0.5, 0.5, 0);
+draw_text_transformed(CAMERA_WIDTH - 10, 145, $"Boost Mode: {boost_mode ? "Enabled" : "Disabled"}", 0.5, 0.5, 0);
+draw_text_transformed(CAMERA_WIDTH - 10, 160, $"Step: {ctrlWindow.image_index}", 0.5, 0.5, 0);
 
 draw_set_halign(fa_left);

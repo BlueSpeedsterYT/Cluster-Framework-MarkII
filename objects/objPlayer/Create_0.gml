@@ -184,7 +184,6 @@ player_reset_input = function()
 	
 	struct_foreach(input_button, function(name, value)
 	{
-	    var verb = value.verb;
 	    value.check = false;
 	    value.pressed = false;
 	    value.released = false;
