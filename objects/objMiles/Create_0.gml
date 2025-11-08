@@ -365,6 +365,8 @@ player_animate = function()
 		{
 			animation_set(global.ani_miles_push_v0);
 			player_set_radii(6, 14);
+			hitboxes[0].set(-6, -10, 6, 16);
+            hitboxes[1].set();
             image_angle = gravity_direction;
 			break;
 		}
