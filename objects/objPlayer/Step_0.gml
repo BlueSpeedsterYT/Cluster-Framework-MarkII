@@ -159,7 +159,7 @@ if (input_allow)
 		}
 	
 		// Respawn
-		if (not instance_in_view(self))
+		if (not instance_in_view())
 		{
 			// TODO: Add "Interlink" State
 			if (input_cpu_respawn_time++ >= input_cpu_respawn_duration)

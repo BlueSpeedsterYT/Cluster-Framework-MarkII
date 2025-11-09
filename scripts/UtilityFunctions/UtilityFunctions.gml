@@ -140,22 +140,7 @@ function instance_in_view(obj = id, view_padding = CAMERA_PADDING)
 	
 	with (obj)
 	{
-		if (object_index == objPlayer)
-		{
-			var x_int = x div 1;
-	        var y_int = y div 1;
-	        var sine = dsin(mask_direction);
-	        var cosine = dcos(mask_direction);
-
-	        var x1 = x_int - (cosine * x_radius * 2) - (sine * y_radius);
-	        var y1 = y_int + (sine * x_radius * 2) - (cosine * y_radius);
-	        var x2 = x_int + (cosine * x_radius * 2) + (sine * y_radius);
-	        var y2 = y_int - (sine * x_radius * 2) + (cosine * y_radius);
-
-	        return (rectangle_in_rectangle(x1, y1, x2, y2, left - view_padding, top - view_padding, right + view_padding, bottom + view_padding) != 0);
-		}
-		
-		return (rectangle_in_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom, left - view_padding, top - view_padding, right + view_padding, bottom + view_padding) != 0);
+		return point_in_rectangle(x, y, left - view_padding, top - view_padding, right + view_padding, bottom + view_padding);
 	}
 }
 

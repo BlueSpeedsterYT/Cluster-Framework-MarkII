@@ -158,9 +158,8 @@ function player_is_hurt(phase)
 			// Land
 			if (on_ground)
 			{
-				player_perform(player_is_standing);
-				x_speed = 0;
 				y_speed = 0;
+				return player_perform(x_speed != 0 ? player_is_running : player_is_standing);
 			}
 			
 			// Fall
