@@ -31,6 +31,17 @@ function hitbox(col, _left = 0, _top = 0, _right = 0, _bottom = 0) : rect(_left,
 	color = col;
 }
 
+/// @function pick(which, opt1, opt2, ...)
+/// @description Returns one of the arguments depending on the first argument. Ported from GM8.2.
+/// @param {Real} which Which option to return
+/// @param {Real} opt1 First option picked.
+/// @param {Real} opt2 Second option picked.
+/// @returns {Real}
+function pick()
+{
+	return argument[(max(0, argument[0]) mod (argument_count - 1)) + 1];
+}
+
 /// @function esign(val, def)
 /// @description Returns the sign of the value, or the default if the value is 0. Ported from GM8.2.
 /// @param {Real} val Value to get the sign of.
@@ -53,7 +64,7 @@ function direction_to_object(obj)
 	return (point_direction(x, y, n.x, n.y));
 }
 
-/// @function choose_weighted(val1, weight1, val2, weight2...)
+/// @function choose_weighted(val1, weight1, val2, weight2, ...)
 /// @description Returns one of the values while minding their "weights" - in other words, a "biased" version of choose.
 /// @param {Real} val1 First value to get the weight of.
 /// @param {Real} weight1 The weight to get from the first value.
