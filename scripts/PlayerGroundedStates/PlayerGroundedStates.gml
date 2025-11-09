@@ -117,7 +117,7 @@ function player_is_running(phase)
 		{
 			// Animate if not in Pushing animation
 			if (animation_data.index != PLAYER_ANIMATION.PUSH 
-			or sign(image_xscale) != input_axis_x)
+			or image_xscale != input_axis_x)
 			{
 				animation_init(PLAYER_ANIMATION.RUN);
 			}
@@ -229,7 +229,7 @@ function player_is_running(phase)
 			{
 				// Animate if not in Pushing animation
 				if (animation_data.index != PLAYER_ANIMATION.PUSH 
-				or sign(image_xscale) != input_axis_x)
+				or image_xscale != input_axis_x)
 				{
 					animation_init(PLAYER_ANIMATION.RUN);
 				}
