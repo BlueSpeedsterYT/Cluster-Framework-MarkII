@@ -36,19 +36,9 @@ function player_move_on_ground()
 		
 		// Handle wall collision
 		var tile_data = player_find_wall();
-		if (tile_data != undefined)
+		if (tile_data != noone and sign(x_speed) == player_eject_wall(tile_data))
 		{
-			var wall_sign = player_eject_wall(tile_data);
-			
-			// Stop moving and push
-			if (sign(x_speed) == wall_sign)
-			{
-				x_speed = 0;
-				if (sign(image_xscale) == wall_sign && input_axis_x == wall_sign) 
-				{
-					player_push_wall(tile_data, wall_sign);
-				}
-			}
+			x_speed = 0;
 		}
 		
 		// Handle floor collision
@@ -73,18 +63,17 @@ function player_move_on_ground()
 function player_move_in_air()
 {
 	// Calculate the number of steps for collision checking
-	var total_x_steps = 1 + (abs(x_speed) div x_radius);
-	var total_y_steps = 1 + (abs(y_speed) div y_radius);
-	var x_step = x_speed / total_x_steps;
-	var y_step = y_speed / total_y_steps;
+	var total_steps = 1 + (abs(x_speed) div x_radius) + (abs(y_speed) div y_radius);
+	var x_step = x_speed / total_steps;
+	var y_step = y_speed / total_steps;
 	var sine = dsin(direction);
 	var cosine = dcos(direction);
 	
 	// Loop over the number of steps
-	repeat (total_x_steps)
+	repeat (total_steps)
 	{
 		// Move by a single step
-		player_new_position(x + (cosine * x_step), y - (sine * x_step));
+		player_new_position(x + (cosine * x_step) + (sine * y_step), y + (-sine * x_step) + (cosine * y_step));
 		if (player_in_bounds() == false)
 		{
 			player_damage(self);
@@ -95,29 +84,10 @@ function player_move_in_air()
 		
 		// Handle wall collision
 		var tile_data = player_find_wall();
-		if (tile_data != undefined)
+		if (tile_data != noone and sign(x_speed) == player_eject_wall(tile_data))
 		{
-			var wall_sign = player_eject_wall(tile_data);
-			
-			// Stop moving
-			if (sign(x_speed) == wall_sign)
-			{
-				x_speed = 0;
-			}
+			x_speed = 0;
 		}
-	}
-	
-	repeat (total_y_steps)
-	{
-		// Move by a single step
-		player_new_position(x + (sine * y_step), y + (cosine * y_step));
-		if (player_in_bounds() == false)
-		{
-			player_damage(self);
-		}
-		
-		// Register nearby instances
-		player_detect_entities();
 		
 		// Handle floor collision
 		if (y_speed >= 0)
@@ -174,9 +144,5 @@ function player_move_in_air()
 			landed = false;
 			break;
 		}
-		
-		// Handle wall collision (again)
-		tile_data = player_find_wall();
-		if (tile_data != undefined) player_eject_wall(tile_data);
 	}
 }

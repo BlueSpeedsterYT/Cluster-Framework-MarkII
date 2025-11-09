@@ -30,7 +30,6 @@ enum PLAYER_ANIMATION
     TRICK_BACK,
     SPRING,
     SPRING_TWIRL,
-	PUSH,
 	HURT,
 	DEAD
 }
@@ -137,15 +136,6 @@ tilemaps =
 semisolid_tilemap = layer_tilemap_get_id("TilesSemisolid");
 
 solid_objects = [];
-
-// Per-Character Variables
-
-// Homing Attack (TODO: Maybe move this to the Sonic object.)
-homing_inst = noone;
-homing_range = 128;
-homing_speed = 12;
-homing_time = 0;
-homing_duration = 180;
 
 // Input
 input_axis_x = 0;
