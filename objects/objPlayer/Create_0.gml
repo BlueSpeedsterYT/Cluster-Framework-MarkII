@@ -30,8 +30,8 @@ enum PLAYER_ANIMATION
     TRICK_BACK,
     SPRING,
     SPRING_TWIRL,
-	HURT,
-	DEAD
+    HURT,
+    DEAD
 }
 
 enum TRICK
