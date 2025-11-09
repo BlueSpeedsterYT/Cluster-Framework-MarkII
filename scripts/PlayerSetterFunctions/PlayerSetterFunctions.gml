@@ -1,7 +1,7 @@
 /// @function player_eject_wall(inst)
 /// @description Moves the player's virtual mask out of collision with the given wall.
 /// @param {Id.Instance|Id.TileMapElement} inst Instance or tilemap element to eject from.
-/// @returns {Real} Sign of the wall from the player, or zero on failure to reposition.
+/// @returns {Real|Undefined} Sign of the wall from the player, or undefined on failure to reposition.
 function player_eject_wall(inst)
 {
 	var sine = dsin(mask_direction);
@@ -35,38 +35,7 @@ function player_eject_wall(inst)
 			return 1;
 		}
 	}
-	return 0;
-}
-
-/// @function player_push_wall(inst, dir)
-/// @description Sets the animation for pushing, and moves the solid if possible.
-/// @param {Id.Instance|Id.TileMapElement} inst Instance or tilemap element to push on.
-/// @param {Real} dir Direction to push.
-function player_push_wall(inst, dir)
-{
-	// TODO: Check for leader state phase
-	if (state != player_is_running) exit;
-
-	// Animate
-	animation_init(PLAYER_ANIMATION.PUSH);
-
-	// Get movement vectors
-	var ox = dcos(direction) * dir;
-	var oy = dsin(direction) * dir;
-
-	// TODO: Make moving objects work with tiles
-	//with (inst)
-	//{
-	//	// Abort
-	//	if ((!can_push || y - yprevious != 0) || place_meeting(x + ox, y - oy, objSolid)) exit;
-
-	//	// Move object
-	//	x += ox;
-	//	y -= oy;
-	//}
-
-	// Move player
-	player_new_position(x + ox, y - oy);
+	return undefined;
 }
 
 /// @function player_new_position(new_x, new_y)
@@ -246,7 +215,7 @@ function player_refresh_status()
 function player_in_bounds()
 {
 	// Check if already inside (early out)
-	if (mask_direction mod 180 != 0)
+	if (gravity_direction mod 180 != 0)
 	{
 		var x1 = x - y_radius;
 		var y1 = y - x_radius;

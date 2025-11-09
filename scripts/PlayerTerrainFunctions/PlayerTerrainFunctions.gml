@@ -10,7 +10,7 @@ function player_find_wall()
 		if (player_ray_collision(inst)) return inst;
 	}
 	
-	return undefined;
+	return noone;
 }
 
 /// @function player_find_floor(radius)

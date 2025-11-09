@@ -115,12 +115,8 @@ function player_is_running(phase)
 	{
 		case PHASE.ENTER:
 		{
-			// Animate if not in Pushing animation
-			if (animation_data.index != PLAYER_ANIMATION.PUSH 
-			or image_xscale != input_axis_x)
-			{
-				animation_init(PLAYER_ANIMATION.RUN);
-			}
+			// Animate
+			animation_init(PLAYER_ANIMATION.RUN);
             break;
 		}
 		case PHASE.STEP:
@@ -230,12 +226,8 @@ function player_is_running(phase)
 			}
 			else
 			{
-				// Animate if not in Pushing animation
-				if (animation_data.index != PLAYER_ANIMATION.PUSH 
-				or image_xscale != input_axis_x)
-				{
-					animation_init(PLAYER_ANIMATION.RUN);
-				}
+				// Animate
+				animation_init(PLAYER_ANIMATION.RUN);
 			}
 			break;
 		}

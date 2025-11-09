@@ -93,42 +93,31 @@ if (input_allow)
 	                // TODO: Check for propeller flight
                 
 	                // Move
+	                // TODO: The checks for xscale should also check if the player is pushing
 	                if (x > leader_inst.x + 16 + leader_extra_distance)
 	                {
 	                    input_axis_x = -1;
-	                    if (image_xscale == 1 and x_speed != 0 and animation_data.index != PLAYER_ANIMATION.PUSH) x++;
+	                    if (image_xscale == 1 and x_speed != 0) x++;
 	                }
 	                if (x < leader_inst.x - 16 - leader_extra_distance)
 	                {
 	                    input_axis_x = 1;
-	                    if (image_xscale == -1 and x_speed != 0 and animation_data.index != PLAYER_ANIMATION.PUSH) x--;
+	                    if (image_xscale == -1 and x_speed != 0) x--;
 	                }
                 
 	                // Jump
 	                var jump_auto = 0;
-					if (animation_data.index == PLAYER_ANIMATION.PUSH)
-					{
-						if (input_cpu_state_time > 0) input_cpu_state_time--;
-						if (sign(image_xscale) == sign(leader_inst.image_xscale) 
-						and leader_inst.animation_data.index == PLAYER_ANIMATION.PUSH) 
-						{
-							input_cpu_state_time = 30;
-						}
-						jump_auto = (input_cpu_state_time > 0) ? 1 : 0;
-					}
-					else
-					{
-		                if (y - leader_inst.y < 32)
-		                {
-		                    jump_auto = 2;
-		                    input_cpu_state_time = 64;
-		                }
-		                else
-		                {
-		                	if (input_cpu_state_time > 0) input_cpu_state_time--;
-		                    jump_auto = (input_cpu_state_time > 0 ? 1 : 0);
-		                }
-					}
+	                // TODO: Check for pushing first
+	                if (y - leader_inst.y < 32)
+	                {
+	                    jump_auto = 2;
+	                    input_cpu_state_time = 64;
+	                }
+	                else
+	                {
+	                	if (input_cpu_state_time > 0) input_cpu_state_time--;
+	                    jump_auto = (input_cpu_state_time > 0 ? 1 : 0);
+	                }
                 
 	                if (leader_inst.state != player_is_dead)
 	                {
