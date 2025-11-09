@@ -24,8 +24,8 @@ enum PLAYER_ANIMATION
     JUMP,
     SPRING,
     SPRING_TWIRL,
-	HURT,
-	DEAD
+    HURT,
+    DEAD
 }
 
 enum CPU_INPUT
