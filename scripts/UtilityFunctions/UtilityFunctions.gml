@@ -71,7 +71,8 @@ function direction_to_object(obj)
 /// @param {Real} val2 Second value to get the weight of.
 /// @param {Real} weight2 The weight to get from the second value.
 /// @returns {Real}
-function choose_weighted() {
+function choose_weighted()
+{
     var n = 0;
     for (var i = 1; i < argument_count; i += 2) {
         if (argument[i] <= 0) continue;
