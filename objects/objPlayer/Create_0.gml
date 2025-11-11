@@ -62,7 +62,6 @@ enum CPU_STATE
 
 // State machine
 state = player_is_ready;
-state_previous = -1;
 state_changed = false;
 
 jump_action = false;
