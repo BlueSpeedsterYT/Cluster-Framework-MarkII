@@ -29,9 +29,7 @@ enum PLAYER_ANIMATION
     TRICK_FRONT,
     TRICK_BACK,
     SPRING,
-    SPRING_TWIRL,
-    HURT,
-    DEAD
+    SPRING_TWIRL
 }
 
 enum TRICK
