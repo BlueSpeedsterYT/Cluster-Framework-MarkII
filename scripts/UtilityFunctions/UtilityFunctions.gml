@@ -89,6 +89,17 @@ function choose_weighted()
     return argument[0];
 }
 
+/// @function mod_time(time, frequency, maximum)
+/// @description Returns the time divided by the frequency, kept between 0 and the max - max exclusive.
+/// @param {Real} time
+/// @param {Integer} frequency
+/// @param {Integer} maximum Maximum value.
+/// @returns {Integer}
+function mod_time(time, frequency, maximum)
+{
+	return (time div frequency) mod maximum;
+}
+
 /// @function wrap(val, minimum, maximum)
 /// @description Wraps the given value between the minimum and maximum inclusively.
 /// @param {Real} val Value to wrap.

@@ -60,6 +60,7 @@ enum CPU_STATE
 
 // State machine
 state = player_is_ready;
+state_previous = -1;
 state_changed = false;
 
 jump_action = false;
@@ -303,10 +304,15 @@ player_index = -1;
 /// @param {Bool} enter Whether to perform the enter phase.
 player_perform = function(action, enter = true)
 {
-	state(PHASE.EXIT);
-	state = action;
-	state_changed = true;
-	if (enter) state(PHASE.ENTER);
+	var state_reset = (argument_count > 1);
+	if (state != action || state_reset)
+	{
+		state_previous = state;
+		state = action;
+		state_changed = true;
+		state_previous(PHASE.EXIT);
+		if (enter) state(PHASE.ENTER);
+	}
 };
 
 /// @method player_try_jump()
