@@ -481,6 +481,7 @@
     {"id":{"name":"PlayerTerrainFunctions","path":"scripts/PlayerTerrainFunctions/PlayerTerrainFunctions.yy",},},
     {"id":{"name":"PlayerTraitFunctions","path":"scripts/PlayerTraitFunctions/PlayerTraitFunctions.yy",},},
     {"id":{"name":"PlayerTrickStates","path":"scripts/PlayerTrickStates/PlayerTrickStates.yy",},},
+    {"id":{"name":"SaveFunctions","path":"scripts/SaveFunctions/SaveFunctions.yy",},},
     {"id":{"name":"SaveInitialization","path":"scripts/SaveInitialization/SaveInitialization.yy",},},
     {"id":{"name":"stanncam_animcurve","path":"scripts/stanncam_animcurve/stanncam_animcurve.yy",},},
     {"id":{"name":"stanncam_macros","path":"scripts/stanncam_macros/stanncam_macros.yy",},},

@@ -75,29 +75,72 @@ function player_is_standing(phase)
 			// Turn
             if (animation_data.index != PLAYER_ANIMATION.TEETER and input_axis_x != 0 and image_xscale != input_axis_x)
             {
-                animation_init(PLAYER_ANIMATION.TURN);
-                image_xscale *= -1;
+                return player_perform(player_is_turning)
             }
-            
-            if (animation_data.index == PLAYER_ANIMATION.TURN and animation_is_finished())
+			
+            // Run
+            if (x_speed != 0 or input_axis_x != 0)
+            {
+                return player_perform(player_is_running);
+            }
+                
+            // Look / crouch
+            if (cliff_sign == 0)
+            {
+                if (input_axis_y == -1) return player_perform(player_is_looking);
+                if (input_axis_y == 1) return player_perform(player_is_crouching);
+            }
+			break;
+		}
+		case PHASE.EXIT:
+		{
+			break;
+		}
+	}
+}
+
+/// @function player_is_turning(phase)
+function player_is_turning(phase)
+{
+	switch (phase)
+	{
+		case PHASE.ENTER:
+		{
+			x_speed = 0;
+            animation_init(PLAYER_ANIMATION.TURN, animation_data.index == PLAYER_ANIMATION.BRAKE);
+            image_xscale *= -1;
+			break;
+		}
+		case PHASE.STEP:
+		{
+			// Jump
+			if (player_try_jump()) return true;
+			
+			// Move
+			player_move_on_ground();
+			if (state_changed) exit;
+			
+			// Fall
+			if (not on_ground) return player_perform(player_is_falling);
+			
+			// Slide down steep slopes
+			if (abs(x_speed) < slide_threshold)
+			{
+				if (local_direction >= 90 and local_direction <= 270)
+				{
+					return player_perform(player_is_falling);
+				}
+				else if (local_direction >= 45 and local_direction <= 315)
+				{
+					control_lock_time = slide_duration;
+					return player_perform(player_is_running);
+				}
+			}
+			
+			if (animation_is_finished())
             {
             	animation_init(PLAYER_ANIMATION.IDLE);
-            }
-            
-            if (animation_data.index != PLAYER_ANIMATION.TURN)
-            {
-                // Run
-                if (x_speed != 0 or input_axis_x != 0)
-                {
-                    return player_perform(player_is_running);
-                }
-                
-                // Look / crouch
-                if (cliff_sign == 0)
-                {
-                    if (input_axis_y == -1) return player_perform(player_is_looking);
-                    if (input_axis_y == 1) return player_perform(player_is_crouching);
-                }
+				return player_perform(player_is_standing);
             }
 			break;
 		}
@@ -125,8 +168,6 @@ function player_is_running(phase)
 			if (player_try_jump()) return true;
 			
 			// Handle ground motion
-			var can_brake = false;
-			
 			if (control_lock_time == 0)
 			{
 				if (input_axis_x != 0)
@@ -134,27 +175,27 @@ function player_is_running(phase)
 					// If moving in the opposite direction...
 					if (x_speed != 0 and sign(x_speed) != input_axis_x)
 					{
+						// Turn
+						if (image_xscale != input_axis_x and abs(x_speed) < 4)
+						{
+                            return player_perform(player_is_turning);
+						}
+						else if (mask_direction == gravity_direction and abs(x_speed) >= 4) // Brake
+						{
+							sound_play(sfxBrake);
+							return player_perform(player_is_braking)
+						}
+						
 						// Decelerate and reverse direction
-						can_brake = true;
 						x_speed += deceleration * input_axis_x;
                         if (sign(x_speed) == input_axis_x)
-                        {
-                            // Turn
-                            if (image_xscale != input_axis_x)
-                            {
-                                x_speed = 0;
-                                animation_init(PLAYER_ANIMATION.TURN, animation_data.index == PLAYER_ANIMATION.BRAKE);
-                                image_xscale *= -1;
-                                return player_perform(player_is_standing);
-                            }
-                            
+                        {   
                             x_speed = deceleration * input_axis_x;
                         }
 					}
 					else
 					{
 						// Accelerate
-						can_brake = false;
 						image_xscale = input_axis_x;
 						if (abs(x_speed) < speed_cap)
 						{
@@ -193,44 +234,118 @@ function player_is_running(phase)
 			player_resist_slope(0.125);
 			
 			// Roll
-			if (abs(x_speed) >= 1.03125 and input_axis_x == 0 and input_axis_y == 1)
-			{
-				sound_play(sfxRoll);
-				return player_perform(player_is_rolling);
-			}
+			if (player_try_roll()) return true;
 			
 			// Stand
 			if (x_speed == 0 and input_axis_x == 0) return player_perform(player_is_standing);
 			
 			// Animate
-			if (can_brake)
-			{
-				if (animation_data.index != PLAYER_ANIMATION.BRAKE)
-				{
-					if (mask_direction == gravity_direction and abs(x_speed) >= 4)
-					{
-						animation_init(PLAYER_ANIMATION.BRAKE, abs(x_speed) > 9.0);
-						sound_play(sfxBrake);
-					}
-				}
-				else if (ctrlWindow.image_index mod 4 == 0)
-				{
-                    // Create brake dust
-					var ox = x + dsin(direction) * y_radius;
-					var oy = y + dcos(direction) * y_radius;
-					particle_create(ox, oy, global.ani_brake_dust_v0);
-				}
-			}
-			else
-			{
-				// Animate
-				animation_init(PLAYER_ANIMATION.RUN);
-			}
+			animation_init(PLAYER_ANIMATION.RUN);
 			break;
 		}
 		case PHASE.EXIT:
 		{
 			control_lock_time = 0;
+			break;
+		}
+	}
+}
+
+/// @function player_is_braking(phase)
+function player_is_braking(phase)
+{
+	switch (phase)
+	{
+		case PHASE.ENTER:
+		{
+			animation_init(PLAYER_ANIMATION.BRAKE, abs(x_speed) > 9.0);
+			break;
+		}
+		case PHASE.STEP:
+		{
+			// Jump
+			if (player_try_jump()) return true;
+			
+			// Handle ground motion
+			if (control_lock_time == 0)
+			{
+				if (input_axis_x != 0)
+				{
+					// If moving in the opposite direction...
+					if (sign(x_speed) != input_axis_x)
+					{	
+						// Decelerate and reverse direction
+						x_speed += deceleration * input_axis_x;
+                        if (sign(x_speed) == input_axis_x)
+                        {   
+                            x_speed = deceleration * input_axis_x;
+							
+							// Turn
+							if (image_xscale != sign(x_speed))
+							{
+	                            return player_perform(player_is_turning);
+							}
+							
+							// Run
+							return player_perform(player_is_running);
+                        }
+					}
+					else
+					{
+						// Run
+						return player_perform(player_is_running);
+					}
+				}
+				else
+				{
+					// Run
+					return player_perform(player_is_running);
+					
+					// Friction
+					x_speed -= min(abs(x_speed), friction) * sign(x_speed);
+					
+					// Roll
+					if (player_try_roll()) return true;
+				}
+			}
+			
+			// Move
+			player_move_on_ground();
+			if (state_changed) exit;
+			
+			// Fall
+			if (not on_ground) return player_perform(player_is_falling);
+			
+			// Slide down steep slopes
+			if (abs(x_speed) < slide_threshold)
+			{
+				if (local_direction >= 90 and local_direction <= 270)
+				{
+					return player_perform(player_is_falling);
+				}
+				else if (local_direction >= 45 and local_direction <= 315)
+				{
+					control_lock_time = slide_duration;
+				}
+			}
+			
+			// Apply slope friction
+			player_resist_slope(0.125);
+			
+			// Stand
+			if (x_speed == 0 and input_axis_x == 0) return player_perform(player_is_standing);
+			
+			if (ctrlWindow.image_index mod 4 == 0)
+			{
+                // Create brake dust
+				var ox = x + dsin(direction) * y_radius;
+				var oy = y + dcos(direction) * y_radius;
+				particle_create(ox, oy, global.ani_brake_dust_v0);
+			}
+			break;
+		}
+		case PHASE.EXIT:
+		{
 			break;
 		}
 	}

@@ -329,6 +329,20 @@ player_try_jump = function()
     return false;
 };
 
+/// @method player_try_roll()
+/// @description Sets the player's current state to rolling, if applicable.
+/// @returns {Bool}
+player_try_roll = function()
+{
+    if (abs(x_speed) >= 1.03125 and input_axis_x == 0 and input_axis_y == 1)
+    {
+        sound_play(sfxRoll);
+		player_perform(player_is_rolling);
+        return true;
+    }
+    return false;
+};
+
 /// @method player_try_trick([time])
 /// @desctiption Sets the player's current state to tricking, if applicable.
 /// @param [time] Time to check (optional, defaults to trick_time).
