@@ -19,18 +19,10 @@ enum CHARACTER
 
 enum HUD
 {
-    NONE = -1,
-    ADVANCE_3,
+    NONE,
+    CLUSTER_GM8,
     S4_EPISODE_II,
-    CLUSTER_GM8
-}
-
-enum TEAM_TYPE
-{
-    NONE = -1,
-    SPEED,
-    POWER,
-    FLY
+    ADVANCE_2
 }
 
 enum ANGLE
@@ -56,7 +48,6 @@ audio_loop_points(bgmR99Map, (143360/44100), (1740820/44100));
 // Player values
 global.players = -1;
 global.characters = -1;
-global.team_type = TEAM_TYPE.NONE;
 global.score = 0;
 global.lives = 3;
 global.rings = 0;

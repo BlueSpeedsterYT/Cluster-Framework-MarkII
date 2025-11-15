@@ -106,8 +106,12 @@ player_0_option = new option_player();
 player_1_option = new option_player(1);
 
 boost_option = new option_bool("Boost");
-boost_option.get = function() { return db_read(global.save_database, true, "boost"); };
-boost_option.set = function(val) { db_write(global.save_database, val, "boost"); };
+boost_option.get = function() { return save_get("boost", true); };
+boost_option.set = function(val) { save_set("boost", val); };
+
+trick_option = new option_bool("Trick");
+trick_option.get = function() { return save_get("trick", true); };
+trick_option.set = function(val) { save_set("trick", val); };
 
 device_option = new option("Device Setup");
 device_option.confirm = function() { InputPartySetJoin(true); }
@@ -147,6 +151,6 @@ back_to_character_menu_option.confirm = function()
     return true;
 };
 
-character_menu = new menu([player_0_option, player_1_option, boost_option, device_option, room_select_option]);
+character_menu = new menu([player_0_option, player_1_option, boost_option, trick_option, device_option, room_select_option]);
 room_menu = new menu([test_option, test_new_option, r99_map_option, back_to_character_menu_option]);
 current_menu = character_menu;

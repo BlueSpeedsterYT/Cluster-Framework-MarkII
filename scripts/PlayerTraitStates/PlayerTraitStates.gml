@@ -25,15 +25,15 @@ function player_trait_boost(tag = false)
 	// Boost mode:
 	if (boost_mode)
 	{
-	    if (on_ground and abs(x_speed) < 4.5 and !tag)
+	    if (on_ground and abs(x_speed) < 4.5 and (not tag))
 	    {
 	        boost_mode = false;
 	        boost_speed = 0;
 	    }
 	    else if (on_ground) boost_speed = boost_threshold[boost_index];
 	}
-	else if (db_read(global.save_database, true, "boost") == true 
-	and on_ground and abs(x_speed) >= speed_cap and (!underwater or tag))
+	else if (save_get("boost", true) == true 
+	and on_ground and abs(x_speed) >= speed_cap and ((not underwater) or tag))
 	{
 	    if (input_axis_x != 0 && input_allow) boost_speed += acceleration;
 
