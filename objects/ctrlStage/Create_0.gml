@@ -31,7 +31,7 @@ switch (room)
 		name = "DEMONSTRATION";
 		act = 1;
 		is_hub = false;
-		//audio_swap_music(bgmMadGear);
+		audio_swap_music(bgmExtraBattle1);
 		break;
 	}
 	case rmR99Map:
