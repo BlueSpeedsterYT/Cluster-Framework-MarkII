@@ -3,6 +3,9 @@ var time = ctrlZone.stage_time;
 var flash = image_index mod 16 < 8;
 var _center_x = (CAMERA_WIDTH / 2);
 
+// No HUD? No Nothing.
+if (save_get_hud_style() == HUD.NONE) exit;
+
 // Team Types
 if (global.team_type != TEAM_TYPE.NONE)
 {
@@ -29,18 +32,6 @@ if (lead_character_index != CHARACTER.NONE)
 {
     draw_sprite(sprLifeIcon, lead_character_index, 5, CAMERA_HEIGHT - 19);
 }
-
-// Main HUD
-draw_set_font(global.font_hud);
-//draw_sprite(sprHUD, 0, 16, 9);
-//if (time < 32400 or flash) // 32400 frames = 9 minutes
-//{
-//	draw_sprite(sprHUD, 1, 16, 25);
-//}
-//if (global.rings > 0 or flash)
-//{
-//	draw_sprite(sprHUD, 2, 16, 41);
-//}
 
 // Text
 draw_set_font(global.font_hud);

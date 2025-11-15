@@ -17,6 +17,14 @@ enum CHARACTER
     CREAM
 }
 
+enum HUD
+{
+    NONE = -1,
+    ADVANCE_3,
+    S4_EPISODE_II,
+    CLUSTER_GM8
+}
+
 enum TEAM_TYPE
 {
     NONE = -1,

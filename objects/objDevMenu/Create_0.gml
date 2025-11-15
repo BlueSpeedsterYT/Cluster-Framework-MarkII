@@ -96,8 +96,8 @@ function option_player(_player = 0) : option_int($"Player {_player}") constructo
     maximum = CHARACTER.CREAM;
     specifiers = ["None", "Sonic", "Miles", "Knuckles", "Amy", "Cream"];
     offset = CHARACTER.NONE;
-    get = function() { return db_read(global.save_database, CHARACTER.NONE, "character", player); };
-    set = function(val) { db_write(global.save_database, val, "character", player); };
+    get = function() { return save_get_character(player); };
+    set = function(val) { save_set_character(val, player); };
 }
 
 #endregion

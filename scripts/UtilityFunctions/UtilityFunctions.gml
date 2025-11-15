@@ -71,7 +71,8 @@ function direction_to_object(obj)
 /// @param {Real} val2 Second value to get the weight of.
 /// @param {Real} weight2 The weight to get from the second value.
 /// @returns {Real}
-function choose_weighted() {
+function choose_weighted()
+{
     var n = 0;
     for (var i = 1; i < argument_count; i += 2) {
         if (argument[i] <= 0) continue;
@@ -86,6 +87,17 @@ function choose_weighted() {
     }
     
     return argument[0];
+}
+
+/// @function mod_time(time, frequency, maximum)
+/// @description Returns the time divided by the frequency, kept between 0 and the max - max exclusive.
+/// @param {Real} time
+/// @param {Integer} frequency
+/// @param {Integer} maximum Maximum value.
+/// @returns {Integer}
+function mod_time(time, frequency, maximum)
+{
+	return (time div frequency) mod maximum;
 }
 
 /// @function wrap(val, minimum, maximum)
@@ -170,6 +182,7 @@ function collision_player(hb, pla, plahb = -1)
     	left *= -1;
     	right *= -1;
     }
+    
     if (image_yscale == -1)
     {
         top *= -1;
@@ -198,6 +211,7 @@ function collision_player(hb, pla, plahb = -1)
     		pleft *= -1;
     		pright *= -1;
     	}
+    	
         if (pla.image_yscale == -1)
     	{
     		ptop *= -1;
@@ -271,6 +285,7 @@ function draw_hitboxes(ang = gravity_direction)
 				left *= -1;
 				right *= -1;
 			}
+			
             if (image_yscale == -1)
             {
                 top *= -1;

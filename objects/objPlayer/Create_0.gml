@@ -22,10 +22,24 @@ enum PLAYER_ANIMATION
     SPIN_DASH,
     FALL,
     JUMP,
+    HURT,
+    DEAD,
+    TRICK_UP,
+    TRICK_DOWN,
+    TRICK_FRONT,
+    TRICK_BACK,
     SPRING,
     SPRING_TWIRL,
     HURT,
     DEAD
+}
+
+enum TRICK
+{
+	UP,
+	DOWN,
+	FRONT,
+	BACK
 }
 
 enum CPU_INPUT
@@ -56,8 +70,13 @@ jump_cap = true;
 
 spin_dash_charge = 0;
 
+trick_index = TRICK.FRONT;
+trick_speed = array_create(TRICK.BACK + 1);
+for (var i = 0; i < array_length(trick_speed); i++) trick_speed[i] = array_create(2);
+
 // Timers
 control_lock_time = 0;
+trick_time = 0;
 superspeed_time = 0;
 remaining_air_time = 0;
 invincibility_time = 0;
@@ -66,6 +85,8 @@ camera_look_time = 0;
 
 slide_duration = 30;
 spring_duration = 16;
+trick_lock_duration = 9;
+remaining_air_duration = 120;
 invulnerability_duration = 120;
 
 // Physics
@@ -138,8 +159,8 @@ input_button =
     aux : new button(INPUT_VERB.AUX),
     swap : new button(INPUT_VERB.SWAP),
     extra : new button(INPUT_VERB.EXTRA),
-    tag : new button(INPUT_VERB.ALT),
-    alt : new button(INPUT_VERB.START),
+    tag : new button(INPUT_VERB.TAG),
+    alt : new button(INPUT_VERB.ALT),
     start : new button(INPUT_VERB.START),
     select : new button(INPUT_VERB.SELECT)
 };
@@ -167,7 +188,7 @@ input_cpu_gamepad_time = 0;
 input_cpu_respawn_duration = 300;
 input_cpu_gamepad_duration = 600;
 input_cpu_history = array_create(CPU_INPUT.MAX);
-for (var i = 0; i < CPU_INPUT.MAX; i++) input_cpu_history[i] = array_create(16);
+for (var i = 0; i < array_length(input_cpu_history); i++) input_cpu_history[i] = array_create(16);
 
 /// @method player_record_cpu_input(cpu_input)
 /// @description Records the given CPU input.
@@ -279,19 +300,20 @@ camera_padding_y = 0;
 // Misc.
 player_index = -1;
 
-/// @method player_perform(action, [reset])
+/// @method player_perform(action, [enter])
 /// @description Sets the given function as the player's current state.
 /// @param {Function} action State function to set.
-/// @param {Bool} [reset] Reset the current state function.
-player_perform = function (action, reset = false)
+/// @param {Bool} enter Whether to perform the enter phase.
+player_perform = function(action, enter = true)
 {
-	if (state != action or reset)
+	var state_reset = (argument_count > 1);
+	if (state != action || state_reset)
 	{
-		previous_state = state;
+		state_previous = state;
 		state = action;
 		state_changed = true;
-		previous_state(PHASE.EXIT);
-		state(PHASE.ENTER);
+		state_previous(PHASE.EXIT);
+		if (enter) state(PHASE.ENTER);
 	}
 };
 
@@ -307,6 +329,39 @@ player_try_jump = function()
         return true;
     }
     return false;
+};
+
+/// @method player_try_roll()
+/// @description Sets the player's current state to rolling, if applicable.
+/// @returns {Bool}
+player_try_roll = function()
+{
+    if (abs(x_speed) >= 1.03125 and input_axis_x == 0 and input_axis_y == 1)
+    {
+        sound_play(sfxRoll);
+		player_perform(player_is_rolling);
+        return true;
+    }
+    return false;
+};
+
+/// @method player_try_trick([time])
+/// @desctiption Sets the player's current state to tricking, if applicable.
+/// @param [time] Time to check (optional, defaults to trick_time).
+/// @returns {Bool}
+player_try_trick = function(time = trick_time)
+{
+	if (time == 0 and input_button.tag.pressed)
+	{
+		trick_index = TRICK.BACK;
+		if (input_axis_y == -1) trick_index = TRICK.UP;
+		else if (input_axis_y == 1) trick_index = TRICK.DOWN;
+		else if (input_axis_x == image_xscale) trick_index = TRICK.FRONT;
+		player_perform(player_is_trick_preparing);
+		score += 100;
+		return true;
+	}
+	return false;
 };
 
 /// @method player_rotate_mask()
@@ -342,10 +397,30 @@ player_resist_slope = function (force)
 /// @description Sets the player's current animation.
 player_animate = function () {};
 
-/// player_animate_run(ani)
-/// @description Sets the given animation as the player's run animation.
-/// @param {Array} ani Animations to set.
-player_animate_run = function (ani)
+/// player_set_animation(ani, [ang])
+/// @description Sets the given animation as the player's current animation.
+/// @param {Undefined|Struct.animation|Array} ani Animation to set. Accepts an array as animation variants.
+/// @param {Real} [ang] Angle to set (optional, defaults to gravity_direction).
+player_set_animation = function(ani, ang = gravity_direction)
+{
+	animation_set(ani);
+	image_angle = ang;
+};
+
+/// player_animate_teeter(ani)
+/// @description Sets the given animation as the player's current teeter animation.
+/// @param {Undefined|Struct.animation|Array} ani Animation to set. Accepts an array as animation variants.
+player_animate_teeter = function(ani)
+{
+	animation_data.variant = (cliff_sign != image_xscale);
+    player_set_animation(ani);
+};
+
+/// player_animate_run(ani, [ang])
+/// @description Sets the given animation as the player's current run animation.
+/// @param {Undefined|Struct.animation|Array} ani Animation to set. Accepts an array as animation variants.
+/// @param {Real} [ang] Angle to set (optional, defaults to direction).
+player_animate_run = function(ani, ang = direction)
 {
     var variant = animation_data.variant;
     if (on_ground)
@@ -358,9 +433,60 @@ player_animate_run = function (ani)
 	    else if (abs_speed <= 9.0) variant = 3;
 	    else if (abs_speed <= 10.0) variant = 4;
     }
-    animation_set(ani);
+    player_set_animation(ani, ang);
     animation_data.variant = variant;
     if (on_ground) animation_data.speed = clamp((abs(x_speed) / 3) + (abs(x_speed) / 4), 0.5, 8);
+};
+
+/// player_animate_fall(ani)
+/// @description Sets the given animation as the player's current fall animation.
+/// @param {Undefined|Struct.animation|Array} ani Animation to set. Accepts an array as animation variants.
+player_animate_fall = function(ani)
+{
+	if (animation_data.variant == 0 and animation_is_finished()) animation_data.variant = 1;
+    player_set_animation(ani, rotate_towards(direction, image_angle));
+};
+
+/// player_animate_jump(ani)
+/// @description Sets the given animation as the player's current jump animation.
+/// @param {Undefined|Struct.animation|Array} ani Animation to set. Accepts an array as animation variants.
+player_animate_jump = function(ani)
+{
+	switch (animation_data.variant)
+    {
+        case 0:
+        {
+            if (animation_is_finished()) animation_data.variant = 1;
+            break;
+        }
+        case 1:
+        {
+            if (y_speed > 0 and not is_undefined(player_find_floor(y_radius + 32))) animation_data.variant = 2;
+            break;
+        }
+    }
+    player_set_animation(ani);
+};
+
+/// player_animate_spring(ani)
+/// @description Sets the given animation as the player's current spring animation.
+/// @param {Undefined|Struct.animation|Array} ani Animation to set. Accepts an array as animation variants.
+player_animate_spring = function(ani)
+{
+	switch (animation_data.variant)
+    {
+        case 0:
+        {
+            if (y_speed > 0) animation_data.variant = 1;
+            break;
+        }
+        case 1:
+        {
+            if (animation_is_finished()) animation_data.variant = 2;
+            break;
+        }
+    }
+    player_set_animation(ani);
 };
 
 /// @method player_set_radii(xrad, yrad)
@@ -469,7 +595,7 @@ player_ring_loss = function ()
 
 	while (total)
 	{
-		var ring_inst = instance_create_layer(x div 1, y div 1, "ZoneObjects", objRing);
+		//var ring_inst = instance_create_layer(x div 1, y div 1, "ZoneObjects", objRing);
 	}
 	
 	player_set_rings(0);
