@@ -51,6 +51,7 @@ global.volume_music = 1;
 
 // Music
 audio_loop_points(bgmExtraBattle1, 14.2224, 128.0002);
+audio_loop_points(bgmR99Map, (143360/44100), (1740820/44100));
 
 // Player values
 global.players = -1;
