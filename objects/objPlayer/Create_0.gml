@@ -593,7 +593,7 @@ player_ring_loss = function ()
 
 	while (total)
 	{
-		var ring_inst = instance_create_layer(x div 1, y div 1, "ZoneObjects", objRing);
+		//var ring_inst = instance_create_layer(x div 1, y div 1, "ZoneObjects", objRing);
 	}
 	
 	player_set_rings(0);

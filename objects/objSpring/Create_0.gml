@@ -13,12 +13,12 @@ reaction = function(pla)
         if ((active & bit) == 0)
         {
             var diff = angle_wrap(direction - pla.gravity_direction);
-            if (diff == 90 or diff == 270)
+            if (diff == ANGLE.UP or diff == ANGLE.DOWN)
             {
                 pla.player_perform(player_is_sprung);
                 pla.y_speed = dsin(diff) * force;
             }
-            else if (diff == 0 or diff == 180)
+            else if (diff == ANGLE.RIGHT or diff == ANGLE.LEFT)
             {
                 if (pla.on_ground)
                 {

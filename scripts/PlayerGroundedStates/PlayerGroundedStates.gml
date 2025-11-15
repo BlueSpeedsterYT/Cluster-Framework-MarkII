@@ -335,7 +335,7 @@ function player_is_braking(phase)
 			// Stand
 			if (x_speed == 0 and input_axis_x == 0) return player_perform(player_is_standing);
 			
-			if (ctrlWindow.image_index mod 4 == 0)
+			if (not underwater and ctrlWindow.image_index mod 4 == 0)
 			{
                 // Create brake dust
 				var ox = x + dsin(direction) * y_radius;
@@ -346,6 +346,7 @@ function player_is_braking(phase)
 		}
 		case PHASE.EXIT:
 		{
+			control_lock_time = 0;
 			break;
 		}
 	}
