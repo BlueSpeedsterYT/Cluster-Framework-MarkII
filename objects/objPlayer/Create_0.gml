@@ -29,9 +29,7 @@ enum PLAYER_ANIMATION
     TRICK_FRONT,
     TRICK_BACK,
     SPRING,
-    SPRING_TWIRL,
-    HURT,
-    DEAD
+    SPRING_TWIRL
 }
 
 enum TRICK
@@ -342,7 +340,7 @@ player_try_roll = function()
 {
     if (abs(x_speed) >= 1.03125 and input_axis_x == 0 and input_axis_y == 1)
     {
-        sound_play(sfxRoll);
+        audio_play_single(sfxRoll);
 		player_perform(player_is_rolling);
         return true;
     }

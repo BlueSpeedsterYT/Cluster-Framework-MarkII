@@ -13,7 +13,7 @@ if (global.team_type != TEAM_TYPE.NONE)
 }
 
 // Time
-if (ctrlZone.is_hub == false)
+if (ctrlStage.is_hub == false)
 {
 	draw_sprite(sprHUDTime, 0, _center_x - 32, 5);
 	var minutes = time div 3600;
@@ -39,7 +39,7 @@ draw_set_halign(fa_left);
 var _lives_text = (global.lives > 9 ? "9" : (global.lives > 0 ? global.lives - 1 : "0"));
 draw_text(32, CAMERA_HEIGHT - 17, _lives_text);
 //draw_text(112, 9, global.score);
-if (ctrlZone.is_hub == false)
+if (ctrlStage.is_hub == false)
 {
 	var _ring_hundreds = global.rings > 99 ? "" : "0";
 	var _ring_tens = global.rings > 9 ? "" : "0";

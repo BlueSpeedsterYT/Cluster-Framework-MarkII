@@ -1,6 +1,4 @@
 /// @description Mute
-if (InputPressed(INPUT_VERB.START) and not audio_is_playing(bgmExtraBattle1)) audio_swap_music(bgmExtraBattle1);
-
 #region Drown
 
 if (audio_is_playing(bgmLife))
