@@ -1,5 +1,5 @@
 /// @description Render
-var time = ctrlZone.stage_time;
+var time = ctrlStage.stage_time;
 var flash = image_index mod 16 < 8;
 var _center_x = (CAMERA_WIDTH / 2);
 

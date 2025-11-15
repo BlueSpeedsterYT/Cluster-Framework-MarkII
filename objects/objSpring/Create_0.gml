@@ -42,7 +42,7 @@ reaction = function(pla)
             pla.trick_time = max(2, 9 - (force / 1.5) div 1);
             active |= bit;
             animation_data.variant = 1;
-            sound_play(sfxSpring);
+            audio_play_single(sfxSpring);
         }
     }
     else 

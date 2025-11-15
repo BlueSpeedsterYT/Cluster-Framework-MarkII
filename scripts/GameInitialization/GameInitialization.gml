@@ -3,9 +3,9 @@
 #macro CAMERA_HEIGHT 240
 #macro CAMERA_PADDING 64
 
-#macro DEPTH_AFTERIMAGE 75 
-#macro DEPTH_PLAYER 50
-#macro DEPTH_PARTICLE 25
+#macro DEPTH_OFFSET_AFTERIMAGE 25
+#macro DEPTH_OFFSET_PLAYER 50
+#macro DEPTH_OFFSET_PARTICLE 75
 
 enum CHARACTER
 {
@@ -48,6 +48,9 @@ enum ANGLE
 // Volumes
 global.volume_sound = 1;
 global.volume_music = 1;
+
+// Music
+audio_loop_points(bgmExtraBattle1, 14.2224, 128.0002);
 
 // Player values
 global.players = -1;

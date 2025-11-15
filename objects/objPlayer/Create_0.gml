@@ -128,10 +128,14 @@ cliff_sign = 0;
 
 tilemaps =
 [
-	layer_tilemap_get_id("TilesLayer0"),
-	layer_tilemap_get_id("TilesLayer1"),
 	layer_tilemap_get_id("TilesMain")
 ];
+
+if (layer_exists("TilesLayer0"))
+{
+    array_push(tilemaps, layer_tilemap_get_id("TilesLayer0"));
+    collision_layer = 0;
+}
 
 semisolid_tilemap = layer_tilemap_get_id("TilesSemisolid");
 
@@ -546,7 +550,7 @@ player_set_score = function (amount)
 player_gain_rings = function(num)
 {
 	player_set_rings(global.rings + num);
-	sound_play(sfxRing);
+	audio_play_single(sfxRing);
 	
 	// Gain lives
 	static ring_life_threshold = 99;
@@ -564,7 +568,7 @@ player_gain_rings = function(num)
 player_gain_lives = function(num)
 {
 	player_set_lives(global.lives + num);
-	music_overlay(bgmLife);
+	audio_play_single(bgmLife);
 };
 
 /// @method player_gain_score(num)

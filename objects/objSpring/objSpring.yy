@@ -3,19 +3,19 @@
   "%Name":"objSpring",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":1,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"objSpring",
   "overriddenProperties":[],
   "parent":{
     "name":"Parents",
-    "path":"folders/Objects/Zone/Parents.yy",
+    "path":"folders/Objects/Stage/Parents.yy",
   },
   "parentObjectId":{
-    "name":"objZoneObject",
-    "path":"objects/objZoneObject/objZoneObject.yy",
+    "name":"objStageObject",
+    "path":"objects/objStageObject/objStageObject.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

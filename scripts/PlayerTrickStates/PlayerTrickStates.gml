@@ -87,6 +87,11 @@ function player_is_tricking(phase)
 	{
 		case PHASE.ENTER:
 		{
+			// Set time:
+			if ((object_index == objSonic or object_index == objAmy) and trick_index == TRICK.FRONT) trick_time = 45;
+			else if (object_index == objKnuckles and (trick_index == TRICK.FRONT or trick_index == TRICK.BACK)) trick_time = 10;
+            else trick_time = 0;
+			
 			// Animate
             animation_data.variant++;
             break;
@@ -94,6 +99,7 @@ function player_is_tricking(phase)
 		case PHASE.STEP:
 		{
 			if (trick_time != 0) trick_time--;
+			if ((object_index == objSonic or object_index == objAmy) and trick_index == TRICK.FRONT and trick_time == 0) animation_init(PLAYER_ANIMATION.FALL);
 			
 			var trick_spiral = (object_index == objKnuckles and trick_index == TRICK.UP);
 			var trick_glide = (object_index == objKnuckles and (trick_index == TRICK.FRONT or trick_index == TRICK.BACK) and trick_time > 0);
@@ -322,9 +328,6 @@ function player_is_trick_somersaulting(phase)
                 // Move
                 player_move_on_ground();
                 if (state_changed) exit;
-                
-                // Fall
-                if (not on_ground) return player_perform(player_is_trick_somersaulting, false);
             }
             else
             {
@@ -332,22 +335,22 @@ function player_is_trick_somersaulting(phase)
     			player_move_in_air();
     			if (state_changed) exit;
                 
-                // Land
-                if (on_ground) return player_perform(player_is_trick_somersaulting, false);
-                
                 // Fall
-    			if (y_speed < gravity_cap)
-    			{
-    				y_speed = min(y_speed + gravity_force, gravity_cap);
-    			}
+                if (not on_ground)
+                {
+                    if (y_speed < gravity_cap)
+        			{
+        				y_speed = min(y_speed + gravity_force, gravity_cap);
+        			}
+                }
             }
             
             // Roll
-            if (animation_is_starting(5)) sound_play(sfxRoll);
+            if (animation_is_starting(5)) audio_play_single(sfxRoll);
             if (animation_is_finished())
             {
                 animation_init(PLAYER_ANIMATION.ROLL);
-                return player_perform(on_ground ? player_is_rolling : player_is_falling);
+                return player_perform(on_ground ? player_is_rolling : player_is_falling, false);
             }
             break;
 		}
