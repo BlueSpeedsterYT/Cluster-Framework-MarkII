@@ -58,7 +58,6 @@ global.font_hud = font_add_sprite(sprFontHUD, ord("0"), false, 0);
 // Misc.
 surface_depth_disable(true);
 randomize();
-audio_channel_num(16);
 InputPartySetParams(INPUT_VERB.CONFIRM, 1, INPUT_MAX_PLAYERS, false, INPUT_VERB.CANCEL, undefined);
 
 // Create global controllers

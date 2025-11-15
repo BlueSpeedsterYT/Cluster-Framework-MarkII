@@ -566,7 +566,7 @@ player_gain_rings = function(num)
 player_gain_lives = function(num)
 {
 	player_set_lives(global.lives + num);
-	audio_play_single(bgmLife);
+	audio_play_life();
 };
 
 /// @method player_gain_score(num)
@@ -601,7 +601,7 @@ player_ring_loss = function ()
 	}
 	
 	player_set_rings(0);
-}
+};
 
 /// @method player_damage(inst)
 /// @description Sets the player state to being hurt or dying. Setting the inst to the player is instant death.
@@ -641,4 +641,4 @@ player_damage = function (inst)
 			player_ring_loss();
 		}
 	}
-}
+};
