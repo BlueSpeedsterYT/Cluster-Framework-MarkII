@@ -42,6 +42,9 @@ switch (config_get("misc_hud", HUD.CLUSTER_GM8))
 			
 			// Draw Rings
 			draw_sprite(sprHUDRingContainerSA2, 0, 1, 3);
+			ring_current_frame += (abs(objPlayer.x_speed) / 8) + 0.25;
+			ring_final_frame = (ring_current_frame mod 256);
+			draw_sprite(sprHUDRingSA2, ring_final_frame, 7, 8);
 			var _ring_hundreds = global.rings > 99 ? "" : "0";
 			var _ring_tens = global.rings > 9 ? "" : "0";
 			var _ring_text = $"{_ring_hundreds}{_ring_tens}{global.rings}";
