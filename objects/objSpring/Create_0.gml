@@ -16,7 +16,7 @@ reaction = function(pla)
             if (diff == ANGLE.UP or diff == ANGLE.DOWN)
             {
                 pla.player_perform(player_is_sprung);
-                pla.y_speed = dsin(diff) * force;
+                pla.y_speed = -dsin(diff) * force;
             }
             else if (diff == ANGLE.RIGHT or diff == ANGLE.LEFT)
             {
@@ -37,7 +37,7 @@ reaction = function(pla)
                 pla.player_perform(player_is_sprung);
                 pla.image_xscale = image_xscale;
                 pla.x_speed = image_xscale * force;
-                pla.y_speed = dsin(diff) * force;
+                pla.y_speed = -dsin(diff) * force;
             }
             pla.trick_time = max(2, 9 - (force / 1.5) div 1);
             active |= bit;
