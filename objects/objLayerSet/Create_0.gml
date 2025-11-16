@@ -2,7 +2,7 @@
 // Inherit the parent event
 event_inherited();
 var hitbox_height = (sprite_height / 2);
-hitboxes[0].set_size(-8, -hitbox_height, 7, hitbox_height - 1);
+hitboxes[0].set_size(-8, -hitbox_height, 8, hitbox_height);
 reaction = function(pla)
 {
 	if (collision_player(0, pla) != 0)

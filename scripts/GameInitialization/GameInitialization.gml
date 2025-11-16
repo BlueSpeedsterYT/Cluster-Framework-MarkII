@@ -53,7 +53,7 @@ global.lives = 3;
 global.rings = 0;
 
 // Fonts
-global.font_hud = font_add_sprite(sprFontHUD, ord("0"), false, 0);
+global.font_hud_sa2 = font_add_sprite(sprHUDFontSA2, ord("0"), false, 0);
 
 // Misc.
 surface_depth_disable(true);
