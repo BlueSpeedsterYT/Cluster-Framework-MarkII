@@ -23,7 +23,7 @@ switch (room)
 		name = "DEMONSTRATION";
 		act = 1;
 		is_hub = false;
-		audio_swap_music(bgmMadGear);
+		audio_enqueue_music(bgmMadGear, PRIORITY_MUSIC);
 		break;
 	}
 	case rmTestNew:
@@ -31,7 +31,7 @@ switch (room)
 		name = "DEMONSTRATION";
 		act = 1;
 		is_hub = false;
-		audio_swap_music(bgmExtraBattle1);
+		audio_enqueue_music(bgmExtraBattle1, PRIORITY_MUSIC);
 		break;
 	}
 	case rmR99Map:
@@ -39,7 +39,7 @@ switch (room)
 		name = "ROUTE 99";
 		act = 0;
 		is_hub = true;
-		audio_swap_music(bgmR99Map);
+		audio_enqueue_music(bgmR99Map, PRIORITY_MUSIC);
 		break;
 	}
 }
