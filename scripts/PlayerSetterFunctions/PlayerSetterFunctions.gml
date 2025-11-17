@@ -187,7 +187,7 @@ function player_refresh_physics()
 		roll_friction *= 0.5;
 
 	    gravity_force = 0.0625;
-	    recoil_gravity = gravity_force;
+	    hurt_force = gravity_force;
 		jump_height -= 3;
 	    jump_release *= 0.5;
 	}
