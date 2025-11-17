@@ -177,35 +177,10 @@ function player_is_dead(phase)
 	{
 		case PHASE.ENTER:
 		{
-			// Reset Depth
-			depth = 150;
-			
-			// Disable Boost Mode
-			boost_mode = false;
-			
-			// Detach from ground
-			player_ground(undefined);
-			
-			// Reset Horizontal Speed
-			x_speed = 0;
-			
-			// Refresh Status
-			player_refresh_status();
-			
-			// Animate
-			animation_init(PLAYER_ANIMATION.DEAD);
 			break;
 		}
 		case PHASE.STEP:
 		{
-			// Set new position
-			player_new_position(x + (dsin(gravity_direction) * y_speed), y + (dcos(gravity_direction) * y_speed));
-			
-			// Fall
-			if (y_speed < gravity_cap)
-			{
-				y_speed = min(y_speed + gravity_force, gravity_cap);
-			}
 			break;
 		}
 		case PHASE.EXIT:

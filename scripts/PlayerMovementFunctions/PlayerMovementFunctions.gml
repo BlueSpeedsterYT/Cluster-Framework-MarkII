@@ -28,7 +28,7 @@ function player_move_on_ground()
 		player_new_position(x + (cosine * step), y - (sine * step));
 		if (player_in_bounds() == false)
 		{
-			player_damage(self);
+			player_damage();
 		}
 		
 		// Register nearby instances
@@ -76,7 +76,7 @@ function player_move_in_air()
 		player_new_position(x + (cosine * x_step) + (sine * y_step), y + (-sine * x_step) + (cosine * y_step));
 		if (player_in_bounds() == false)
 		{
-			player_damage(self);
+			player_damage();
 		}
 		
 		// Register nearby instances

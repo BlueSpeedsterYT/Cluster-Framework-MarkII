@@ -617,7 +617,7 @@ player_damage = function(inst = self)
     }
     else
     {
-    	var hurt_speed = -2;
+    	var hurt_speed = -2 div (1 + underwater);
         animation_init(PLAYER_ANIMATION.HURT);
         if (abs(x_speed) <= 2.5)
         {
@@ -630,7 +630,7 @@ player_damage = function(inst = self)
             x_speed = sign(x_speed) * -hurt_speed;
             animation_data.variant = 1;
         }
-        y_speed = -4;
+        y_speed = -4 div (1 + underwater);
         return player_perform(player_is_hurt);
     }
 };
