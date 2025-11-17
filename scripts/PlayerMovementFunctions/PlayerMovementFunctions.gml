@@ -26,10 +26,7 @@ function player_move_on_ground()
 	{
 		// Move by a single step
 		player_new_position(x + (cosine * step), y - (sine * step));
-		if (player_in_bounds() == false)
-		{
-			player_damage();
-		}
+		player_in_bounds(); // TODO: add death state and call it if this is false
 		
 		// Register nearby instances
 		player_detect_entities();
@@ -74,10 +71,7 @@ function player_move_in_air()
 	{
 		// Move by a single step
 		player_new_position(x + (cosine * x_step) + (sine * y_step), y + (-sine * x_step) + (cosine * y_step));
-		if (player_in_bounds() == false)
-		{
-			player_damage();
-		}
+		player_in_bounds();
 		
 		// Register nearby instances
 		player_detect_entities();
