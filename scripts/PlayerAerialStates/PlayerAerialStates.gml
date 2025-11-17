@@ -144,35 +144,28 @@ function player_is_hurt(phase)
 		{
 			// Detach from ground
 			player_ground(undefined);
-			
-			// Animate
-			animation_init(PLAYER_ANIMATION.HURT);
-			break;
+            break;
 		}
 		case PHASE.STEP:
 		{
 			// Move
 			player_move_in_air();
 			if (state_changed) exit;
-			
-			// Land
-			if (on_ground)
-			{
-				y_speed = 0;
-				return player_perform(x_speed != 0 ? player_is_running : player_is_standing);
-			}
-			
-			// Fall
+            
+            // Land
+			if (on_ground) return player_perform(x_speed != 0 ? player_is_running : player_is_standing);
+            
+            // Fall
 			if (y_speed < gravity_cap)
 			{
-				y_speed = min(y_speed + recoil_gravity, gravity_cap);
+				y_speed = min(y_speed + hurt_force, gravity_cap);
 			}
-			break;
+            break;
 		}
 		case PHASE.EXIT:
 		{
 			invulnerability_time = invulnerability_duration;
-			break;
+            break;
 		}
 	}
 }

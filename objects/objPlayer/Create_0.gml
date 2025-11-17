@@ -359,8 +359,9 @@ player_try_trick = function(time = trick_time)
 		if (input_axis_y == -1) trick_index = TRICK.UP;
 		else if (input_axis_y == 1) trick_index = TRICK.DOWN;
 		else if (input_axis_x == image_xscale) trick_index = TRICK.FRONT;
+        score += 100;
 		player_perform(player_is_trick_preparing);
-		score += 100;
+        if (not ((object_index == objSonic or object_index == objKnuckles or object_index == objAmy) and trick_index == TRICK.DOWN)) audio_play_single(sfxTrick);
 		return true;
 	}
 	return false;
@@ -603,42 +604,33 @@ player_ring_loss = function ()
 	player_set_rings(0);
 };
 
-/// @method player_damage(inst)
-/// @description Sets the player state to being hurt or dying. Setting the inst to the player is instant death.
-/// @param {Id.Instance} inst Instance to damage from.
-player_damage = function (inst)
+/// @method player_damage([inst])
+/// @description Sets the player to be either hurt or dead. Set inst to self to instantly kill the player.
+/// @param {Id.Instance} [inst] Instance to check (optional, defaults to the player).
+player_damage = function(inst = self)
 {
-	if (state == player_is_dead 
-	or ((state == player_is_hurt or invulnerability_time > 0 or invincibility_time > 0) 
-	and inst != self)) 
-	{
-		exit;
-	}
-	
-	var damage_inst = inst.id;
-	var hurt_direction = esign(x - damage_inst.x, 1);
-	
-	if (damage_inst == id or (global.rings == 0 and player_index == 0))
-	{
-		player_perform(player_is_dead);
-		if (drown == false)
-		{
-			y_speed = -7;
-		}
-		else
-		{
-			
-		}
-	}
-	else
-	{
-		x_speed = (underwater ? 2 : 1) * hurt_direction;
-		y_speed = (underwater ? -4 : -2);
-		player_perform(player_is_hurt);
-		
-		if (player_index == 0)
-		{
-			player_ring_loss();
-		}
-	}
+    if (state == player_is_dead or ((state == player_is_hurt or invincibility_time > 0 or invulnerability_time > 0) and inst != self)) exit;
+    
+    if (inst == self)
+    {
+        return player_perform(player_is_dead);
+    }
+    else
+    {
+    	var hurt_speed = -2;
+        animation_init(PLAYER_ANIMATION.HURT);
+        if (abs(x_speed) <= 2.5)
+        {
+            if (abs(x_speed) > 0.625) x_speed = sign(x_speed) * hurt_speed;
+            else x_speed = image_xscale * hurt_speed;
+            animation_data.variant = 0;
+        }
+        else
+        {
+            x_speed = sign(x_speed) * -hurt_speed;
+            animation_data.variant = 1;
+        }
+        y_speed = -4;
+        return player_perform(player_is_hurt);
+    }
 };
