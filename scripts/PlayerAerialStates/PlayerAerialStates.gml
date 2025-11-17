@@ -37,7 +37,7 @@ function player_is_falling(phase)
 			if (state_changed) exit;
 			
 			// Land
-			if (on_ground) return player_perform(x_speed != 0 ? player_is_running : player_is_standing);
+			if (player_try_landing()) return true;
 			
 			// Apply air resistance
 			if (y_speed < 0 and y_speed > -4 and abs(x_speed) > air_drag_threshold)
@@ -107,7 +107,7 @@ function player_is_jumping(phase)
 			if (state_changed) exit;
 			
 			// Land
-			if (on_ground) return player_perform(x_speed != 0 ? player_is_running : player_is_standing);
+			if (player_try_landing()) return true;
 			
 			// Lower height
 			if (jump_cap and not input_button.jump.check and y_speed < -jump_release)
@@ -153,7 +153,12 @@ function player_is_hurt(phase)
 			if (state_changed) exit;
             
             // Land
-			if (on_ground) return player_perform(x_speed != 0 ? player_is_running : player_is_standing);
+			if (player_try_landing()) 
+			{
+				if (not config_get("advance_hurt", true)) x_speed = 0;
+				y_speed = 0;
+				return true;
+			}
             
             // Fall
 			if (y_speed < gravity_cap)

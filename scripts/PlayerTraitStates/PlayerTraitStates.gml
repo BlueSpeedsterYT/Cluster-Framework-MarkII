@@ -4,13 +4,8 @@
 function player_trait_boost(tag = false)
 {
 	var boost_index = (global.rings > 10 ? 1 : 0) + min(global.rings div 50, 3);
-	var boost_threshold;
-	
-	boost_threshold[0] = 8.0;
-	boost_threshold[1] = 7.96875;
-	boost_threshold[2] = 6.5625;
-	boost_threshold[3] = 5.625;
-	boost_threshold[4] = 4.21875;
+	var boost_threshold = [8, 7.96875, 6.5625, 5.625, 4.21875];
+	var boost_physics = [[0.03125, 0.25], [0.046875, 0.25], [0.0546875, 0.25], [0.0625, 0.25], [0.0703125, 0.25]];
 	
 	// Have to start at the base values and redo their math:
 	player_refresh_physics();
@@ -49,6 +44,11 @@ function player_trait_boost(tag = false)
 	}
 	else boost_speed = 0;
 
-	// Double top speed if not already doubled:
-	if (boost_mode && superspeed_time <= 0) speed_cap *= 2;
+	// Change the physics upon boosting:
+	if (boost_mode && superspeed_time <= 0) 
+	{
+		speed_cap *= 2;
+		acceleration = boost_physics[boost_index][0];
+		deceleration = boost_physics[boost_index][1];
+	}
 }

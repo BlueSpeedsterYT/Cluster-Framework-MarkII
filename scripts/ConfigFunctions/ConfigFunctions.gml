@@ -10,7 +10,24 @@ function config_set(database_name, database_value)
 
 function config_reset()
 {
+	config_reset_audio();
+	
+	config_reset_advance();
 	config_reset_misc();
+}
+
+function config_reset_audio()
+{
+	config_set("audio_sfx", 0.85);
+	config_set("audio_bgm", 0.75);
+}
+
+function config_reset_advance()
+{
+	config_set("advance_turn", true);
+	config_set("advance_brake", true);
+	config_set("advance_hurt", true);
+	config_set("advance_flicker", false);
 }
 
 function config_reset_misc()

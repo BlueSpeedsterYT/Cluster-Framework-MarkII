@@ -70,7 +70,7 @@ function player_is_trick_preparing(phase)
 			if (state_changed) exit;
 			
 			// Land
-			if (on_ground) return player_perform(x_speed != 0 ? player_is_running : player_is_standing);
+			if (player_try_landing()) return true;
 			break;
 		}
 		case PHASE.EXIT:
@@ -223,7 +223,7 @@ function player_is_trick_rebounding(phase)
 			if (state_changed) exit;
 			
 			// Land
-			if (on_ground) return player_perform(x_speed != 0 ? player_is_running : player_is_standing);
+			if (player_try_landing()) return true;
 			
 			// Apply air resistance
 			if (y_speed < 0 and y_speed > -4 and abs(x_speed) > air_drag_threshold)

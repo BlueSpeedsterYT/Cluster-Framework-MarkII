@@ -38,8 +38,8 @@ enum ANGLE
 }
 
 // Volumes
-global.volume_sound = 1;
-global.volume_music = 1;
+global.volume_sound = config_get("audio_sfx", 0.85);
+global.volume_music = config_get("audio_bgm", 0.75);
 
 // Music
 audio_loop_points(bgmExtraBattle1, 14.2224, 128.0002);

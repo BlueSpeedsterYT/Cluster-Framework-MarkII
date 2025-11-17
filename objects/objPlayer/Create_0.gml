@@ -367,6 +367,19 @@ player_try_trick = function(time = trick_time)
 	return false;
 };
 
+/// @method player_try_landing()
+/// @description Sets the player's current state to either idle or running, if applicable.
+/// @returns {Bool}
+player_try_landing = function ()
+{
+	if (on_ground)
+	{
+		player_perform(x_speed != 0 ? player_is_running : player_is_standing);
+		return true;
+	}
+	return false;
+}
+
 /// @method player_rotate_mask()
 /// @description Rotates the player's virtual mask, if applicable.
 player_rotate_mask = function ()
