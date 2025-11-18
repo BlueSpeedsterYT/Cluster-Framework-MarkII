@@ -191,13 +191,12 @@ function player_is_dead(phase)
 			
 			// Animate
 			animation_init(PLAYER_ANIMATION.DEAD);
+			
+			// Reset Camera
+			camera = noone;
 			break;
 		}
 		case PHASE.STEP:
-		{
-			break;
-		}
-		case PHASE.EXIT:
 		{
 			// Move
 			y += y_speed;
@@ -209,6 +208,10 @@ function player_is_dead(phase)
 			{
 				y_speed = min(y_speed + gravity_force, gravity_cap);
 			}
+			break;
+		}
+		case PHASE.EXIT:
+		{
 			break;
 		}
 	}

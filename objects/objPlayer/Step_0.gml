@@ -168,8 +168,11 @@ if (input_allow)
 
 #region Perform
 
-state(PHASE.STEP);
-if (state_changed) state_changed = false;
+if (script_exists(state)) 
+{
+	state(PHASE.STEP);
+	if (state_changed) state_changed = false;
+}
 player_animate();
 player_trait_boost();
 

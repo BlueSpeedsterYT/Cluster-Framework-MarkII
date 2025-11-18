@@ -63,6 +63,8 @@ state = player_is_ready;
 state_previous = -1;
 state_changed = false;
 
+underwater = false;
+
 jump_action = false;
 jump_cap = true;
 
@@ -81,15 +83,13 @@ invincibility_time = 0;
 invulnerability_time = 0;
 camera_look_time = 0;
 
-slide_duration = 30;
+slide_duration = 32;
 spring_duration = 16;
 trick_lock_duration = 9;
-remaining_air_duration = 120;
+remaining_air_duration = 1800;
 invulnerability_duration = 120;
 
 // Physics
-underwater = false;
-drown = false;
 x_speed = 0;
 y_speed = 0;
 
@@ -314,8 +314,11 @@ player_perform = function(action, enter = true)
 		state_previous = state;
 		state = action;
 		state_changed = true;
-		state_previous(PHASE.EXIT);
-		if (enter) state(PHASE.ENTER);
+		if (script_exists(state_previous)) state_previous(PHASE.EXIT);
+		if (enter) 
+		{
+			if (script_exists(state)) state(PHASE.ENTER);
+		}
 	}
 };
 
@@ -605,14 +608,14 @@ player_gain_score = function (num)
 /// @returns {Id.Instance}
 player_ring_loss = function ()
 {
-	var total = min(global.rings, 32);
-	var dir = 101.25;
-	var len = 4;
+	//var total = min(global.rings, 32);
+	//var dir = 101.25;
+	//var len = 4;
 
-	while (total)
-	{
+	//while (total)
+	//{
 		//var ring_inst = instance_create_layer(x div 1, y div 1, "ZoneObjects", objRing);
-	}
+	//}
 	
 	player_set_rings(0);
 };
@@ -624,7 +627,7 @@ player_damage = function(inst)
 {
     if (state == player_is_dead or ((state == player_is_hurt or invincibility_time > 0 or invulnerability_time > 0) and inst != self)) exit;
     
-    if (inst == self)
+    if (inst == self or (global.rings == 0 and player_index == 0))
     {
         return player_perform(player_is_dead);
     }
@@ -644,6 +647,10 @@ player_damage = function(inst)
             animation_data.variant = 1;
         }
         y_speed = -4 div (1 + underwater);
+		if (player_index == 0)
+		{
+			player_ring_loss();
+		}
         return player_perform(player_is_hurt);
     }
 };

@@ -23,6 +23,12 @@ if (invincibility_time > 0)
     --invincibility_time;
 }
 
+if (remaining_air_time > 0)
+{
+    --remaining_air_time;
+	// TODO: Set up Drowning (See how SonicForGMS handles it)
+}
+
 animation_update();
 with (spin_dash_effect) animation_update();
 
