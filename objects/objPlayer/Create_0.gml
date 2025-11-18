@@ -617,10 +617,10 @@ player_ring_loss = function ()
 	player_set_rings(0);
 };
 
-/// @method player_damage([inst])
+/// @method player_damage(inst)
 /// @description Sets the player to be either hurt or dead. Set inst to self to instantly kill the player.
-/// @param {Id.Instance} [inst] Instance to check (optional, defaults to the player).
-player_damage = function(inst = self)
+/// @param {Id.Instance} [inst] Instance to check.
+player_damage = function(inst)
 {
     if (state == player_is_dead or ((state == player_is_hurt or invincibility_time > 0 or invulnerability_time > 0) and inst != self)) exit;
     
