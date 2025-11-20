@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"PlayerEffectFunctions",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"PlayerEffectFunctions",
+  "parent":{
+    "name":"Effects",
+    "path":"folders/Scripts/Player/Effects.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

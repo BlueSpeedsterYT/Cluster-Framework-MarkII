@@ -27,7 +27,7 @@ function config_reset_advance()
 	config_set("advance_turn", true);
 	config_set("advance_brake", true);
 	config_set("advance_hurt", true);
-	config_set("advance_flicker", false);
+	config_set("advance_flicker", true);
 }
 
 function config_reset_misc()

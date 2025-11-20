@@ -175,6 +175,7 @@ if (script_exists(state))
 }
 player_animate();
 player_trait_boost();
+player_invin_spark_create();
 
 #endregion
 

@@ -648,7 +648,7 @@ player_ring_loss = function ()
 /// @param {Id.Instance} inst Instance to check.
 player_damage = function(inst)
 {
-    if (state == player_is_dead or ((state == player_is_hurt or invincibility_time > 0 or invulnerability_time > 0) and inst != self)) exit;
+    if (state == player_is_dead or ((state == player_is_hurt or invincibility_time or invulnerability_time) and inst != self)) exit;
     
     if (inst == self or (global.rings == 0 and shield_index == SHIELD_TYPE.NONE and player_index == 0))
     {
@@ -669,6 +669,7 @@ player_damage = function(inst)
             x_speed = sign(x_speed) * -hurt_speed;
             animation_data.variant = 1;
         }
+		
         y_speed = -4 div (1 + underwater);
 		
 		if (player_index == 0)
