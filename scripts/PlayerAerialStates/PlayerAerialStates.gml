@@ -182,24 +182,32 @@ function player_is_dead(phase)
 	{
 		case PHASE.ENTER:
 		{
+			// Set Depth
+			depth = 150;
+			
 			// Stop
 			x_speed = 0;
-			y_speed = 0;
+			y_speed = -7;
 			
 			// Detach from ground
 			player_ground(undefined);
 			
+			// Reset
+			player_refresh_status();
+			boost_mode = false;
+			
 			// Animate
 			animation_init(PLAYER_ANIMATION.DEAD);
 			
-			// Reset Camera
-			camera = noone;
+			// TODO: SonicForGMS resets the camera here, figure it out here or wait for proper solution.
 			break;
 		}
 		case PHASE.STEP:
 		{
 			// Move
-			y += y_speed;
+			var sine = dsin(gravity_direction);
+			var cosine = dcos(gravity_direction);
+			player_new_position(x + (sine * y_speed), y + (cosine * y_speed));
 			
 			// TODO: SonicForGMS checks if the player is 48 below bound_bottom.
 			

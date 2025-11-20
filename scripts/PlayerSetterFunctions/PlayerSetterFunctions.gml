@@ -206,6 +206,8 @@ function player_refresh_physics()
 /// @description Resets the player status variables back to their default values.
 function player_refresh_status()
 {
+	shield_index = SHIELD_TYPE.NONE;
+	shield_allow = true;
 	invulnerability_time = 0;
 	invincibility_time = 0;
 	superspeed_time = 0;

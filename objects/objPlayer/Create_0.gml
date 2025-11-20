@@ -32,6 +32,26 @@ enum PLAYER_ANIMATION
     SPRING_TWIRL
 }
 
+enum SHIELD_TYPE
+{ 
+    NONE,
+    BASIC,
+    MAGNETIC,
+    BUBBLE,
+    FIRE,
+    LIGHTNING
+}
+
+enum STATUS_INDEX
+{ 
+    SHIELD,
+    INVINCIBILITY,
+    SPEED,
+    PANIC,
+    SWAP,
+    TOTAL_STATUSES
+}
+
 enum TRICK
 {
 	UP,
@@ -64,6 +84,9 @@ state_previous = -1;
 state_changed = false;
 
 underwater = false;
+
+shield_index = SHIELD_TYPE.NONE;
+shield_allow = true;
 
 jump_action = false;
 jump_cap = true;
@@ -622,14 +645,14 @@ player_ring_loss = function ()
 
 /// @method player_damage(inst)
 /// @description Sets the player to be either hurt or dead. Set inst to self to instantly kill the player.
-/// @param {Id.Instance} [inst] Instance to check.
+/// @param {Id.Instance} inst Instance to check.
 player_damage = function(inst)
 {
     if (state == player_is_dead or ((state == player_is_hurt or invincibility_time > 0 or invulnerability_time > 0) and inst != self)) exit;
     
-    if (inst == self or (global.rings == 0 and player_index == 0))
+    if (inst == self or (global.rings == 0 and shield_index == SHIELD_TYPE.NONE and player_index == 0))
     {
-        return player_perform(player_is_dead);
+		return player_perform(player_is_dead);
     }
     else
     {
@@ -647,10 +670,52 @@ player_damage = function(inst)
             animation_data.variant = 1;
         }
         y_speed = -4 div (1 + underwater);
+		
 		if (player_index == 0)
 		{
-			player_ring_loss();
+			if (shield_index != SHIELD_TYPE.NONE) shield_index = SHIELD_TYPE.NONE;
+			else player_ring_loss();
 		}
+		
         return player_perform(player_is_hurt);
     }
 };
+
+/// @method player_status(status, [new_value])
+/// @description Set's the current player's status
+/// @param {Enum.STATUS_INDEX} status The status to apply
+/// @param {Enum|Integer} [new_value] The new value to set (Optional.)
+player_status = function (status, new_value = 0)
+{
+	switch (status)
+	{
+		case STATUS_INDEX.SHIELD:
+		{
+			if (shield_index == new_value) exit;
+			
+			if (new_value > SHIELD_TYPE.NONE)
+			{
+				shield_index = new_value;
+				shield_allow = true;
+			}
+			else
+			{
+				shield_index = SHIELD_TYPE.NONE;
+			}
+			break;
+		}
+		case STATUS_INDEX.INVINCIBILITY:
+		{
+			invincibility_time = new_value;
+			audio_play_jingle(bgmInvincibility);
+			break;
+		}
+		case STATUS_INDEX.SPEED:
+		{
+			superspeed_time = new_value;
+			player_refresh_physics();
+			audio_play_jingle(bgmSpeedUp);
+			break;
+		}
+	}
+}

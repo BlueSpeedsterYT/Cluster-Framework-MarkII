@@ -19,7 +19,7 @@ if (input_allow)
 	    if (input_cpu_gamepad_time > 0) 
 		{
 			input_cpu_gamepad_time--;
-			player_refresh_status();
+			if (input_cpu_gamepad_time == 0) player_refresh_status();
 		}
 	}
 
@@ -232,5 +232,13 @@ with (camera)
         follow = other;
     }
 }
+
+#endregion
+
+#region Debug
+
+if (keyboard_check_pressed(ord("1"))) player_status(STATUS_INDEX.SHIELD, SHIELD_TYPE.BASIC);
+if (keyboard_check_pressed(ord("2"))) player_status(STATUS_INDEX.INVINCIBILITY, 1380);
+if (keyboard_check_pressed(ord("3"))) player_status(STATUS_INDEX.SPEED, 900);
 
 #endregion
