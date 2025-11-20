@@ -546,17 +546,17 @@ player_set_rings = function (amount)
 /// @method player_set_lives(amount)
 /// @description Sets the player's life count to the given amount.
 /// @param {Real} amount Amount of lives to give.
-player_set_lives = function (amount)
-{
-	global.lives = clamp(amount, 0, 99);
-};
+//player_set_lives = function (amount)
+//{
+//	global.lives = clamp(amount, 0, 99);
+//};
 
 /// @method player_set_score(num)
 /// @description Sets the player's score count to the given amount.
 /// @param {Real} amount Amount of score points to give.
 player_set_score = function (amount)
 {
-	global.score = clamp(amount, 0, 999999);
+	global.score = clamp(amount, 0, 999999999);
 };
 
 /// @method player_gain_rings(num)
@@ -568,23 +568,23 @@ player_gain_rings = function(num)
 	audio_play_single(sfxRing);
 	
 	// Gain lives
-	static ring_life_threshold = 99;
-	if (global.rings > ring_life_threshold)
-	{
-		var change = global.rings div 100;
-		player_gain_lives(change - ring_life_threshold div 100);
-		ring_life_threshold = change * 100 + 99;
-	}
+	//static ring_life_threshold = 99;
+	//if (global.rings > ring_life_threshold)
+	//{
+	//	var change = global.rings div 100;
+	//	player_gain_lives(change - ring_life_threshold div 100);
+	//	ring_life_threshold = change * 100 + 99;
+	//}
 };
 
 /// @method player_gain_lives(num)
 /// @description Increases the player's life count by the given amount.
 /// @param {Real} num Amount of lives to give.
-player_gain_lives = function(num)
-{
-	player_set_lives(global.lives + num);
-	audio_play_life();
-};
+//player_gain_lives = function(num)
+//{
+//	player_set_lives(global.lives + num);
+//	audio_play_life();
+//};
 
 /// @method player_gain_score(num)
 /// @description Increases the player's score count by the given amount.
@@ -594,13 +594,13 @@ player_gain_score = function (num)
 	player_set_score(global.score + num);
 	
 	// Gain lives
-	static score_life_threshold = 49999;
-	if (global.score > score_life_threshold)
-	{
-		var change = global.score div 50000;
-		player_gain_lives(change - score_life_threshold div 50000);
-		score_life_threshold = change * 50000 + 9999;
-	}
+	//static score_life_threshold = 49999;
+	//if (global.score > score_life_threshold)
+	//{
+	//	var change = global.score div 50000;
+	//	player_gain_lives(change - score_life_threshold div 50000);
+	//	score_life_threshold = change * 50000 + 9999;
+	//}
 };
 
 /// @method player_ring_loss()

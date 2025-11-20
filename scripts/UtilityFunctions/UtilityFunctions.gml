@@ -31,6 +31,16 @@ function hitbox(col, _left = 0, _top = 0, _right = 0, _bottom = 0) : rect(_left,
 	color = col;
 }
 
+/// @function string_pad(number, digits)
+/// @description Returns a number string with padded zeros from the amount provided. Ported from GM8.2.
+/// @param {String} number String
+/// @param {Integer} digits Amount of digits to pad out the zeros.
+/// @returns {String}
+function string_pad(number, digits)
+{
+	return string_repeat("-", number < 0) + string_replace_all(string_format(abs(number), digits, 0), " ", "0");
+}
+
 /// @function pick(which, opt1, opt2, ...)
 /// @description Returns one of the arguments depending on the first argument. Ported from GM8.2.
 /// @param {Real} which Which option to return

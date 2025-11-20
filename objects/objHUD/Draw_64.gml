@@ -13,49 +13,84 @@ if (ctrlStage.is_hub == false)
 // Switch up HUD styles:
 switch (config_get("misc_hud", HUD.CLUSTER_GM8))
 {
+	case HUD.S4_EPISODE_2:
+	{
+		hud_x = 13;
+		hud_y = 14;
+		
+		if (ctrlStage.is_hub == false)
+		{
+			// Main HUD Sprite
+			draw_sprite(sprHUDS4E2, 0, hud_x, hud_y);
+		
+			// Main Text Stuff
+			draw_set_halign(fa_left);
+			draw_set_color(c_white);
+		
+			// Score Text
+			draw_set_font(global.font_hud_score_s4e2);
+			draw_text(hud_x + 37, hud_y + 3, string_pad(global.score, 9));
+			
+			// Time Text
+			var _time_x = hud_x + 58;
+			var _time_y = hud_y + 18;
+			draw_set_font(global.font_hud_time_s4e2);
+			draw_text(_time_x, _time_y, $"{minutes}");
+			draw_text(_time_x + 10, _time_y, ":");
+			draw_text(_time_x + 16, _time_y, string_pad(seconds, 2));
+			draw_text(_time_x + 35, _time_y, ";");
+			draw_text(_time_x + 44, _time_y, string_pad(centiseconds, 2));
+			
+			// Ring Text
+			draw_set_font(global.font_hud_s4e2);
+			if ((mod_time(ctrlWindow.image_index, 8, 2) && global.rings == 0) || global.rings > 0)
+			{
+			    if (global.rings == 0) draw_set_color(c_red);
+			    draw_text(hud_x - 5, hud_y + 11, string_pad(global.rings, 3));
+			}
+		}
+		break;
+	}
+	
 	case HUD.ADVANCE_2:
 	{
 		var _center_x = (CAMERA_WIDTH / 2);
 
+		hud_x = 0;
+		hud_y = 3;
+
 		// Lives
-		var lead_character_index = save_get_character(0);
-		if (lead_character_index != CHARACTER.NONE)
-		{
-		    draw_sprite(sprLifeIconSA2, lead_character_index, 6, CAMERA_HEIGHT - 20);
-		}
+		//var lead_character_index = save_get_character(0);
+		//if (lead_character_index != CHARACTER.NONE)
+		//{
+		    //draw_sprite(sprLifeIconSA2, lead_character_index, hud_x + 6, CAMERA_HEIGHT - 20);
+		//}
 
 		// Text
 		draw_set_font(global.font_hud_sa2);
 		draw_set_halign(fa_left);
-		var _lives_text = (global.lives > 9 ? "9" : (global.lives > 0 ? global.lives - 1 : "0"));
-		draw_text(30, CAMERA_HEIGHT - 17, _lives_text);
+		draw_set_color(c_white);
+		//var _lives_text = (global.lives > 9 ? "9" : (global.lives > 0 ? global.lives - 1 : "0"));
+		//draw_text(hud_x + 30, CAMERA_HEIGHT - 17, _lives_text);
 		if (ctrlStage.is_hub == false)
 		{
 			// Draw Score
-			var _score_hundred_thousands = global.score > 99999 ? "" : "0";
-			var _score_ten_thousands = global.score > 9999 ? "" : "0";
-			var _score_thousands = global.score > 999 ? "" : "0";
-			var _score_hundreds = global.score > 99 ? "" : "0";
-			var _score_tens = global.score > 9 ? "" : "0";
-			var _score_text = $"{_score_hundred_thousands}{_score_ten_thousands}{_score_thousands}{_score_hundreds}{_score_tens}{global.score}";
-			draw_text(28, 17, _score_text);
+			var _score_text = global.score > 999999 ? "999999" : string_pad(global.score, 6)
+			draw_text(hud_x + 28, hud_y + 14, _score_text);
 			
 			// Draw Rings
-			draw_sprite(sprHUDRingContainerSA2, 0, 1, 3);
-			ring_current_frame += (abs(objPlayer.x_speed) / 8) + 0.25;
-			ring_final_frame = (ring_current_frame mod 256);
-			draw_sprite(sprHUDRingSA2, ring_final_frame, 7, 8);
-			var _ring_hundreds = global.rings > 99 ? "" : "0";
-			var _ring_tens = global.rings > 9 ? "" : "0";
-			var _ring_text = $"{_ring_hundreds}{_ring_tens}{global.rings}";
-			draw_text(28, 3, _ring_text);
+			draw_sprite(sprHUDRingContainerSA2, 0, hud_x + 1, hud_y);
+			sa2_ring_current_frame += (abs(objPlayer.x_speed) / 8) + 0.25;
+			sa2_ring_final_frame = (sa2_ring_current_frame mod 256);
+			draw_sprite(sprHUDRingSA2, sa2_ring_final_frame, hud_x + 7, hud_y + 5);
+			draw_text(hud_x + 28, hud_y, string_pad(global.rings, 3));
 			
 			// Draw Timer
-			draw_sprite(sprHUDColonSA2, 0, _center_x - 20, 3);
-			draw_sprite(sprHUDColonSA2, 0, _center_x + 4, 3);
-			draw_text(_center_x - 28, 3, $"{minutes}");
-			draw_text(_center_x - 12, 3, $"{seconds < 10 ? 0 : ""}{seconds}");
-			draw_text(_center_x + 12, 3, $"{centiseconds < 10 ? 0 : ""}{centiseconds}");
+			draw_sprite(sprHUDColonSA2, 0, hud_x + _center_x - 20, hud_y);
+			draw_sprite(sprHUDColonSA2, 0, hud_x + _center_x + 4, hud_y);
+			draw_text(hud_x + _center_x - 28, hud_y, $"{minutes}");
+			draw_text(hud_x + _center_x - 12, hud_y, string_pad(seconds, 2));
+			draw_text(hud_x + _center_x + 12, hud_y, string_pad(centiseconds, 2));
 		}
 		break;
 	}

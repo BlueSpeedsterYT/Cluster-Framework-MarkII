@@ -21,7 +21,7 @@ enum HUD
 {
     NONE,
     CLUSTER_GM8,
-    S4_EPISODE_II,
+    S4_EPISODE_2,
     ADVANCE_2
 }
 
@@ -49,11 +49,14 @@ audio_loop_points(bgmR99Map, (143360/44100), (1740820/44100));
 global.players = -1;
 global.characters = -1;
 global.score = 0;
-global.lives = 3;
+//global.lives = 3;
 global.rings = 0;
 
 // Fonts
 global.font_hud_sa2 = font_add_sprite(sprHUDFontSA2, ord("0"), false, 0);
+global.font_hud_s4e2 = font_add_sprite(sprHUDFontRingS4E2, ord("0"), false, 1);
+global.font_hud_score_s4e2 = font_add_sprite(sprHUDFontScoreS4E2, ord("0"), false, 1);
+global.font_hud_time_s4e2 = font_add_sprite_ext(sprHUDFontTimeS4E2, "0123456789:;", false, 1);
 
 // Misc.
 surface_depth_disable(true);

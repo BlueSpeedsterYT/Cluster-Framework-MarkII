@@ -2,6 +2,7 @@
 if (player_index != 0) exit;
 draw_set_font(-1);
 draw_set_halign(fa_right);
+draw_set_colour(c_white);
 
 draw_text_transformed(CAMERA_WIDTH - 10, 10, $"State: {script_get_name(state)}", 0.5, 0.5, 0);
 draw_text_transformed(CAMERA_WIDTH - 10, 25, $"Animation ID: {string(animation_data.index)}", 0.5, 0.5, 0);
