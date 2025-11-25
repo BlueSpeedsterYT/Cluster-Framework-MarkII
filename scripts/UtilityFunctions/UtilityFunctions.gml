@@ -174,6 +174,7 @@ function instance_in_view(obj = id, view_padding = CAMERA_PADDING)
 /// @returns {Real}
 function collision_player(hb, pla, plahb = -1)
 {
+    var result = 0;
     var x_int = x div 1;
     var y_int = y div 1;
     var sine = dsin(gravity_direction);
@@ -185,18 +186,18 @@ function collision_player(hb, pla, plahb = -1)
     var bottom = hitboxes[hb].bottom;
     
     // Abort if hitbox is empty
-    if (left == 0 and top == 0 and right == 0 and bottom == 0) return 0;
+    if (left == 0 and top == 0 and right == 0 and bottom == 0) return result;
     
     if (image_xscale == -1)
     {
-    	left *= -1;
-    	right *= -1;
+    	left = -hitboxes[hb].right;
+        right = -hitboxes[hb].left;
     }
     
     if (image_yscale == -1)
     {
-        top *= -1;
-        bottom *= -1;
+        top = -hitboxes[hb].bottom;
+        bottom = -hitboxes[hb].top;
     }
     
     var px_int = pla.x div 1;
@@ -218,19 +219,19 @@ function collision_player(hb, pla, plahb = -1)
     	
     	if (pla.image_xscale == -1)
     	{
-    		pleft *= -1;
-    		pright *= -1;
+    		pleft = -pla.hitboxes[plahb].right;
+            pright = -pla.hitboxes[plahb].left;
     	}
     	
         if (pla.image_yscale == -1)
     	{
-    		ptop *= -1;
-    		pbottom *= -1;
+    		ptop = -pla.hitboxes[plahb].bottom;
+            pbottom = -pla.hitboxes[plahb].top;
     	}
     }
 	
     // Abort if hitbox is empty
-    if (pleft == 0 and ptop == 0 and pright == 0 and pbottom == 0) return 0;
+    if (pleft == 0 and ptop == 0 and pright == 0 and pbottom == 0) return result;
     
 	var sx1 = px_int + pcosine * pleft + psine * ptop;
 	var sy1 = py_int - psine * pright + pcosine * ptop;
@@ -241,8 +242,91 @@ function collision_player(hb, pla, plahb = -1)
 	var dy1 = y_int - sine * right + cosine * top;
 	var dx2 = x_int + cosine * right + sine * bottom;
 	var dy2 = y_int - sine * left + cosine * bottom;
+    
+    // Ensure top left and bottom right are correct
+    var swap;
+    
+    if (sx1 > sx2)
+    {
+        swap = sx1;
+        sx1 = sx2;
+        sx2 = swap;
+    }
+    
+    if (sy1 > sy2)
+    {
+        swap = sy1;
+        sy1 = sy2;
+        sy2 = swap;
+    }
+    
+    if (dx1 > dx2)
+    {
+        swap = dx1;
+        dx1 = dx2;
+        dx2 = swap;
+    }
+    
+    if (dy1 > dy2)
+    {
+        swap = dy1;
+        dy1 = dy2;
+        dy2 = swap;
+    }
 	
-	return rectangle_in_rectangle(sx1, sy1, sx2, sy2, dx1, dy1, dx2, dy2);
+    if (rectangle_in_rectangle(sx1, sy1, sx2, sy2, dx1, dy1, dx2, dy2))
+    {
+        var x_center = (dx1 + dx2) / 2;
+        var y_center = (dy1 + dy2) / 2;
+        var x_dist = 0;
+        var y_dist = 0;
+        var y_dist_ext = y_dist;
+        
+        if (x_center <= px_int)
+        {
+            x_dist = dx2 - sx1;
+            result |= COLL_RIGHT;
+        }
+        else
+        {
+        	x_dist = sx2 - dx1;
+            result |= COLL_LEFT;
+        }
+        
+        if (y_center > py_int)
+        {
+            y_dist = sy2 - dy1;
+            y_dist_ext = y_dist - 5;
+            if (y_dist_ext < 0) y_dist_ext = 0;
+            result |= COLL_TOP;
+        }
+        else
+        {
+        	y_dist = dy2 - sy1;
+            y_dist_ext = y_dist + 2;
+            if (y_dist_ext < 0) y_dist_ext = 0;
+            result |= COLL_BOTTOM;
+        }
+        
+        if (abs(x_dist) < abs(y_dist_ext)) result &= (COLL_RIGHT | COLL_LEFT);
+        else result &= (COLL_TOP | COLL_BOTTOM);
+        
+        result |= (((x_dist << 8) & 0xFF00) | (y_dist & 0xFF));
+        if (result & 0xC0000)
+        {
+            if (!(result & 0xFF00)) result &= 0xFFF300FF;
+        }
+        else
+        {
+            result &= 0xFFFF00FF;
+        }
+        
+        if (not (result & (COLL_TOP | COLL_BOTTOM))) result &= ~0xFF;
+        
+        /* AUTHOR NOTE: This is mostly copied from the sa2 decomp. */
+    }
+    
+    return result;
 }
 
 /// @function particle_create(x, y, ani, [xspd], [yspd], [xaccel], [yaccel])
@@ -292,22 +376,39 @@ function draw_hitboxes(ang = gravity_direction)
         	
 			if (image_xscale == -1)
 			{
-				left *= -1;
-				right *= -1;
+				left = -hitboxes[i].right;
+                right = -hitboxes[i].left;
 			}
 			
             if (image_yscale == -1)
             {
-                top *= -1;
-                bottom *= -1;
+                top = -hitboxes[i].bottom;
+                bottom = -hitboxes[i].top;
             }
 			
 			var x1 = x_int + cosine * left + sine * top;
 	        var y1 = y_int - sine * right + cosine * top;
 	        var x2 = x_int + cosine * right + sine * bottom;
 	        var y2 = y_int - sine * left + cosine * bottom;
+            var swap;
+            
+            if (x1 > x2)
+            {
+                swap = x1;
+                x1 = x2;
+                x2 = swap;
+            }
+            
+            if (y1 > y2)
+            {
+                swap = y1;
+                y1 = y2;
+                y2 = swap;
+            }
 	        
 	        draw_rectangle_color(x1, y1, x2, y2, color, color, color, color, true);
+            draw_point_color(x1, y1, c_aqua);
+            draw_point_color(x2, y2, c_fuchsia);
 		}
 	}
 }
