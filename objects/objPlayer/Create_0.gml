@@ -201,7 +201,7 @@ player_reset_cpu = function ()
 		gravity_direction = player_inst.gravity_direction;
 		x_speed = player_inst.x_speed;
 		y_speed = player_inst.y_speed;
-		// TODO: Add Layer Collisions
+		collision_layer = player_inst.collision_layer;
 		underwater = player_inst.underwater;
 		player_perform(player_is_falling);
 		animation_init(PLAYER_ANIMATION.ROLL);
@@ -504,13 +504,14 @@ player_set_score = function (amount)
 	global.score = clamp(amount, 0, 999999999);
 };
 
-/// @method player_gain_rings(num)
+/// @method player_gain_rings(num, [is_super_ring])
 /// @description Increases the player's ring count by the given amount.
 /// @param {Real} num Amount of rings to give.
-player_gain_rings = function(num)
+/// @param {Boolean} [is_super_ring] If the ring gained is a Super Ring or not (Optional, defaults to false).
+player_gain_rings = function(num, is_super_ring = false)
 {
 	player_set_rings(global.rings + num);
-	audio_play_single(sfxRing);
+	audio_play_single(is_super_ring ? sfxRingSuper : sfxRing);
 	
 	// Gain lives
 	//static ring_life_threshold = 99;
@@ -553,14 +554,33 @@ player_gain_score = function (num)
 /// @returns {Id.Instance}
 player_ring_loss = function ()
 {
-	//var total = min(global.rings, 32);
-	//var dir = 101.25;
-	//var len = 4;
+	var total = min(global.rings, 32);
+	var dir = 101.25;
+	var len = 4;
 
-	//while (total)
-	//{
-		//var ring_inst = instance_create_layer(x div 1, y div 1, "ZoneObjects", objRing);
-	//}
+	while (total)
+	{
+		var ring_inst = instance_create_layer(x div 1, y div 1, "StageObjects", objWorldRing);
+		
+		ring_inst.life_alarm = 256;
+		ring_inst.x_speed = dcos(round(dir)) * len;
+		ring_inst.y_speed = -dsin(round(dir)) * len;
+		ring_inst.has_dropped = true;
+
+		if (total mod 2 != 0)
+		{
+		    dir += 22.5;
+		    ring_inst.x_speed *= -1;
+		}
+
+		total -= 1;
+
+		if (total == 16)
+		{
+		    len = 2;
+		    dir = 101.25;
+		}
+	}
 	
 	player_set_rings(0);
 };

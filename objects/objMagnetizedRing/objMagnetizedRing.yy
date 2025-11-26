@@ -1,20 +1,21 @@
 {
   "$GMObject":"",
-  "%Name":"objRing",
+  "%Name":"objMagnetizedRing",
   "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":1,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"objRing",
+  "name":"objMagnetizedRing",
   "overriddenProperties":[],
   "parent":{
     "name":"Rings",
     "path":"folders/Objects/Stage/General/Rings.yy",
   },
   "parentObjectId":{
-    "name":"objStageObject",
-    "path":"objects/objStageObject/objStageObject.yy",
+    "name":"objRing",
+    "path":"objects/objRing/objRing.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -29,13 +30,14 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[
-    {"$GMObjectProperty":"v2","%Name":"is_super_ring","filters":[],"listItems":[],"multiselect":false,"name":"is_super_ring","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
-  ],
+  "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"sprRing",
+    "path":"sprites/sprRing/sprRing.yy",
+  },
   "spriteMaskId":null,
   "visible":true,
 }

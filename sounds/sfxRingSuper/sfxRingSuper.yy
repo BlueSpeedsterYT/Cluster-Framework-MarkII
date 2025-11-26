@@ -1,6 +1,6 @@
 {
   "$GMSound":"v2",
-  "%Name":"sfxRing",
+  "%Name":"sfxRingSuper",
   "audioGroupId":{
     "name":"audiogroup_default",
     "path":"audiogroups/audiogroup_default",
@@ -10,9 +10,9 @@
   "compression":0,
   "compressionQuality":4,
   "conversionMode":0,
-  "duration":0.6682086,
+  "duration":1.4996145,
   "exportDir":"",
-  "name":"sfxRing",
+  "name":"sfxRingSuper",
   "parent":{
     "name":"Zone Objects",
     "path":"folders/Sounds/SFX/Zone Objects.yy",
@@ -21,6 +21,6 @@
   "resourceType":"GMSound",
   "resourceVersion":"2.0",
   "sampleRate":44100,
-  "soundFile":"sfxRing.wav",
+  "soundFile":"sfxRingSuper.wav",
   "volume":1.0,
 }

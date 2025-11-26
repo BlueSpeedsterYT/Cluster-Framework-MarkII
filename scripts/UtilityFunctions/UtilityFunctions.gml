@@ -111,14 +111,21 @@ function mod_time(time, frequency, maximum)
 /// @function wrap(val, minimum, maximum)
 /// @description Wraps the given value between the minimum and maximum inclusively.
 /// @param {Real} val Value to wrap.
-/// @param {Real} maximum Maximum value.
 /// @param {Real} minimum Minimum value.
+/// @param {Real} maximum Maximum value.
 /// @returns {Real}
 function wrap(val, minimum, maximum)
 {
     if (val < minimum) return maximum;
     else if (val > maximum) return minimum;
     else return val;
+}
+
+/// @function draw_self_floored()
+/// @description A floored version of the existing draw_self() function.
+function draw_self_floored()
+{
+	if (sprite_index != -1) draw_sprite_ext(sprite_index, image_index, floor(x), floor(y), image_xscale, image_yscale, image_angle, image_blend, image_alpha);
 }
 
 /// @function angle_wrap(ang)

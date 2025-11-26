@@ -245,7 +245,7 @@ if (keyboard_check_pressed(vk_numpad2)) gravity_direction = 0;
 if (keyboard_check_pressed(vk_numpad4)) gravity_direction = 270;
 if (keyboard_check_pressed(vk_numpad6)) gravity_direction = 90;
 if (keyboard_check_pressed(vk_numpad8)) gravity_direction = 180;
-if (keyboard_check_pressed(ord("1"))) player_status(STATUS_INDEX.SHIELD, SHIELD_TYPE.BASIC);
+if (keyboard_check_pressed(ord("1"))) player_status(STATUS_INDEX.SHIELD, wrap(shield_index + 1, SHIELD_TYPE.NONE, SHIELD_TYPE.MAGNETIC));
 if (keyboard_check_pressed(ord("2"))) player_status(STATUS_INDEX.INVINCIBILITY, 1380);
 if (keyboard_check_pressed(ord("3"))) player_status(STATUS_INDEX.SPEED, 900);
 
