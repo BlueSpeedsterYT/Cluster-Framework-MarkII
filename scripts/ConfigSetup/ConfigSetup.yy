@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"ConfigInitalization",
+  "%Name":"ConfigSetup",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"ConfigInitalization",
+  "name":"ConfigSetup",
   "parent":{
     "name":"Global",
     "path":"folders/Scripts/Global.yy",

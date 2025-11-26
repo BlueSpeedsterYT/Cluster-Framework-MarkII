@@ -25,3 +25,9 @@ with (spin_dash_effect)
 }
 
 #endregion
+
+#region Shields
+
+player_shield_late_update();
+
+#endregion

@@ -235,6 +235,8 @@ function player_effect() constructor
 
 spin_dash_effect = new player_effect();
 
+player_shield_create();
+
 // Camera
 camera = noone;
 camera_offset_x = 0;

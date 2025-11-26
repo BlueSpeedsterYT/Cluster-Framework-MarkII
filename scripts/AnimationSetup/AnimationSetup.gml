@@ -32,6 +32,10 @@ global.ani_spin_dash_v0 = new animation(sprSpinDash0, 2);
 global.ani_spin_dash_v1 = new animation(sprSpinDash1, 2);
 global.ani_spin_dash = [global.ani_spin_dash_v0, global.ani_spin_dash_v1];
 
+global.ani_shield_basic = new animation(sprShieldBasic, 3);
+global.ani_shield_magnetic = new animation(sprShieldMagnetic, 3);
+global.ani_invin_effect = new animation(sprInvin, 2);
+
 #endregion
 
 #region Sonic

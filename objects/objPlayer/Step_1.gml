@@ -31,6 +31,7 @@ if (remaining_air_time > 0)
 
 animation_update();
 with (spin_dash_effect) animation_update();
+with (shield_effect) animation_update();
 
 // Record
 if (player_index == 0)

@@ -15,6 +15,9 @@ with (spin_dash_effect)
 	draw();
 }
 
+// Shield
+player_shield_draw();
+
 // Hitboxes
 draw_hitboxes(mask_direction);
 
