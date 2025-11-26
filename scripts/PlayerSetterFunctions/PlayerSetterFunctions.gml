@@ -6,35 +6,36 @@ function player_eject_wall(inst)
 {
 	var sine = dsin(mask_direction);
 	var cosine = dcos(mask_direction);
-	var inside = (collision_point(x div 1, y div 1, inst, true, false) != noone);
+	var inside = collision_point(x div 1, y div 1, inst, true, false) != noone;
 	
 	for (var ox = 1; ox <= x_wall_radius; ++ox)
 	{
 		if (not inside)
 		{
 			// Left of the wall
-			if (player_beam_collision(inst, ox, 0))
+			if (player_ray_collision(inst, ox, 0))
 			{
 				player_new_position(x - (cosine * (x_wall_radius - ox + 1)), y + (sine * (x_wall_radius - ox + 1)));
 				return 1;
 			}
-			else if (player_beam_collision(inst, -ox, 0)) // Right of the wall
+			else if (player_ray_collision(inst, -ox, 0)) // Right of the wall
 			{
 				player_new_position(x + (cosine * (x_wall_radius - ox + 1)), y - (sine * (x_wall_radius - ox + 1)));
 				return -1;
 			}
 		}
-		else if (not player_beam_collision(inst, ox, 0)) // Right of the wall
+		else if (not player_ray_collision(inst, ox, 0)) // Right of the wall
 		{
 			player_new_position(x + (cosine * (x_wall_radius + ox)), y - (sine * (x_wall_radius + ox)));
 			return -1;
 		}
-		else if (not player_beam_collision(inst, -ox, 0)) // Left of the wall
+		else if (not player_ray_collision(inst, -ox, 0)) // Left of the wall
 		{
 			player_new_position(x - (cosine * (x_wall_radius + ox)), y + (sine * (x_wall_radius + ox)));
 			return 1;
 		}
 	}
+	
 	return undefined;
 }
 
@@ -65,21 +66,21 @@ function player_resolve_angle()
 	var ramp_edge = 0;
 	
 	// Find which of the player's vertical sensors are grounded
-	var total_solids = array_concat(tilemaps, solid_objects);
-	for (var n = array_length(total_solids) - 1; n > -1; --n)
+	for (var n = array_length(tilemaps) - 1; n > -1; --n)
 	{
-		var inst = total_solids[n];
+		var inst = tilemaps[n];
 		
 		// Check directly below
-		if (player_beam_collision(inst, -x_radius, y_radius + 1)) mask_edge |= 1;
-		if (player_beam_collision(inst, x_radius, y_radius + 1)) mask_edge |= 2;
+		if (player_ray_collision(inst, -x_radius, y_radius + 1)) mask_edge |= 1;
+		if (player_ray_collision(inst, x_radius, y_radius + 1)) mask_edge |= 2;
+		if (player_ray_collision(inst, 0, y_radius + 1)) mask_edge |= 4;
 		
 		// Check for ramp edges
 		if (not landed)
 		{
-			if (player_beam_collision(inst, -x_radius, y_radius + y_tile_reach)) ramp_edge |= 1;
-			if (player_beam_collision(inst, x_radius, y_radius + y_tile_reach)) ramp_edge |= 2;
-			if (player_beam_collision(inst, 0, y_radius + y_tile_reach)) ramp_edge |= 4;
+			if (player_ray_collision(inst, -x_radius, y_radius + y_tile_reach)) ramp_edge |= 1;
+			if (player_ray_collision(inst, x_radius, y_radius + y_tile_reach)) ramp_edge |= 2;
+			if (player_ray_collision(inst, 0, y_radius + y_tile_reach)) ramp_edge |= 4;
 		}
 	}
 	
@@ -109,15 +110,17 @@ function player_resolve_angle()
 	if (mask_edge != 0)
 	{
 		var new_dir = mask_direction;
-		if (mask_edge != 3)
+		
+		// Check if only one of the player's sensors is grounded (power of 2 check)
+		if ((mask_edge & (mask_edge - 1)) == 0)
 		{
-			// Reposition offset point to the grounded side of the player's virtual mask
+			// Reposition offset point to the left or right side of the player's virtual mask, if applicable
 			if (mask_edge == 1)
 			{
 				ox -= cosine * x_radius;
 				oy += sine * x_radius;
 			}
-			else
+			else if (mask_edge == 2)
 			{
 				ox += cosine * x_radius;
 				oy -= sine * x_radius;

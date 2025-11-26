@@ -1,4 +1,4 @@
-/// @description Initialize
+/// @description Setup
 var player_objects = [objSonic, objMiles, objKnuckles, objAmy, objCream];
 var character_enum_id = [CHARACTER.SONIC, CHARACTER.MILES, CHARACTER.KNUCKLES, CHARACTER.AMY, CHARACTER.CREAM];
 global.players = array_create(INPUT_MAX_PLAYERS, noone);

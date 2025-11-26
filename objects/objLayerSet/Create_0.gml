@@ -1,4 +1,4 @@
-/// @description Initialize
+/// @description Setup
 // Inherit the parent event
 event_inherited();
 var hitbox_height = (sprite_height / 2);

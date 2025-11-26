@@ -1,21 +1,16 @@
 /// @description Render
 var time = ctrlStage.stage_time;
 var reached_time_limit = time == ctrlStage.time_limit;
-
-// Time:
-if (ctrlStage.is_hub == false)
-{
-	var minutes = time div 3600;
-	var seconds = (time div 60) mod 60;
-	var centiseconds = floor(time / 0.6) mod 100;
-}
+var minutes = time div 3600;
+var seconds = (time div 60) mod 60;
+var centiseconds = floor(time / 0.6) mod 100;
 
 // Switch up HUD styles:
 switch (config_get("misc_hud", HUD.CLUSTER_GM8))
 {
 	case HUD.S4_EPISODE_2:
 	{
-		var _flash = mod_time(image_index, 8, 2);
+		var _flash = mod_time(time, 8, 2);
 		
 		hud_x = 13;
 		hud_y = 14;
@@ -57,7 +52,7 @@ switch (config_get("misc_hud", HUD.CLUSTER_GM8))
 	case HUD.ADVANCE_2:
 	{
 		var _center_x = (CAMERA_WIDTH / 2);
-		var _flash = (image_index & 0x10);
+		var _flash = (time & 0x10);
 
 		hud_x = 0;
 		hud_y = 3;

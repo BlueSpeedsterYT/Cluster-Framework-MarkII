@@ -1,82 +1,5 @@
-/// @description Initialize
+/// @description Setup
 image_speed = 0;
-
-// Constants
-enum PHASE
-{ 
-    ENTER,
-    STEP,
-    EXIT
-}
-
-enum PLAYER_ANIMATION
-{ 
-    IDLE,
-    TEETER,
-    TURN,
-    RUN,
-    BRAKE,
-    LOOK,
-    CROUCH,
-    ROLL,
-    SPIN_DASH,
-    FALL,
-    JUMP,
-    HURT,
-    DEAD,
-    TRICK_UP,
-    TRICK_DOWN,
-    TRICK_FRONT,
-    TRICK_BACK,
-    SPRING,
-    SPRING_TWIRL
-}
-
-enum SHIELD_TYPE
-{ 
-    NONE,
-    BASIC,
-    MAGNETIC,
-    BUBBLE,
-    FIRE,
-    LIGHTNING
-}
-
-enum STATUS_INDEX
-{ 
-    SHIELD,
-    INVINCIBILITY,
-    SPEED,
-    PANIC,
-    SWAP,
-    TOTAL_STATUSES
-}
-
-enum TRICK
-{
-	UP,
-	DOWN,
-	FRONT,
-	BACK
-}
-
-enum CPU_INPUT
-{
-	X,
-	Y,
-	JUMP,
-	JUMP_PRESSED,
-	MAX
-}
-
-enum CPU_STATE
-{
-	FOLLOW,
-	CROUCH,
-	SPIN_DASH
-}
-
-#macro PLAYER_HEIGHT 14
 
 // State machine
 state = player_is_ready;
@@ -147,18 +70,13 @@ mask_direction = 0;
 
 cliff_sign = 0;
 
-tilemaps =
-[
-	layer_tilemap_get_id("TilesMain")
-];
-
+tilemaps = [layer_tilemap_get_id("TilesMain")];
+semisolid_tilemap = layer_tilemap_get_id("TilesSemisolid");
 if (layer_exists("TilesLayer0"))
 {
-    array_push(tilemaps, layer_tilemap_get_id("TilesLayer0"));
-    collision_layer = 0;
+	array_push(tilemaps, layer_tilemap_get_id("TilesLayer0"));
+	collision_layer = 0;
 }
-
-semisolid_tilemap = layer_tilemap_get_id("TilesSemisolid");
 
 solid_objects = [];
 ground_id = noone;
