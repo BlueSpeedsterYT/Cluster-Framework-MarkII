@@ -1,7 +1,7 @@
 /// @description player_invin_spark_create()
 function player_invin_spark_create()
 {
-	if (config_get("advance_flicker", false))
+	if (config_get("advance_flicker", false) and invincibility_time > 0)
 	{
 	    if (mod_time(invincibility_time, 2, 4) == 0) 
 		{

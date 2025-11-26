@@ -675,7 +675,7 @@ player_damage = function(inst)
 		
 		if (player_index == 0)
 		{
-			if (shield_index != SHIELD_TYPE.NONE) shield_index = SHIELD_TYPE.NONE;
+			if (shield_index > SHIELD_TYPE.NONE) shield_index = SHIELD_TYPE.NONE;
 			else player_ring_loss();
 		}
 		
