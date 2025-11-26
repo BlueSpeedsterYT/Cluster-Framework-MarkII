@@ -21,8 +21,6 @@ if (input_allow)
 			input_cpu_gamepad_time--;
 			if (input_cpu_gamepad_time == 0) player_refresh_status();
 		}
-		
-		if (input_button.start.check) gravity_direction = 90;
 	}
 
 	if (player_index != 0 and input_cpu_gamepad_time == 0)
@@ -224,22 +222,29 @@ py += sine * camera_padding_x + cosine * camera_padding_y;
 
 with (camera)
 {
-    offset(ox, oy);
-    padding(px, py);
-    center(false, other.on_ground);
-    spd_max_y = (other.x_speed >= 8 or not other.on_ground ? 24 : 6);
+	if (get_paused() == false)
+	{
+		offset(ox, oy);
+	    padding(px, py);
+	    center(false, other.on_ground);
+		spd_max_y = (other.x_speed >= 8 or not other.on_ground ? 24 : 6);
     
-    if (follow != other)
-    {
-        move(other.x, other.y);
-        follow = other;
-    }
+		if (follow != other)
+		{
+		    move(other.x, other.y);
+		    follow = other;
+		}
+	}
 }
 
 #endregion
 
 #region Debug
 
+if (keyboard_check_pressed(vk_numpad2)) gravity_direction = 0;
+if (keyboard_check_pressed(vk_numpad4)) gravity_direction = 270;
+if (keyboard_check_pressed(vk_numpad6)) gravity_direction = 90;
+if (keyboard_check_pressed(vk_numpad8)) gravity_direction = 180;
 if (keyboard_check_pressed(ord("1"))) player_status(STATUS_INDEX.SHIELD, SHIELD_TYPE.BASIC);
 if (keyboard_check_pressed(ord("2"))) player_status(STATUS_INDEX.INVINCIBILITY, 1380);
 if (keyboard_check_pressed(ord("3"))) player_status(STATUS_INDEX.SPEED, 900);

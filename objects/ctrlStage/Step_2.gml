@@ -14,6 +14,3 @@ with (objPlayer)
 		instance_activate_region(x - CAMERA_PADDING, y - CAMERA_PADDING, CAMERA_PADDING * 2, CAMERA_PADDING * 2, true);
 	}
 }
-
-// Repeat
-alarm[0] = 5;

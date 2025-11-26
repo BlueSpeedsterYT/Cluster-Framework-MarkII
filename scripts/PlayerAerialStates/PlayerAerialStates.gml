@@ -195,11 +195,16 @@ function player_is_dead(phase)
 			// Reset
 			player_refresh_status();
 			boost_mode = false;
+			ctrlStage.time_enabled = false;
 			
 			// Animate
 			animation_init(PLAYER_ANIMATION.DEAD);
 			
-			// TODO: SonicForGMS resets the camera here, figure it out here or wait for proper solution.
+			// Reset Camera
+			with (camera)
+			{
+				set_paused(true);
+			}
 			break;
 		}
 		case PHASE.STEP:
@@ -209,7 +214,12 @@ function player_is_dead(phase)
 			var cosine = dcos(gravity_direction);
 			player_new_position(x + (sine * y_speed), y + (cosine * y_speed));
 			
-			// TODO: SonicForGMS checks if the player is 48 below bound_bottom.
+			// Reset Player State
+			var y_int = y div 1;
+			if (y_speed >= 0 and y_int >= ctrlStage.bound_bottom + 48)
+			{
+				return player_perform(-1);
+			}
 			
 			// Fall
 			if (y_speed < gravity_cap)
