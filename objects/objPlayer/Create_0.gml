@@ -162,6 +162,7 @@ semisolid_tilemap = layer_tilemap_get_id("TilesSemisolid");
 
 solid_objects = [];
 ground_id = noone;
+ceiling_id = noone;
 
 // Input
 input_axis_x = 0;
@@ -306,7 +307,7 @@ function player_effect() constructor
     image_xscale = 1;
     image_yscale = 1;
     image_angle = 0;
-	image_alpha = 1;
+    image_alpha = 1;
     animation_data = new animation_core();
     static draw = function()
     {
@@ -662,7 +663,7 @@ player_damage = function(inst)
         if (abs(x_speed) <= 2.5)
         {
             if (abs(x_speed) > 0.625) x_speed = sign(x_speed) * hurt_speed;
-            else x_speed = image_xscale * hurt_speed;
+            else x_speed = esign(inst.x - x, image_xscale) * hurt_speed;
             animation_data.variant = 0;
         }
         else

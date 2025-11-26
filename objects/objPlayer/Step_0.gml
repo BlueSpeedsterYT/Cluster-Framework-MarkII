@@ -21,6 +21,8 @@ if (input_allow)
 			input_cpu_gamepad_time--;
 			if (input_cpu_gamepad_time == 0) player_refresh_status();
 		}
+		
+		if (input_button.start.check) gravity_direction = 90;
 	}
 
 	if (player_index != 0 and input_cpu_gamepad_time == 0)

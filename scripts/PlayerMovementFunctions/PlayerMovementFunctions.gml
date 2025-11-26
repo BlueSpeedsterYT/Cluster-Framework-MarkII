@@ -103,6 +103,7 @@ function player_move_in_air()
             else if (instance_exists(ground_id))
             {
                 landed = true;
+                on_ground = true;
                 direction = gravity_direction;
                 mask_direction = gravity_direction;
                 player_rotate_mask();
@@ -135,6 +136,11 @@ function player_move_in_air()
 					break;
 				}
 			}
+            else if (instance_exists(ceiling_id))
+            {
+                landed = true;
+                on_ground = false;
+            }
 		}
 		
 		// Land
