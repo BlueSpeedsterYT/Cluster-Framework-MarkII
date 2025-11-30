@@ -1,11 +1,11 @@
 {
   "$GMObject":"",
-  "%Name":"objSpike",
+  "%Name":"objJumpPanel",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"objSpike",
+  "name":"objJumpPanel",
   "overriddenProperties":[],
   "parent":{
     "name":"General",
@@ -33,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprSpike",
-    "path":"sprites/sprSpike/sprSpike.yy",
+    "name":"sprJumpPanel",
+    "path":"sprites/sprJumpPanel/sprJumpPanel.yy",
   },
   "spriteMaskId":null,
   "visible":true,
