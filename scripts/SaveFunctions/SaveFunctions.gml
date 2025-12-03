@@ -1,8 +1,12 @@
 function save_reset()
 {
-    db_write(global.save_database, "name", "");
-    db_write(global.save_database, "playtime", 0);
-    db_write(global.save_database, "stage", room_get_name(rmTest));
+    db_write(global.save_database, "", "name");
+    db_write(global.save_database, 0, "playtime");
+    db_write(global.save_database, room_get_name(rmTest), "stage");
+    db_write(global.save_database, true, "boost");
+    db_write(global.save_database, true, "trick");
+    db_write(global.save_database, true, "tag");
+    db_write(global.save_database, true, "swap");
     
     for (var i = 0; i < INPUT_MAX_PLAYERS; i++)
     {
@@ -10,9 +14,4 @@ function save_reset()
     }
     
     db_write(global.save_database, CHARACTER.SONIC, "character", 0);
-    
-    db_write(global.save_database, "boost", false);
-    db_write(global.save_database, "trick", true);
-    db_write(global.save_database, "tag", false);
-    db_write(global.save_database, "swap", false);
 }
