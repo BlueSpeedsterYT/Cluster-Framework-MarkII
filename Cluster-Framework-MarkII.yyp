@@ -499,7 +499,6 @@
     {"id":{"name":"PlayerReactionStates","path":"scripts/PlayerReactionStates/PlayerReactionStates.yy",},},
     {"id":{"name":"PlayerSetterFunctions","path":"scripts/PlayerSetterFunctions/PlayerSetterFunctions.yy",},},
     {"id":{"name":"PlayerTerrainFunctions","path":"scripts/PlayerTerrainFunctions/PlayerTerrainFunctions.yy",},},
-    {"id":{"name":"PlayerTraitStates","path":"scripts/PlayerTraitStates/PlayerTraitStates.yy",},},
     {"id":{"name":"PlayerTrickStates","path":"scripts/PlayerTrickStates/PlayerTrickStates.yy",},},
     {"id":{"name":"SaveFunctions","path":"scripts/SaveFunctions/SaveFunctions.yy",},},
     {"id":{"name":"SaveSetup","path":"scripts/SaveSetup/SaveSetup.yy",},},

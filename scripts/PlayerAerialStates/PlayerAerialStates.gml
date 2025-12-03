@@ -194,7 +194,6 @@ function player_is_dead(phase)
 			
 			// Reset
 			player_refresh_status();
-			boost_mode = false;
 			ctrlStage.time_enabled = false;
 			
 			// Animate

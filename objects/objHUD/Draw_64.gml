@@ -97,4 +97,9 @@ switch (config_get("misc_hud", HUD.CLUSTER_GM8))
 		break;
 	}
 }
+
+draw_set_valign(fa_top);
+draw_set_halign(fa_left);
+draw_set_font(-1);
+
 /* AUTHOR NOTE: for obvious reasons, the divisions for the timestamp do not respect the game framerate. */

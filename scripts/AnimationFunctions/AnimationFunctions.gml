@@ -23,6 +23,7 @@ function animation_core() constructor
     alarm = 0;
     speed = 1;
     pos = 0;
+    previous_pos = 0;
 }
 
 /// @function animation_init(index, [variant], [alternatives])
@@ -41,10 +42,11 @@ function animation_init(index, variant = -1, alternatives = [])
     animation_data.variant = variant;
 }
 
-/// @function animation_set(ani)
+/// @function animation_set(ani, [start])
 /// @description Sets the given animation as the animation core's current animation.
 /// @param {Undefined|Struct.animation|Array} ani Animation to set. Accepts an array as animation variants.
-function animation_set(ani)
+/// @param {Real} [start] Animation position to set.
+function animation_set(ani, start = 0)
 {
     ani = (is_array(ani) ? ani[min(array_length(ani) - 1, animation_data.variant)] : ani);
     
@@ -52,6 +54,7 @@ function animation_set(ani)
     {
         animation_data.alarm = 0;
         animation_data.pos = -1;
+        animation_data.previous_pos = -1;
         sprite_index = -1;
         image_index = 0;
     }
@@ -61,10 +64,10 @@ function animation_set(ani)
         var duration = ani.duration;
         var loop = ani.loop;
         var order = ani.order;
-        var start = 0;
         
         animation_data.alarm = (is_array(duration) ? duration[start] : duration);
         animation_data.pos = start;
+        animation_data.previous_pos = 0;
         sprite_index = sprite;
         image_index = (array_length(order) > 0 ? order[start] : start);
     }
@@ -93,6 +96,7 @@ function animation_update()
                 var order_length = array_length(order);
                 var last = (order_length > 0 ? order_length - 1 : sprite_get_number(sprite) - 1);
                 
+                animation_data.previous_pos = animation_data.pos;
                 animation_data.pos++;
                 
                 if (animation_data.pos > last)

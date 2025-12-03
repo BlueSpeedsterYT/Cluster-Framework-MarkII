@@ -16,10 +16,10 @@ function save_reset()
 
 	save_reset_character();
 	
-	save_set("boost", true);
+	save_set("boost", false);
 	save_set("trick", true);
-	save_set("tag", true);
-	save_set("swap", true);
+	save_set("tag", false);
+	save_set("swap", false);
 }
 
 function save_get_character(chara_id = 0)

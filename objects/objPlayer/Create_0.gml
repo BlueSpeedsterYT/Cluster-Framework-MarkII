@@ -46,9 +46,6 @@ slide_threshold = 2.5;
 air_drag_threshold = 0.125;
 air_drag = 0.96875;
 
-boost_mode = false;
-boost_speed = 0;
-
 // Collision detection
 x_radius = 8;
 x_wall_radius = 10;
