@@ -295,7 +295,7 @@ player_try_roll = function()
 /// @returns {Bool}
 player_try_trick = function(time = trick_time)
 {
-	if (save_get("trick", true) == true and time == 0 and input_button.tag.pressed)
+	if (time == 0 and input_button.tag.pressed)
 	{
 		trick_index = TRICK.BACK;
 		if (input_axis_y == -1) trick_index = TRICK.UP;

@@ -1,3 +1,5 @@
+/* TODO: Maybe refactor all of this cuz the db library is something */
+
 function config_get(database_name, database_default)
 {
 	return db_read(global.config_database, database_default, database_name);
