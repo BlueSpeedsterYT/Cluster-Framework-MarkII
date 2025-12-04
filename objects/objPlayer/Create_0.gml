@@ -554,7 +554,7 @@ player_ring_loss = function ()
 
 	while (total)
 	{
-		var ring_inst = instance_create_layer(x div 1, y div 1, "StageObjects", objWorldRing);
+		var ring_inst = instance_create_layer(x div 1, y div 1, "Interactables", objWorldRing);
 		
 		ring_inst.life_alarm = 256;
 		ring_inst.x_speed = dcos(round(dir)) * len;
