@@ -1,17 +1,19 @@
 {
   "$GMObject":"",
-  "%Name":"objRightTriangle",
-  "eventList":[],
+  "%Name":"objSunsetHillSemisolid",
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
-  "name":"objRightTriangle",
+  "name":"objSunsetHillSemisolid",
   "overriddenProperties":[],
   "parent":{
-    "name":"Terrain Shapes",
-    "path":"folders/Objects/Depreciated/Terrain Shapes.yy",
+    "name":"Sunset Hill",
+    "path":"folders/Objects/Stage/Sunset Hill.yy",
   },
   "parentObjectId":{
-    "name":"objSolid",
-    "path":"objects/objSolid/objSolid.yy",
+    "name":"objSemisolid",
+    "path":"objects/objSemisolid/objSemisolid.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -31,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprRightTriangle",
-    "path":"sprites/sprRightTriangle/sprRightTriangle.yy",
+    "name":"sprSunsetHillSemisolid",
+    "path":"sprites/sprSunsetHillSemisolid/sprSunsetHillSemisolid.yy",
   },
   "spriteMaskId":null,
   "visible":true,

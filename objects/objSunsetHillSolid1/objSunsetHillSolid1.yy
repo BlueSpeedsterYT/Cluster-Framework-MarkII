@@ -1,13 +1,15 @@
 {
   "$GMObject":"",
-  "%Name":"objRightTriangle",
-  "eventList":[],
+  "%Name":"objSunsetHillSolid1",
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
-  "name":"objRightTriangle",
+  "name":"objSunsetHillSolid1",
   "overriddenProperties":[],
   "parent":{
-    "name":"Terrain Shapes",
-    "path":"folders/Objects/Depreciated/Terrain Shapes.yy",
+    "name":"Solids",
+    "path":"folders/Objects/Stage/Sunset Hill/Solids.yy",
   },
   "parentObjectId":{
     "name":"objSolid",
@@ -31,8 +33,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"sprRightTriangle",
-    "path":"sprites/sprRightTriangle/sprRightTriangle.yy",
+    "name":"sprSunsetHillSolid1",
+    "path":"sprites/sprSunsetHillSolid1/sprSunsetHillSolid1.yy",
   },
   "spriteMaskId":null,
   "visible":true,

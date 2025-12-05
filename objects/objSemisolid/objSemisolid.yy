@@ -1,13 +1,15 @@
 {
   "$GMObject":"",
-  "%Name":"objRightTriangle",
-  "eventList":[],
+  "%Name":"objSemisolid",
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
-  "name":"objRightTriangle",
+  "name":"objSemisolid",
   "overriddenProperties":[],
   "parent":{
-    "name":"Terrain Shapes",
-    "path":"folders/Objects/Depreciated/Terrain Shapes.yy",
+    "name":"Parents",
+    "path":"folders/Objects/Stage/Parents.yy",
   },
   "parentObjectId":{
     "name":"objSolid",
@@ -30,10 +32,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"sprRightTriangle",
-    "path":"sprites/sprRightTriangle/sprRightTriangle.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }
