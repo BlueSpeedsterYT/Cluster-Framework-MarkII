@@ -1,10 +1,10 @@
-/// @function player_calc_ground_normal(x, y, rot)
+/// @function player_calc_tile_normal(x, y, rot)
 /// @description Calculates the surface normal of the 16x16 solid chunk found at the given point.
 /// @param {Real} x x-coordinate of the point.
 /// @param {Real} y y-coordinate of the point.
-/// @param {Real} rot Rotation of the point in multiples of 90 degrees.
+/// @param {Real} rot Direction to extend / regress the angle sensors in multiples of 90 degrees.
 /// @returns {Real}
-function player_calc_ground_normal(ox, oy, rot)
+function player_calc_tile_normal(ox, oy, rot)
 {
 	// Setup angle sensors
 	var sensor_x = array_create(2, ox);
@@ -61,11 +61,15 @@ function player_detect_entities()
 	// Evaluate semisolid tilemap collision
     if (semisolid_tilemap != -1)
     {
-   	    var valid = array_contains(tilemaps, semisolid_tilemap);
-   	    if (not player_beam_collision(semisolid_tilemap))
-   	    { 
-            if (not valid) array_push(tilemaps, semisolid_tilemap);
-   	    }
-   	    else if (valid) array_pop(tilemaps);
+        var valid = array_contains(tilemaps, semisolid_tilemap);
+        if (not player_beam_collision(semisolid_tilemap))
+        { 
+            if (not valid) array_push(tilemaps, semisolid_tilemap); 
+        } 
+        else if (valid) array_pop(tilemaps);
     }
+    
+    /* AUTHOR NOTE:
+	There is a limitation with the semisolid tilemap detection where, if the player passes through a semisolid tilemap whilst standing on one,
+	they will fall as it will be delisted from their `solid_entities` array. */
 }
