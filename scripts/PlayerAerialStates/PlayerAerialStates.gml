@@ -109,6 +109,20 @@ function player_is_jumping(phase)
 			// Land
 			if (player_try_landing()) return true;
 			
+			// Perform Per-Character Air Action
+			// TODO: Move this into a separate script if possible
+			if (input_button.jump.pressed)
+			{
+				switch (object_index)
+				{
+					case objSonic:
+					{
+						return player_perform(sonic_is_drop_dashing);
+						break;
+					}
+				}
+			}
+			
 			// Lower height
 			if (jump_cap and not input_button.jump.check and y_speed < -jump_release)
 			{

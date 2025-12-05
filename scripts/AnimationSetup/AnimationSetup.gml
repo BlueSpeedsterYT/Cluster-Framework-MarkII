@@ -3,6 +3,7 @@
 global.ani_brake_dust_v0 = new animation(sprBrakeDust, 2, -1);
 global.ani_ring_sparkle_v0 = new animation(sprRingSparkle, 4, -1);
 global.ani_invin_spark_v0 = new animation(sprInvinSpark, 2, -1);
+global.ani_drop_dash_v0 = new animation(sprDropDash, 3, -1);
 
 #endregion
 

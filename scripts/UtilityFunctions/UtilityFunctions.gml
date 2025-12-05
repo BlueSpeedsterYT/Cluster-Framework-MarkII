@@ -177,7 +177,7 @@ function instance_in_view(obj = id, view_padding = CAMERA_PADDING)
 /// @param {Real} y y-coordinate of the particle.
 /// @param {Struct.animation} ani animation of the particle.
 /// @param {Real} [xspd] x-speed of the particle.
-/// @param {Real} [yspd] y-speed of the effect.
+/// @param {Real} [yspd] y-speed of the particle.
 /// @param {Real} [xaccel] x-acceleration of the particle.
 /// @param {Real} [yaccel] y-acceleration of the particle.
 /// @returns {Id.Instance}
@@ -187,6 +187,38 @@ function particle_create(ox, oy, ani, xspd = 0, yspd = 0, xaccel = 0, yaccel = 0
     with (particle)
     {
         animation_set(ani);
+        x_speed = xspd;
+        y_speed = yspd;
+        x_acceleration = xaccel;
+        y_acceleration = yaccel;
+    }
+    return particle;
+}
+
+/// @function particle_create_ext(x, y, ani, [xscale], [yscale], [angle], [alpha], [xspd], [yspd], [xaccel], [yaccel])
+/// @description Creates a particle with the given animation.
+/// @param {Real} x x-coordinate of the particle.
+/// @param {Real} y y-coordinate of the particle.
+/// @param {Struct.animation} ani animation of the particle.
+/// @param {Real} [xscale] horizontal scale of the particle.
+/// @param {Real} [yscale] vertical scale of the particle.
+/// @param {Real} [angle] angle of the particle.
+/// @param {Real} [alpha] alpha level of the particle.
+/// @param {Real} [xspd] x-speed of the particle.
+/// @param {Real} [yspd] y-speed of the particle.
+/// @param {Real} [xaccel] x-acceleration of the particle.
+/// @param {Real} [yaccel] y-acceleration of the particle.
+/// @returns {Id.Instance}
+function particle_create_ext(ox, oy, ani, xscale = 1, yscale = 1, angle = 0, alpha = 1, xspd = 0, yspd = 0, xaccel = 0, yaccel = 0)
+{
+    var particle = instance_create_depth(ox, oy, layer_get_depth("Interactables") - DEPTH_OFFSET_PARTICLE, objParticle);
+    with (particle)
+    {
+        animation_set(ani);
+        image_xscale = xscale;
+        image_yscale = yscale;
+        image_angle = angle;
+        image_alpha = alpha;
         x_speed = xspd;
         y_speed = yspd;
         x_acceleration = xaccel;

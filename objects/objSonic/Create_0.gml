@@ -2,6 +2,8 @@
 // Inherit the parent event
 event_inherited();
 
+drop_dash_timer = 0;
+
 trick_speed =
 [
     [0, -6],
