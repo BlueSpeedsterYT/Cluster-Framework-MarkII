@@ -175,7 +175,7 @@ function player_is_hurt(phase)
             // Land
 			if (player_try_landing()) 
 			{
-				if (not config_get("advance_hurt", true)) x_speed = 0;
+				/* if (not config_get("advance_hurt")) x_speed = 0; */
 				y_speed = 0;
 				return true;
 			}

@@ -6,7 +6,8 @@ var seconds = (time div 60) mod 60;
 var centiseconds = floor(time / 0.6) mod 100;
 
 // Switch up HUD styles:
-switch (config_get("misc_hud", HUD.CLUSTER_GM8))
+/*
+switch (config_get("misc_hud"))
 {
 	case HUD.S4_EPISODE_2:
 	{
@@ -51,6 +52,7 @@ switch (config_get("misc_hud", HUD.CLUSTER_GM8))
 	
 	case HUD.ADVANCE_2:
 	{
+*/
 		var _center_x = (CAMERA_WIDTH / 2);
 		var _flash = (time & 0x10);
 
@@ -94,9 +96,11 @@ switch (config_get("misc_hud", HUD.CLUSTER_GM8))
 			draw_text(hud_x + _center_x + 12, hud_y, reached_time_limit ? "99" : string_pad(centiseconds, 2));
 			draw_set_colour(c_white);
 		}
+/*
 		break;
 	}
 }
+*/
 
 draw_set_valign(fa_top);
 draw_set_halign(fa_left);

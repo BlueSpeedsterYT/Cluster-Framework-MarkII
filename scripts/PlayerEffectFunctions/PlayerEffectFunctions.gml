@@ -1,7 +1,7 @@
 /// @function player_invin_spark_create()
 function player_invin_spark_create()
 {
-	if (config_get("advance_flicker", false) and invincibility_time > 0)
+	if (/* config_get("advance_flicker") and */ invincibility_time > 0)
 	{
 	    if (mod_time(invincibility_time, 2, 4) == 0) 
 		{
@@ -64,7 +64,7 @@ function player_shield_late_update()
 	
 	shield_advance = (shield_index == SHIELD_TYPE.BASIC or shield_index == SHIELD_TYPE.MAGNETIC or invincibility_time > 0);
 	
-	if (config_get("advance_flicker", false) and shield_advance)
+	if (/* config_get("advance_flicker") and */ shield_advance)
 	{
 		shield_hide = mod_time(ctrlWindow.image_index, 2, 2);
 	}
@@ -81,7 +81,7 @@ function player_shield_draw()
 	{
         image_angle = other.gravity_direction;
 		image_xscale = 1;
-		image_alpha = ((config_get("advance_flicker", false) and other.shield_advance) or not other.shield_advance) ? 1 : 0.6;
+		image_alpha = ((/* config_get("advance_flicker") and */ other.shield_advance) or not other.shield_advance) ? 1 : 0.6;
 		if (not other.shield_hide)
 		{
 			draw();

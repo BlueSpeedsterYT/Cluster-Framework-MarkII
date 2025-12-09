@@ -71,7 +71,7 @@ function player_is_standing(phase)
 			
 			// Turn
             if (animation_data.index != PLAYER_ANIMATION.TEETER and 
-				config_get("advance_turn", true) and input_axis_x != 0 and 
+				/* config_get("advance_turn") and */ input_axis_x != 0 and 
 				image_xscale != input_axis_x)
             {
                 return player_perform(player_is_turning)
@@ -176,7 +176,7 @@ function player_is_running(phase)
 					{
 						// Turn
 						if (mask_direction == gravity_direction and 
-							config_get("advance_turn", true) and 
+							/* config_get("advance_turn") and */ 
 							sign(image_xscale) == -input_axis_x and abs(x_speed) < 4)
 						{
                             return player_perform(player_is_turning);
@@ -259,7 +259,7 @@ function player_is_braking(phase)
 	{
 		case PHASE.ENTER:
 		{
-			if (not config_get("advance_brake", true) and x_speed != 0) image_xscale = sign(x_speed);
+			/* if (not config_get("advance_brake") and x_speed != 0) image_xscale = sign(x_speed); */
 			animation_init(PLAYER_ANIMATION.BRAKE, abs(x_speed) > 9.0);
 			break;
 		}
@@ -283,7 +283,7 @@ function player_is_braking(phase)
                             x_speed = deceleration * input_axis_x;
 							
 							// Turn
-							if (config_get("advance_turn", true) and image_xscale != sign(x_speed))
+							if (/* config_get("advance_turn") and */ image_xscale != sign(x_speed))
 							{
 	                            return player_perform(player_is_turning);
 							}
@@ -301,13 +301,15 @@ function player_is_braking(phase)
 				else
 				{
 					// Run
-					if (config_get("advance_brake", true)) return player_perform(player_is_running);
+					/* if (config_get("advance_brake")) */ return player_perform(player_is_running);
 					
+					/*
 					// Friction
 					x_speed -= min(abs(x_speed), friction) * sign(x_speed);
 					
 					// Roll
 					if (player_try_roll()) return true;
+					*/
 				}
 			}
 			

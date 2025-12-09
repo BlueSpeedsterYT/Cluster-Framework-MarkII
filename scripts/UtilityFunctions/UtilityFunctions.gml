@@ -68,7 +68,7 @@ function esign(val, def)
 function direction_to_object(obj)
 {
 	var n = (obj >= 100000) ? obj : instance_nearest(x, y, obj);
-	if(n == noone) return -1;
+	if (n == noone) return -1;
 	return (point_direction(x, y, n.x, n.y));
 }
 
