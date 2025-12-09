@@ -11,10 +11,12 @@ underwater = false;
 shield_index = SHIELD_TYPE.NONE;
 shield_allow = true;
 
+spin_dash_charge = 0;
+
+fall_speed_reset = true;
+
 jump_action = false;
 jump_cap = true;
-
-spin_dash_charge = 0;
 
 trick_index = TRICK.FRONT;
 trick_speed = array_create(TRICK.BACK + 1);
@@ -23,10 +25,13 @@ for (var i = 0; i < array_length(trick_speed); i++) trick_speed[i] = array_creat
 // Timers
 control_lock_time = 0;
 trick_time = 0;
+invulnerability_time = 0;
 superspeed_time = 0;
 remaining_air_time = 0;
 invincibility_time = 0;
-invulnerability_time = 0;
+input_cpu_state_time = 0;
+input_cpu_respawn_time = 0;
+input_cpu_gamepad_time = 0;
 camera_look_time = 0;
 
 slide_duration = 32;
@@ -581,13 +586,13 @@ player_ring_loss = function ()
 };
 
 /// @method player_damage(inst)
-/// @description Sets the player to be either hurt or dead. Set inst to self to instantly kill the player.
+/// @description Sets the player to be either hurt or dead. Set inst to id to instantly kill the player.
 /// @param {Id.Instance} inst Instance to check.
 player_damage = function(inst)
 {
-    if (state == player_is_dead or ((state == player_is_hurt or invincibility_time or invulnerability_time) and inst != self)) exit;
+    if (state == player_is_dead or ((state == player_is_hurt or invincibility_time > 0 or invulnerability_time > 0) and inst != id)) exit;
     
-    if (inst == self or (global.rings == 0 and shield_index == SHIELD_TYPE.NONE and player_index == 0))
+    if (inst == id or (global.rings == 0 and shield_index == SHIELD_TYPE.NONE and player_index == 0))
     {
 		return player_perform(player_is_dead);
     }

@@ -37,22 +37,25 @@ function player_move_on_ground()
 		// Handle floor collision
 		if (on_ground)
 		{
-			tile_data = player_find_floor(y_radius + (ground_snap ? y_tile_reach : 1));
-            if (tile_data != undefined)
-			{
-				player_ground(tile_data);
-				player_rotate_mask();
-			}
-            else if (instance_exists(ground_id))
+			if (instance_exists(ground_id))
             {
                 on_ground = true;
                 direction = gravity_direction;
                 mask_direction = gravity_direction;
                 local_direction = 0;
             }
-			else
+            else
             {
-                on_ground = false;
+                tile_data = player_find_floor(y_radius + (ground_snap ? y_tile_reach : 1));
+                if (tile_data != undefined)
+                {
+				    player_ground(tile_data);
+				    player_rotate_mask();
+                }
+                else
+                {
+				    on_ground = false;
+                }
             }
 		}
 	}
@@ -89,20 +92,23 @@ function player_move_in_air()
 		// Handle floor collision
 		if (y_speed >= 0)
 		{
-			tile_data = player_find_floor(y_radius);
-			if (tile_data != undefined)
-			{
-				landed = true;
-				player_ground(tile_data);
-				player_rotate_mask();
-			}
-            else if (instance_exists(ground_id))
+			if (instance_exists(ground_id))
             {
                 landed = true;
                 on_ground = true;
                 direction = gravity_direction;
                 mask_direction = gravity_direction;
                 local_direction = 0;
+            }
+            else
+            {
+                tile_data = player_find_floor(y_radius);
+                if (tile_data != undefined)
+                {
+                    landed = true;
+                    player_ground(tile_data);
+                    player_rotate_mask();
+                }
             }
 		}
 		else
