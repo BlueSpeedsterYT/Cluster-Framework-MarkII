@@ -140,14 +140,32 @@ if (player_index != 0 and cpu_gamepad_time == 0)
         // Swap to player
         if (InputCheckMany(-1, player_index)) cpu_gamepad_time = CPU_GAMEPAD_DURATION;
 	}
+
+    // Respawn
+    if (not instance_in_view())
+    {
+        // TODO: Add "Interlink" State
+        if (cpu_respawn_time++ >= CPU_RESPAWN_DURATION)
+        {
+            cpu_respawn_time = 0;
+            cpu_respawn_to_leader();
+        }
+    }
+    else if (cpu_respawn_time != 0)
+    {
+        cpu_respawn_time = 0;
+    }
 }
 
 #endregion
 
 #region Perform
 
-state(PHASE.STEP);
-if (state_changed) state_changed = false;
+if (script_exists(state)) 
+{
+	state(PHASE.STEP);
+	if (state_changed) state_changed = false;
+}
 player_animate();
 
 #endregion
