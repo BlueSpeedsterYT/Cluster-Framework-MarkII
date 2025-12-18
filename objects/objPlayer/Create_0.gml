@@ -6,6 +6,7 @@ player_index = -1;
 
 // State machine
 state = player_is_ready;
+state_previous = -1;
 state_changed = false;
 
 spin_dash_charge = 0;
@@ -218,14 +219,18 @@ player_respawn_cpu = function()
 /// @param {Bool} enter Whether to perform the enter phase (optional, defaults to true).
 player_perform = function(action, enter = true)
 {
-    var reset = (argument_count > 1);
-    if (state != action or reset)
-    { 
-        state(PHASE.EXIT);
-        state = action;
-        state_changed = true;
-        if (enter) state(PHASE.ENTER);
-    }
+	var state_reset = (argument_count > 1);
+	if (state != action || state_reset)
+	{
+		state_previous = state;
+		state = action;
+		state_changed = true;
+		if (script_exists(state_previous)) state_previous(PHASE.EXIT);
+		if (enter) 
+		{
+			if (script_exists(state)) state(PHASE.ENTER);
+		}
+	}
 };
 
 /// @method player_try_jump()
