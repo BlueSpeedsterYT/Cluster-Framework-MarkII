@@ -6,6 +6,7 @@ player_index = -1;
 
 // State machine
 state = player_is_ready;
+state_previous = -1;
 state_changed = false;
 
 spin_dash_charge = 0;
@@ -147,6 +148,45 @@ cpu_axis_y = array_create(16);
 cpu_input_jump = array_create(16);
 cpu_input_jump_pressed = array_create(16);
 
+/// @method cpu_respawn_to_leader()
+/// @description Respawns the CPU to the leader's location
+cpu_respawn_to_leader = function ()
+{
+	var player_inst = ctrlStage.stage_players[0];
+
+	if (instance_exists(player_inst))
+	{
+		if (player_inst.state != player_is_dead)
+		{
+			cpu_reset_status();
+			invulnerability_time = invulnerability_duration;
+		}
+	}
+}
+
+/// @method cpu_reset_status()
+/// @description Resets the CPU to match the leader
+cpu_reset_status = function ()
+{
+	var player_inst = ctrlStage.stage_players[0];
+
+	if (instance_exists(player_inst))
+	{
+		x = player_inst.x div 1;
+		y = player_inst.y div 1;
+		xprevious = player_inst.x div 1;
+		yprevious = player_inst.y div 1;
+		image_xscale = player_inst.image_xscale;
+		gravity_direction = player_inst.gravity_direction;
+		x_speed = player_inst.x_speed;
+		y_speed = player_inst.y_speed;
+		collision_layer = player_inst.collision_layer;
+		player_perform(player_is_falling);
+		animation_init(PLAYER_ANIMATION.ROLL);
+		player_refresh_physics();
+	}
+}
+
 // Animation
 animation_data = new animation_core();
 //animation_history = array_create(16);
@@ -184,10 +224,18 @@ camera_padding_y = 0;
 /// @param {Bool} enter Whether to perform the enter phase.
 player_perform = function(action, enter = true)
 {
-	state(PHASE.EXIT);
-	state = action;
-	state_changed = true;
-	if (enter) state(PHASE.ENTER);
+	var state_reset = (argument_count > 1);
+	if (state != action || state_reset)
+	{
+		state_previous = state;
+		state = action;
+		state_changed = true;
+		if (script_exists(state_previous)) state_previous(PHASE.EXIT);
+		if (enter) 
+		{
+			if (script_exists(state)) state(PHASE.ENTER);
+		}
+	}
 };
 
 /// @method player_try_jump()
@@ -458,7 +506,7 @@ player_damage = function(inst)
 {
     if (state == player_is_dead or ((state == player_is_hurt or invincibility_time > 0 or invulnerability_time > 0) and inst != id)) exit;
     
-    if (inst == id or (global.ring_count == 0 and player_index == 0))
+    if (inst == id or (global.ring_count == 0 and shield == SHIELD.NONE and player_index == 0))
     {
         y_speed = -7;
         if (inst == id) audio_play_single(sfxHurt);
@@ -483,7 +531,8 @@ player_damage = function(inst)
         y_speed = -4;
         if (player_index == 0)
         {
-            player_lose_rings();
+            if (shield > SHIELD.NONE) shield = SHIELD.NONE;
+            else player_lose_rings();
         }
         audio_play_single(inst.object_index == objSpike ? sfxHurtSpike : sfxHurt);
         return player_perform(player_is_hurt);
