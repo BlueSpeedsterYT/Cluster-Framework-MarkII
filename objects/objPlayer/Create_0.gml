@@ -6,6 +6,7 @@ player_index = -1;
 
 // State machine
 state = player_is_ready;
+state_previous = -1;
 state_changed = false;
 
 spin_dash_charge = 0;
@@ -139,6 +140,45 @@ cpu_axis_y = array_create(16);
 cpu_input_jump = array_create(16);
 cpu_input_jump_pressed = array_create(16);
 
+/// @method cpu_respawn_to_leader()
+/// @description Respawns the CPU to the leader's location
+cpu_respawn_to_leader = function ()
+{
+	var player_inst = ctrlStage.stage_players[0];
+
+	if (instance_exists(player_inst))
+	{
+		if (player_inst.state != player_is_dead)
+		{
+			cpu_reset_status();
+			invulnerability_time = invulnerability_duration;
+		}
+	}
+}
+
+/// @method cpu_reset_status()
+/// @description Resets the CPU to match the leader
+cpu_reset_status = function ()
+{
+	var player_inst = ctrlStage.stage_players[0];
+
+	if (instance_exists(player_inst))
+	{
+		x = player_inst.x div 1;
+		y = player_inst.y div 1;
+		xprevious = player_inst.x div 1;
+		yprevious = player_inst.y div 1;
+		image_xscale = player_inst.image_xscale;
+		gravity_direction = player_inst.gravity_direction;
+		x_speed = player_inst.x_speed;
+		y_speed = player_inst.y_speed;
+		collision_layer = player_inst.collision_layer;
+		player_perform(player_is_falling);
+		animation_init(PLAYER_ANIMATION.ROLL);
+		player_refresh_physics();
+	}
+}
+
 // Misc.
 /// @method player_perform(action, [enter])
 /// @description Sets the given function as the player's current state.
@@ -146,10 +186,18 @@ cpu_input_jump_pressed = array_create(16);
 /// @param {Bool} enter Whether to perform the enter phase.
 player_perform = function(action, enter = true)
 {
-	state(PHASE.EXIT);
-	state = action;
-	state_changed = true;
-	if (enter) state(PHASE.ENTER);
+	var state_reset = (argument_count > 1);
+	if (state != action || state_reset)
+	{
+		state_previous = state;
+		state = action;
+		state_changed = true;
+		if (script_exists(state_previous)) state_previous(PHASE.EXIT);
+		if (enter) 
+		{
+			if (script_exists(state)) state(PHASE.ENTER);
+		}
+	}
 };
 
 /// @method player_reset_input()
