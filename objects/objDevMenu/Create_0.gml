@@ -112,6 +112,28 @@ function option_player(_player) : option_int($"Player {_player}") constructor
 
 #endregion
 
+#region Gameplay
+
+boost_option = new option_bool("Boost");
+boost_option.get = function() { return db_read(global.save_database, true, "boost"); };
+boost_option.set = function(val) { db_write(global.save_database, val, "boost"); };
+
+trick_option = new option_bool("Trick");
+trick_option.get = function() { return db_read(global.save_database, true, "trick"); };
+trick_option.set = function(val) { db_write(global.save_database, val, "trick"); };
+
+tag_option = new option_bool("Tag");
+tag_option.get = function() { return db_read(global.save_database, true, "tag"); };
+tag_option.set = function(val) { db_write(global.save_database, val, "tag"); };
+
+swap_option = new option_bool("Swap");
+swap_option.get = function() { return db_read(global.save_database, true, "swap"); };
+swap_option.set = function(val) { db_write(global.save_database, val, "swap"); };
+
+gameplay_menu = new menu([boost_option, trick_option, tag_option, swap_option]);
+
+#endregion
+
 #region Config
 
 lives_option = new option_bool("Lives");
@@ -138,17 +160,14 @@ config_menu = new menu([lives_option, time_over_option, hud_option, device_optio
 
 #endregion
 
-#region Home
+#region Room
 
-player_0_option = new option_player(0);
-player_1_option = new option_player(1);
-
-boost_option = new option_bool("Boost");
-boost_option.get = function() { return db_read(global.save_database, true, "boost"); };
-boost_option.set = function(val) { db_write(global.save_database, val, "boost"); };
-
-config_option = new option_goto("Config");
-config_option.option_next = config_menu;
+test_old_option = new option("Old Test Room");
+test_old_option.confirm = function()
+{
+    room_goto(rmTest);
+    return true;
+};
 
 test_option = new option("Test Room");
 test_option.confirm = function()
@@ -157,7 +176,25 @@ test_option.confirm = function()
     return true;
 };
 
-home_menu = new menu([player_0_option, player_1_option, boost_option, config_option, test_option]);
+room_menu = new menu([test_old_option, test_option]);
+
+#endregion
+
+#region Home
+
+player_0_option = new option_player(0);
+player_1_option = new option_player(1);
+
+gameplay_option = new option_goto("Gameplay");
+gameplay_option.option_next = gameplay_menu;
+
+config_option = new option_goto("Config");
+config_option.option_next = config_menu;
+
+room_option = new option_goto("Room");
+room_option.option_next = room_menu;
+
+home_menu = new menu([player_0_option, player_1_option, gameplay_option, config_option, room_option]);
 
 #endregion
 
