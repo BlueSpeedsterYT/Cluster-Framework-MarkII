@@ -402,8 +402,11 @@ player_perform = function(action, enter = true)
         state_previous = state;
         state = action;
         state_changed = true;
-        state_previous(PHASE.EXIT);
-        if (enter) state(PHASE.ENTER);
+        if (script_exists(state_previous)) state_previous(PHASE.EXIT);
+        if (enter) 
+        {
+            if (script_exists(state)) state(PHASE.ENTER);
+        }
     }
 };
 

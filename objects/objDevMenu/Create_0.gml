@@ -2,6 +2,40 @@
 image_speed = 0;
 history = [];
 
+#region Gameplay
+
+boost_mode_option = new dev_option_bool("Boost Mode");
+with (boost_mode_option)
+{
+    get = function() { return db_read(DATABASE_SAVE, true, "boost_mode"); };
+    set = function(val) { db_write(DATABASE_SAVE, val, "boost_mode"); };
+}
+
+trick_actions_option = new dev_option_bool("Trick Actions");
+with (trick_actions_option)
+{
+    get = function() { return db_read(DATABASE_SAVE, true, "trick_actions"); };
+    set = function(val) { db_write(DATABASE_SAVE, val, "trick_actions"); };
+}
+
+tag_actions_option = new dev_option_bool("Tag Actions");
+with (tag_actions_option)
+{
+    get = function() { return db_read(DATABASE_SAVE, true, "tag_actions"); };
+    set = function(val) { db_write(DATABASE_SAVE, val, "tag_actions"); };
+}
+
+swap_option = new dev_option_bool("Swap");
+with (swap_option)
+{
+    get = function() { return db_read(DATABASE_SAVE, true, "swap"); };
+    set = function(val) { db_write(DATABASE_SAVE, val, "swap"); };
+}
+
+gameplay_menu = new dev_menu([boost_mode_option, trick_actions_option, tag_actions_option, swap_option]);
+
+#endregion
+
 #region Config
 
 lives_option = new dev_option_bool("Lives");
@@ -84,33 +118,8 @@ for (var i = 0; i < INPUT_MAX_PLAYERS; i++)
 player_0_option = new dev_option_player(0);
 player_1_option = new dev_option_player(1);
 
-boost_mode_option = new dev_option_bool("Boost Mode");
-with (boost_mode_option)
-{
-    get = function() { return db_read(DATABASE_SAVE, true, "boost_mode"); };
-    set = function(val) { db_write(DATABASE_SAVE, val, "boost_mode"); };
-}
-
-trick_actions_option = new dev_option_bool("Trick Actions");
-with (trick_actions_option)
-{
-    get = function() { return db_read(DATABASE_SAVE, true, "trick_actions"); };
-    set = function(val) { db_write(DATABASE_SAVE, val, "trick_actions"); };
-}
-
-tag_actions_option = new dev_option_bool("Tag Actions");
-with (tag_actions_option)
-{
-    get = function() { return db_read(DATABASE_SAVE, true, "tag_actions"); };
-    set = function(val) { db_write(DATABASE_SAVE, val, "tag_actions"); };
-}
-
-swap_option = new dev_option_bool("Swap");
-with (swap_option)
-{
-    get = function() { return db_read(DATABASE_SAVE, true, "swap"); };
-    set = function(val) { db_write(DATABASE_SAVE, val, "swap"); };
-}
+gameplay_option = new dev_option("Gameplay");
+gameplay_option.confirm = function() { dev_menu_goto(gameplay_menu); }
 
 config_option = new dev_option("Config");
 config_option.confirm = function() { dev_menu_goto(config_menu); }
@@ -127,10 +136,7 @@ with (room_option)
     toString = function() { return room_get_name(elements[index]); };
 }
 
-home_menu = new dev_menu(array_concat(player_options,
-    [boost_mode_option, trick_actions_option,
-    tag_actions_option, swap_option,
-    config_option, room_option]));
+home_menu = new dev_menu(array_concat(player_options, [gameplay_option, config_option, room_option]));
 
 #endregion
 
