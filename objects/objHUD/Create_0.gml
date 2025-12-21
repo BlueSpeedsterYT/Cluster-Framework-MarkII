@@ -40,6 +40,12 @@ switch (hud)
         hud_y = 8;
         break;
     }
+    case HUD.ADVANCE:
+    {
+        hud_x = 5;
+        hud_y = 2;
+        break;
+    }
     case HUD.ADVANCE_2:
     {
         hud_x = 1;
