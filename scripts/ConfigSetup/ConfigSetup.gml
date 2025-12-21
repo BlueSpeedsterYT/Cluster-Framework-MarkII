@@ -5,6 +5,7 @@ enum HUD
     CLUSTER,
     ADVENTURE,
     ADVENTURE_2,
+    ADVANCE,
     ADVANCE_2,
     ADVANCE_3,
     EPISODE_II

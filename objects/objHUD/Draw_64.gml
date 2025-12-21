@@ -80,6 +80,39 @@ switch (hud)
         draw_set_color(c_white);
         break;
     }
+    case HUD.ADVANCE:
+    {
+        // Text
+        draw_set_font(global.font_hud_advance);
+        draw_set_halign(fa_left);
+        draw_set_color(c_white);
+        
+        // Rings
+        draw_sprite(sprHUDAdvanceRing, 0, hud_x, hud_y);
+        draw_set_font(global.ring_count == 0 and flash ? global.font_hud_advance_red_digits : global.font_hud_advance);
+        draw_set_halign(fa_center);
+        draw_text(hud_x + 8, hud_y + 3, global.ring_count);
+        draw_set_halign(fa_left);
+        draw_set_font(global.font_hud_advance);
+        
+        // Score
+        var score_max = 9999999;
+        draw_set_halign(fa_right);
+        draw_text(hud_x + 76, hud_y - 4, $"{global.score_count > score_max ? score_max : global.score_count}");
+        draw_set_halign(fa_left);
+        
+        // Time
+        var time_x = hud_x + 20;
+        var time_y = hud_y + 10;
+        draw_set_font(time_flash and flash ? global.font_hud_advance_red_digits : global.font_hud_advance);
+        draw_text(time_x, time_y, $"{time_over ? "9" : minutes}");
+        draw_text(time_x + 8, time_y, ":");
+        draw_text(time_x + 16, time_y, time_over ? "59" : string_pad(seconds, 2));
+        draw_text(time_x + 32, time_y, ":");
+        draw_text(time_x + 40, time_y, time_over ? "99" : string_pad(centiseconds, 2));
+        draw_set_font(global.font_hud_advance);
+        break;
+    }
     case HUD.ADVANCE_2:
     {
         // Text
@@ -218,6 +251,17 @@ if (LIVES_ENABLED)
             draw_sprite_ext(sprHUDAdvance3LifeIcon, pla_character, lives_x, lives_y, -1, 1, 0, c_white, 1);
             draw_set_font(global.font_hud_adventure_2_lives);
             draw_text(lives_x + 4, lives_y + 6, $"{global.life_count > lives_max ? lives_max : string_pad(global.life_count, 2)}");
+            break;
+        }
+        case HUD.ADVANCE:
+        {
+            var lives_x = 1;
+            var lives_y = CAMERA_HEIGHT - 16;
+            var lives_max = 9;
+            var pla_character = global.characters[0];
+            draw_sprite(sprHUDAdvanceLifeIcon, pla_character, lives_x, lives_y);
+            draw_set_font(global.font_hud_advance);
+            draw_text(lives_x + 20, lives_y - 1, $"{global.life_count > lives_max ? lives_max : global.life_count}");
             break;
         }
         case HUD.ADVANCE_2:
