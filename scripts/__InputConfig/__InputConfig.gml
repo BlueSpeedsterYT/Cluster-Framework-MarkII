@@ -46,18 +46,18 @@
 // Minimum threshold for directional (thumbstick) axes. This value is used for detecting gamepad
 // input when hotswapping so make sure you set it above 0. This value can further be overriden per
 // player by using the `InputPlayerSetMinThreshold()` function.
-#macro INPUT_GAMEPAD_THUMBSTICK_MIN_THRESHOLD  0.25
+#macro INPUT_GAMEPAD_THUMBSTICK_MIN_THRESHOLD  0.3
 
 // Maximum threshold for directional (thumbstick) axes. This value can be overriden per player by
 // using the `InputPlayerSetMaxThreshold()` function.
-#macro INPUT_GAMEPAD_THUMBSTICK_MAX_THRESHOLD  0.8
+#macro INPUT_GAMEPAD_THUMBSTICK_MAX_THRESHOLD  0.95
 
 // Default minimum threshold for non-directional (trigger) axes. This value is used for detecting
 // gamepad input when hotswapping so make sure you set it above 0.
-#macro INPUT_GAMEPAD_TRIGGER_MIN_THRESHOLD  0.05
+#macro INPUT_GAMEPAD_TRIGGER_MIN_THRESHOLD  0.02
 
 // Default maximum threshold for non-directional (trigger) axes.
-#macro INPUT_GAMEPAD_TRIGGER_MAX_THRESHOLD  0.9
+#macro INPUT_GAMEPAD_TRIGGER_MAX_THRESHOLD  1.0
 
 /////////////////////////////////////
 //                                 //
@@ -78,7 +78,7 @@
 #macro INPUT_ALLOW_TOUCH_ON_DESKTOP  false
 
 // The maximum number of touchpoints to track when using the INPUT_TOUCH device.
-#macro INPUT_MAX_TOUCHPOINTS  4
+#macro INPUT_MAX_TOUCHPOINTS  11
 
 // Margin in pixels around the screen edge where gaining or losing a touch point will not register
 // "pressed" or "released". Prevents false positives when dragging on to or off of the edge of a
