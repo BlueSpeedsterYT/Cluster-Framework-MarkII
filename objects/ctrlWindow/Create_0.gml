@@ -7,7 +7,7 @@ background = draw_background_none;
 stanncam_init(CAMERA_WIDTH, CAMERA_HEIGHT, CAMERA_WIDTH * scale, CAMERA_HEIGHT * scale);
 global.main_camera = new stanncam();
 global.main_camera.room_constrain = true;
-global.main_camera.bounds_w = 8;
+global.main_camera.bounds_w = 0;
 global.main_camera.bounds_h = 32;
 //global.main_camera.debug_draw = true;
 stanncam_debug_set_draw_zones(true);
