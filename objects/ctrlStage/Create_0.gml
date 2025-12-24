@@ -19,12 +19,13 @@ time_enabled = true;
 // Identify stage
 switch (room)
 {
-	case rmTest:
-	{
-		name = "DEMONSTRATION";
-		act = 1;
-		break;
-	}
+    case rmTest:
+    case rmTestNew:
+    {
+        name = "DEMONSTRATION";
+        act = 1;
+        break;
+    }
 }
 
 // Setup tilemaps; discard invalid ones
