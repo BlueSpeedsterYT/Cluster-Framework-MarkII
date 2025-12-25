@@ -104,7 +104,7 @@ switch (hud)
         // Time
         var time_x = hud_x + 20;
         var time_y = hud_y + 10;
-        draw_set_font(time_flash and flash ? global.font_hud_advance_red_digits : global.font_hud_advance);
+        draw_set_font(time_alert and flash ? global.font_hud_advance_red_digits : global.font_hud_advance);
         draw_text(time_x, time_y, $"{time_over ? "9" : minutes}");
         draw_text(time_x + 8, time_y, ":");
         draw_text(time_x + 16, time_y, time_over ? "59" : string_pad(seconds, 2));
