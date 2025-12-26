@@ -37,7 +37,19 @@
 | Tag Action | 1340-0, 1340-1 |
 | Heart | 1317-0 |
 
-# Objects
+# Advance Objects
+| Animation | Source | Notes |
+| --- | --- | --- |
+| Item Box | 705-0 |
+| Items | 706-0, 706-1, 706-2, ... | Cream lacks a item icon so that would need to be custom made if possible |
+
+# Advance 2 Objects
+| Animation | Source | Notes |
+| --- | --- | --- |
+| Item Box | 724-0 |
+| Items | 725-0, 725-1, 725-2, ... |
+
+# Advance 3 Objects
 | Animation | Source | Notes |
 | --- | --- | --- |
 | Vertical Spring | 866-0, 866-1 |
