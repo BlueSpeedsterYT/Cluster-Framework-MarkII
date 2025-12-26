@@ -121,8 +121,8 @@
   "swatchColours":null,
   "swfPrecision":0.5,
   "textureGroupId":{
-    "name":"Default",
-    "path":"texturegroups/Default",
+    "name":"SunsetHill",
+    "path":"texturegroups/SunsetHill",
   },
   "type":0,
   "VTile":false,

@@ -157,18 +157,18 @@ itembox_icon_option = new option_int("Item Box Icon");
 itembox_icon_option.get = function() { return db_read(global.config_database, ITEMBOX_ICON.ADVANCE_2, "itembox_icon"); };
 itembox_icon_option.set = function(val) { db_write(global.config_database, val, "itembox_icon"); };
 itembox_icon_option.clampinv = true;
-itembox_icon_option.minimum = ITEMBOX_ICON.ADVANCE_2;
+itembox_icon_option.minimum = ITEMBOX_ICON.GENERIC;
 itembox_icon_option.maximum = ITEMBOX_ICON.ADVANCE_3;
-itembox_icon_option.specifiers = ["Advance 2", "Advance 3"];
-itembox_icon_option.offset = ITEMBOX_ICON.ADVANCE_2;
+itembox_icon_option.specifiers = ["Generic", "Advance 2", "Advance 3"];
+itembox_icon_option.offset = ITEMBOX_ICON.GENERIC;
 
 itembox_design_option = new option_int("Item Box Design");
 itembox_design_option.get = function() { return db_read(global.config_database, ITEMBOX_DESIGN.ADVANCE_2, "itembox_design"); };
 itembox_design_option.set = function(val) { db_write(global.config_database, val, "itembox_design"); };
 itembox_design_option.clampinv = true;
 itembox_design_option.minimum = ITEMBOX_DESIGN.ADVANCE;
-itembox_design_option.maximum = ITEMBOX_DESIGN.ADVANCE_2;
-itembox_design_option.specifiers = ["Advance", "Advance 2"];
+itembox_design_option.maximum = ITEMBOX_DESIGN.COLORS_DS;
+itembox_design_option.specifiers = ["Advance", "Advance 2", "Rush", "Rush Adventure", "Colors (DS)"];
 itembox_design_option.offset = ITEMBOX_DESIGN.ADVANCE;
 
 hud_option = new option_int("HUD");

@@ -36,8 +36,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"Advance 3",
-    "path":"folders/Sprites/Stage/General/Item Box/Advance 3.yy",
+    "name":"Item Box",
+    "path":"folders/Sprites/Stage/General/Item Box.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",
