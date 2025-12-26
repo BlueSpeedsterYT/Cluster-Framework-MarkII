@@ -41,7 +41,9 @@ switch (item_design)
 	}
 }
 
-item_delay = 0;
+item_display_state = 0; 
+item_frames = 0;
+draw_itembox = true;
 icon_display = 0;
 icon_offset = 0;
 
@@ -61,14 +63,36 @@ enum ITEMS
 
 reaction = function(pla)
 {
+	if (item_display_state > 0) exit;
+	
+	/* AUTHOR NOTE:
+	(1) Find out if the Rush Item Box has solid collision in any capacity.
+	(2) Improve the Advance Item Box icon behavior. */
 	if (collision_player(0, pla) and pla.state != player_is_dead)
 	{
 		if (pla.player_index == 0 or (pla.player_index != 0 and pla.cpu_gamepad_time > 0))
 		{
+			//TODO: Make this work while grounded
+			//NOTE: Maybe check the Rush games if this behavior was retained?
+			if (player_break_recoil or not pla.on_ground)
+			{
+				pla.y_speed = -3;
+			}
+			
 			//TODO: Call the Sonic Homing Routine here once added
-			//pla.player_give_item(pla, item_index);
+			if (item_design >= ITEMBOX_DESIGN.RUSH) //Give the item immediately if we're beyond the Advance games
+			{
+				pla.player_give_item(item_index);
+				instance_destroy();
+			}
+			else //Otherwise, make it behave like SA2
+			{
+				draw_itembox = false;
+				hitboxes[0].set_size(0, 0, 0, 0);
+				item_frames = 60;
+				item_display_state++;
+			}
 			//particle_create(x, y, global.ani_ring_sparkle_v0);
-			instance_destroy();
 		}
 	}
 }

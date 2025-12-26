@@ -12,6 +12,7 @@ enum HUD
 
 enum RANDOM_RING
 {
+    HYBRID,
     ADVANCE,
     ADVANCE_2
 }

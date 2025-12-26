@@ -1,5 +1,41 @@
 /// @description Update Item Box
 
+#region States (Advance Item Boxes Only)
+
+	if (item_frames > 0)
+	{
+		--item_frames;
+	}
+	
+	switch (item_display_state)
+	{
+		case 1:
+		{
+			if (item_frames <= 0)
+			{
+				objPlayer.player_give_item(item_index);
+				item_frames = 30;
+				item_display_state++;
+			}
+			else
+			{
+				icon_offset += -1;
+			}
+			break;
+		}
+		
+		case 2:
+		{
+			if (item_frames <= 0)
+			{
+				instance_destroy();
+			}
+			break;
+		}
+	}
+
+#endregion
+
 //Update Item Index/Icons
 switch (item_index)
 {

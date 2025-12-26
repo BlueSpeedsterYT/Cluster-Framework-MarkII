@@ -538,3 +538,50 @@ player_damage = function(inst)
         return player_perform(player_is_hurt);
     }
 };
+
+/// @method player_give_item(item_index)
+/// @description Gives the player an item from the provided index
+/// @param {Enum.ITEMS} item_index An item provided from the listed enum
+player_give_item = function(item_index)
+{
+	switch (item_index)
+	{
+		case ITEMS.ONE_UP:
+		{
+			player_gain_lives(1);
+			break;
+		}
+		case ITEMS.BONUS_RANDOM_RINGS:
+		{
+			var random_ring_behavior = db_read(global.config_database, RANDOM_RING.ADVANCE_2, "random_ring");
+			if (random_ring_behavior == RANDOM_RING.ADVANCE_2)
+			{
+				player_gain_rings(choose(1, 5, 10, 30, 50))
+			}
+			else if (random_ring_behavior == RANDOM_RING.ADVANCE)
+			{
+				player_gain_rings(choose(1, 5, 10, 20, 30, 40))
+			}
+			else
+			{
+				player_gain_rings(choose(1, 5, 10, 20, 30, 40, 50))
+			}
+			break;
+		}
+		case ITEMS.BONUS_5_RINGS:
+		{
+			player_gain_rings(5);
+			break;
+		}
+		case ITEMS.BONUS_10_RINGS:
+		{
+			player_gain_rings(10);
+			break;
+		}
+		default:
+		{
+			show_debug_message("got nothin here yet.");
+			break;
+		}
+	}
+}

@@ -41,6 +41,7 @@
         "ITEMS.BONUS_5_RINGS",
         "ITEMS.BONUS_10_RINGS",
       ],"multiselect":false,"name":"item_index","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"ITEMS.ONE_UP","varType":6,},
+    {"$GMObjectProperty":"v2","%Name":"player_break_recoil","filters":[],"listItems":[],"multiselect":false,"name":"player_break_recoil","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"true","varType":3,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

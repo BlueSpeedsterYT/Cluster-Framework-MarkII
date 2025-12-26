@@ -13,7 +13,10 @@ if (item_design != ITEMBOX_DESIGN.RUSH)
 	draw_sprite_ext(icon_sprite, icon_display, x_int + rush_adventure_x_offset, item_icon_offset - rush_adventure_y_offset, 1, 1, image_angle, c_white, 1);
 }
 
-draw_sprite_ext(itembox_sprite, 0, x_int, y_int, 1, 1, image_angle, c_white, 1);
+if (draw_itembox)
+{
+	draw_sprite_ext(itembox_sprite, 0, x_int, y_int, 1, 1, image_angle, c_white, 1);
+}
 
 if (item_design == ITEMBOX_DESIGN.RUSH)
 {

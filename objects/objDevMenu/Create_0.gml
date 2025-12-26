@@ -148,10 +148,10 @@ random_ring_option = new option_int("Random Ring");
 random_ring_option.get = function() { return db_read(global.config_database, RANDOM_RING.ADVANCE_2, "random_ring"); };
 random_ring_option.set = function(val) { db_write(global.config_database, val, "random_ring"); };
 random_ring_option.clampinv = true;
-random_ring_option.minimum = RANDOM_RING.ADVANCE;
+random_ring_option.minimum = RANDOM_RING.HYBRID;
 random_ring_option.maximum = RANDOM_RING.ADVANCE_2;
-random_ring_option.specifiers = ["Advance", "Advance 2"];
-random_ring_option.offset = RANDOM_RING.ADVANCE;
+random_ring_option.specifiers = ["Hybrid", "Advance", "Advance 2"];
+random_ring_option.offset = RANDOM_RING.HYBRID;
 
 itembox_icon_option = new option_int("Item Box Icon");
 itembox_icon_option.get = function() { return db_read(global.config_database, ITEMBOX_ICON.ADVANCE_2, "itembox_icon"); };
