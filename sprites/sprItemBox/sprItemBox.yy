@@ -26,8 +26,8 @@
   "nineSlice":null,
   "origin":9,
   "parent":{
-    "name":"Item Box",
-    "path":"folders/Sprites/Stage/General/Item Box.yy",
+    "name":"Cluster",
+    "path":"folders/Sprites/Stage/General/Item Box/Cluster.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

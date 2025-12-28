@@ -491,7 +491,19 @@ player_obtain_item = function(item)
         }
         case ITEM.RANDOM_RING_BONUS:
         {
-            player_gain_rings(choose(1, 5, 10, 20, 30, 40));
+            var random_ring_behavior = db_read(global.config_database, RANDOM_RING.ADVANCE, "random_ring");
+            if (random_ring_behavior == RANDOM_RING.ADVANCE_2)
+            {
+                player_gain_rings(choose(1, 5, 10, 30, 50))
+            }
+            else if (random_ring_behavior == RANDOM_RING.ADVANCE)
+            {
+                player_gain_rings(choose(1, 5, 10, 20, 30, 40))
+            }
+            else
+            {
+                player_gain_rings(choose(1, 5, 10, 20, 30, 40, 50))
+            }
             break;
         }
         case ITEM.BASIC:

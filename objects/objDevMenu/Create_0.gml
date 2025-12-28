@@ -34,6 +34,33 @@ time_over_option = new dev_option_bool("Time Over");
 time_over_option.get = function() { return db_read(global.config_database, true, "time_over"); };
 time_over_option.set = function(val) { db_write(global.config_database, val, "time_over"); };
 
+random_ring_option = new dev_option_int("Random Ring");
+random_ring_option.get = function() { return db_read(global.config_database, RANDOM_RING.ADVANCE, "random_ring"); };
+random_ring_option.set = function(val) { db_write(global.config_database, val, "random_ring"); };
+random_ring_option.clampinv = true;
+random_ring_option.minimum = RANDOM_RING.HYBRID;
+random_ring_option.maximum = RANDOM_RING.ADVANCE_2;
+random_ring_option.specifiers = ["Hybrid", "Advance", "Advance 2"];
+random_ring_option.offset = RANDOM_RING.HYBRID;
+
+itembox_icon_option = new dev_option_int("Item Box Icon");
+itembox_icon_option.get = function() { return db_read(global.config_database, ITEMBOX_ICON.CLUSTER, "itembox_icon"); };
+itembox_icon_option.set = function(val) { db_write(global.config_database, val, "itembox_icon"); };
+itembox_icon_option.clampinv = true;
+itembox_icon_option.minimum = ITEMBOX_ICON.GENERIC;
+itembox_icon_option.maximum = ITEMBOX_ICON.ADVANCE_3;
+itembox_icon_option.specifiers = ["Generic", "Cluster", "Advance 2", "Advance 3"];
+itembox_icon_option.offset = ITEMBOX_ICON.GENERIC;
+
+itembox_design_option = new dev_option_int("Item Box Design");
+itembox_design_option.get = function() { return db_read(global.config_database, ITEMBOX_DESIGN.CLUSTER, "itembox_design"); };
+itembox_design_option.set = function(val) { db_write(global.config_database, val, "itembox_design"); };
+itembox_design_option.clampinv = true;
+itembox_design_option.minimum = ITEMBOX_DESIGN.CLUSTER;
+itembox_design_option.maximum = ITEMBOX_DESIGN.COLORS_DS;
+itembox_design_option.specifiers = ["Cluster", "Advance", "Advance 2", "Rush", "Rush Adventure", "Colors (DS)"];
+itembox_design_option.offset = ITEMBOX_DESIGN.CLUSTER;
+
 hud_option = new dev_option_int("HUD");
 hud_option.get = function() { return db_read(global.config_database, HUD.CLUSTER, "hud"); };
 hud_option.set = function(val) { db_write(global.config_database, val, "hud"); };
@@ -54,7 +81,7 @@ flicker_option.specifiers = ["Off", "Original", "Virtual Console", "Virtual Cons
 device_option = new dev_option("Device Setup");
 device_option.confirm = function() { InputPartySetJoin(true); };
 
-config_menu = new dev_menu([lives_option, time_over_option, hud_option, flicker_option, device_option]);
+config_menu = new dev_menu([lives_option, time_over_option, random_ring_option, itembox_icon_option, itembox_design_option, hud_option, flicker_option, device_option]);
 
 #endregion
 
