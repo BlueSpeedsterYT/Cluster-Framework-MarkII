@@ -13,7 +13,7 @@ reaction = function(pla)
     if (not sprite_exists(sprite_index) or image_index != 0) exit;
     
     var flags_hurtbox = collision_player(0, pla);
-    var flags_attackbox = collision_player(0, pla);
+    var flags_attackbox = collision_player(1, pla);
     
     if (flags_hurtbox)
     {

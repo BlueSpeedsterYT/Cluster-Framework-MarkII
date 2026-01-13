@@ -203,7 +203,7 @@ if (volume_list == noone)
 var x_speed_cap = 24 * (x_lag_time == 0);
 var y_speed_cap = min(6 + abs(y - yprevious), 24) * (y_lag_time == 0);
 if (abs(camera_x) > x_speed_cap) camera_x = x_speed_cap * sign(camera_x);
-if (abs(camera_y > y_speed_cap)) camera_y = y_speed_cap * sign(camera_y);
+if (abs(camera_y) > y_speed_cap) camera_y = y_speed_cap * sign(camera_y);
 
 // Move the view
 if (camera_x != 0 or camera_y != 0)

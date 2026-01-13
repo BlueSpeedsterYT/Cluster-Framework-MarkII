@@ -149,7 +149,7 @@ cpu_respawn_to_leader = function ()
 		if (player_inst.state != player_is_dead)
 		{
 			cpu_reset_status();
-			invulnerability_time = invulnerability_duration;
+			recovery_time = RECOVERY_DURATION;
 		}
 	}
 }
