@@ -375,7 +375,6 @@ player_refresh_cpu = function()
     player_refresh_physics();
 };
 
-
 /// @method player_respawn_cpu()
 /// @description Respawns the CPU.
 player_respawn_cpu = function()
