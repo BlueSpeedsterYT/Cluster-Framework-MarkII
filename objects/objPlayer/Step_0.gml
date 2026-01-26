@@ -243,10 +243,7 @@ if (player_index != 0 and cpu_gamepad_time == 0)
     }
 }
 
-#endregion
-
-#region Perform
-
+// State
 if (script_exists(state)) 
 {
 	state(PHASE.STEP);
@@ -261,6 +258,19 @@ if (player_index == 0 and array_length(ctrlStage.stage_players) > 1 and state !=
     if (input_button.swap.pressed)
     {
         var swap_config = db_read(DATABASE_SAVE, true, "swap");
+        if ((not swap_config) or partner == noone)
+        {
+            if (not swap_config)
+            {
+                show_debug_message("swap config is set to off, exiting!");
+            }
+            else
+            {
+                show_debug_message("no partners found, maybe set one up?");
+            }
+            exit;
+        }
+
         if (swap_config and partner.cpu_gamepad_time == 0)
         {
             if (instance_in_view(partner))
