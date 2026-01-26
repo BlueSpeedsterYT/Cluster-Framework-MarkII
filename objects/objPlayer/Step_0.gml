@@ -186,10 +186,7 @@ if (player_index != 0 and cpu_gamepad_time == 0)
     }
 }
 
-#endregion
-
-#region Perform
-
+// State
 if (script_exists(state)) 
 {
 	state(PHASE.STEP);
@@ -203,6 +200,12 @@ if (player_index == 0 and array_length(ctrlStage.stage_players) > 1 and state !=
     var partner = ctrlStage.stage_players[1];
     if (input_button.swap.pressed)
     {
+        if (partner == noone)
+        {
+            show_debug_message("no partners found, maybe set one up?");
+            exit;
+        }
+
         if (partner.cpu_gamepad_time == 0)
         {
             if (instance_in_view(partner))
